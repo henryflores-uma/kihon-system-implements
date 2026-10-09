@@ -2,6 +2,7 @@ package com.sunkku.sistema.kihonsystem.controller;
 
 import com.sunkku.sistema.kihonsystem.model.Categoria;
 import com.sunkku.sistema.kihonsystem.service.CategoriaService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,27 +31,21 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> guardar(@RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> guardar(
+            @Valid @RequestBody Categoria categoria) {
+
         Categoria categoriaGuardada = categoriaService.guardar(categoria);
+
         return ResponseEntity.ok(categoriaGuardada);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> actualizar(
             @PathVariable Long id,
-            @RequestBody Categoria categoria) {
+            @Valid @RequestBody Categoria categoria) {
 
-        return categoriaService.buscarPorId(id)
-                .map(categoriaExistente -> {
-
-                    categoriaExistente.setNombre(categoria.getNombre());
-                    categoriaExistente.setDescripcion(categoria.getDescripcion());
-                    categoriaExistente.setEstado(categoria.getEstado());
-
-                    Categoria categoriaActualizada = categoriaService.guardar(categoriaExistente);
-
-                    return ResponseEntity.ok(categoriaActualizada);
-                })
+        return categoriaService.actualizar(id, categoria)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 

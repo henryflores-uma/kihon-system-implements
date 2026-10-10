@@ -1,12 +1,16 @@
+
 package com.sunkku.sistema.kihonsystem.controller;
 
 import com.sunkku.sistema.kihonsystem.model.Categoria;
 import com.sunkku.sistema.kihonsystem.service.CategoriaService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/categorias")
@@ -23,40 +27,87 @@ public class CategoriaController {
         return ResponseEntity.ok(categoriaService.listarTodas());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id) {
         return categoriaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<?> buscarPorNombre(
+            @RequestParam String nombre) {
+        try {
+            return categoriaService.buscarPorNombre(nombre)
+                    .<ResponseEntity<?>>map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("mensaje", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/buscar/parcial")
+    public ResponseEntity<?> buscarPorNombreParcial(
+            @RequestParam String nombre) {
+        try {
+            return ResponseEntity.ok(
+                    categoriaService.buscarPorNombreParcial(nombre));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("mensaje", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/buscar/estado/{estado}")
+    public ResponseEntity<?> buscarPorEstado(
+            @PathVariable String estado) {
+        try {
+            return ResponseEntity.ok(
+                    categoriaService.buscarPorEstado(estado));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("mensaje", e.getMessage()));
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<Categoria> guardar(
+    public ResponseEntity<?> guardar(
             @Valid @RequestBody Categoria categoria) {
-
-        Categoria categoriaGuardada = categoriaService.guardar(categoria);
-
-        return ResponseEntity.ok(categoriaGuardada);
+        try {
+            return ResponseEntity.ok(categoriaService.guardar(categoria));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("mensaje", e.getMessage()));
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> actualizar(
+    public ResponseEntity<?> actualizar(
             @PathVariable Long id,
             @Valid @RequestBody Categoria categoria) {
-
-        return categoriaService.actualizar(id, categoria)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return categoriaService.actualizar(id, categoria)
+                    .<ResponseEntity<?>>map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("mensaje", e.getMessage()));
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        try {
+            if (categoriaService.buscarPorId(id).isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
 
-        return categoriaService.buscarPorId(id)
-                .map(categoria -> {
-                    categoriaService.eliminar(id);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+            categoriaService.eliminar(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("mensaje", e.getMessage()));
+        }
     }
 }

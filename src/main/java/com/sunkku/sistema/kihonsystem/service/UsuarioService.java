@@ -23,6 +23,14 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+    public Optional<Usuario> buscarPorUsername(String username) {
+        return usuarioRepository.findByUsername(username);
+    }
+
+    public boolean existePorUsername(String username) {
+        return usuarioRepository.existsByUsername(username);
+    }
+
     public Usuario guardar(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }

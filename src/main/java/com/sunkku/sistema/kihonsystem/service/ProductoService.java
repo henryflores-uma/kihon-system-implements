@@ -35,6 +35,57 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Producto> buscarPorCodigo(String codigo) {
+        if (codigo == null || codigo.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Debes indicar el código del producto");
+        }
+
+        return productoRepository.findByCodigoIgnoreCase(codigo.trim());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> buscarPorNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Debes indicar el nombre o parte del nombre");
+        }
+
+        return productoRepository
+                .findByNombreContainingIgnoreCase(nombre.trim());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> buscarPorCategoria(Long categoriaId) {
+        if (categoriaId == null || categoriaId <= 0) {
+            throw new IllegalArgumentException(
+                    "El ID de la categoría no es válido");
+        }
+
+        if (!categoriaRepository.existsById(categoriaId)) {
+            throw new IllegalArgumentException(
+                    "La categoría indicada no existe");
+        }
+
+        return productoRepository.findByCategoriaId(categoriaId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> buscarPorEstado(String estado) {
+        if (estado == null || estado.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Debes indicar el estado del producto");
+        }
+
+        return productoRepository.findByEstadoIgnoreCase(estado.trim());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> buscarConStockBajo() {
+        return productoRepository.findProductosConStockBajo();
+    }
+
     @Transactional
     public Producto guardar(Producto producto) {
 

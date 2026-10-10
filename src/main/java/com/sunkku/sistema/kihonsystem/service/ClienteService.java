@@ -30,4 +30,8 @@ public class ClienteService {
     public void eliminar(Long id) {
         clienteRepository.deleteById(id);
     }
+
+    public boolean existePorPersonaId(Long personaId) {
+        return clienteRepository.existsByPersonaId(personaId);
+    }
 }

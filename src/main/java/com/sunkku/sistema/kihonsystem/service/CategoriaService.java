@@ -1,3 +1,4 @@
+
 package com.sunkku.sistema.kihonsystem.service;
 
 import com.sunkku.sistema.kihonsystem.model.Categoria;
@@ -28,9 +29,39 @@ public class CategoriaService {
         return categoriaRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Categoria> buscarPorNombre(String nombre) {
+        validarNombre(nombre);
+        return categoriaRepository.findByNombreIgnoreCase(nombre.trim());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Categoria> buscarPorNombreParcial(String nombre) {
+        validarNombre(nombre);
+        return categoriaRepository
+                .findByNombreContainingIgnoreCase(nombre.trim());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Categoria> buscarPorEstado(String estado) {
+        if (estado == null || estado.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Debes indicar el estado de la categoría");
+        }
+
+        String estadoNormalizado = estado.trim();
+
+        if (!estadoNormalizado.equalsIgnoreCase("ACTIVO")
+                && !estadoNormalizado.equalsIgnoreCase("INACTIVO")) {
+            throw new IllegalArgumentException(
+                    "El estado debe ser ACTIVO o INACTIVO");
+        }
+
+        return categoriaRepository.findByEstadoIgnoreCase(estadoNormalizado);
+    }
+
     @Transactional
     public Categoria guardar(Categoria categoria) {
-
         validarNombre(categoria.getNombre());
 
         String nombre = categoria.getNombre().trim();
@@ -46,20 +77,16 @@ public class CategoriaService {
 
     @Transactional
     public Optional<Categoria> actualizar(Long id, Categoria datos) {
-
-        // Buscar primero la categoría que se desea actualizar
         Optional<Categoria> resultado = categoriaRepository.findById(id);
 
         if (resultado.isEmpty()) {
             return Optional.empty();
         }
 
-        // Validar el nombre recibido
         validarNombre(datos.getNombre());
 
         String nombre = datos.getNombre().trim();
 
-        // Comprobar si otra categoría utiliza el mismo nombre
         boolean duplicada = categoriaRepository
                 .existsByNombreIgnoreCaseAndIdNot(nombre, id);
 
@@ -68,9 +95,7 @@ public class CategoriaService {
                     "Ya existe una categoría con ese nombre");
         }
 
-        // Modificar la entidad solamente después de validar
         Categoria existente = resultado.get();
-
         existente.setNombre(nombre);
         existente.setDescripcion(datos.getDescripcion());
         existente.setEstado(datos.getEstado());
@@ -87,7 +112,6 @@ public class CategoriaService {
 
     @Transactional
     public void eliminar(Long id) {
-
         if (!categoriaRepository.existsById(id)) {
             throw new IllegalArgumentException(
                     "La categoría que intentas eliminar no existe");

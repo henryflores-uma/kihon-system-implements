@@ -1,0 +1,134 @@
+/* ==========================================
+   GRUPOS DE FORMULARIO
+   ========================================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* ==========================================
+   ETIQUETAS
+   ========================================== */
+
+.form-label {
+    color: $color-gray-900;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* ==========================================
+   CAMPOS DE FORMULARIO
+   ========================================== */
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+
+    border: 1px solid $color-gray-200;
+    border-radius: 6px;
+
+    background-color: $color-white;
+    color: $color-gray-900;
+
+    font-family: $font-family-base;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    &::placeholder {
+        color: $color-gray-600;
+        opacity: 0.8;
+    }
+
+    &:focus {
+        border-color: $color-red;
+        box-shadow: 0 0 0 3px rgba(255, 36, 0, 0.12);
+    }
+
+    &:disabled {
+        background-color: $color-gray-100;
+        color: $color-gray-600;
+        cursor: not-allowed;
+    }
+
+    &:read-only {
+        background-color: $color-gray-100;
+    }
+}
+
+/* ==========================================
+   SELECT
+   ========================================== */
+
+.form-select {
+    cursor: pointer;
+}
+
+/* ==========================================
+   ÁREA DE TEXTO
+   ========================================== */
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ==========================================
+   ERRORES DE VALIDACIÓN
+   ========================================== */
+
+.form-error {
+    color: $color-red;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.form-input[aria-invalid="true"],
+.form-select[aria-invalid="true"],
+.form-textarea[aria-invalid="true"] {
+    border-color: $color-red;
+}
+
+/* ==========================================
+   AYUDA DEL CAMPO
+   ========================================== */
+
+.form-help {
+    color: $color-gray-600;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+/* ==========================================
+   ACCIONES DEL FORMULARIO
+   ========================================== */
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        .btn {
+            width: 100%;
+        }
+    }
+}

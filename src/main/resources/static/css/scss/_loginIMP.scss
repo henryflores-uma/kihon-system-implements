@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --brand-red: #FF2400;
+  --brand-red-hover: #e01e00;
+  --brand-gold: #D6A800;
+  --brand-dark: #050505;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Efectos visuales de la tarjeta del logo */
+.logo-container {
+  box-shadow: 0 10px 35px rgba(255, 36, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
+}
+
+/* Estilos de foco para inputs */
+.input-brand:focus {
+  outline: none;
+  border-color: var(--brand-red);
+  box-shadow: 0 0 0 3px rgba(255, 36, 0, 0.25);
+}

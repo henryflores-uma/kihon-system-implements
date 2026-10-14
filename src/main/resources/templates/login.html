@@ -1,185 +1,185 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Iniciar sesión | Sunkku Sinchi</title>
 
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión | Sunkku Sinchi</title>
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #101820, #263746);
-      }
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Hoja de estilos externa vinculada con Thymeleaf -->
+  <link rel="stylesheet" th:href="@{/css/login.css}" href="/css/login.css" />
+</head>
 
-      .login-card {
-        width: 100%;
-        max-width: 400px;
-        padding: 36px;
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-      }
+<body class="bg-neutral-100 text-neutral-900 antialiased min-h-screen">
+  <div class="min-h-screen w-full flex flex-col md:flex-row">
 
-      .brand {
-        text-align: center;
-        margin-bottom: 28px;
-      }
+    <!-- Columna Izquierda: Branding Dark Karate -->
+    <section class="w-full md:w-[45%] lg:w-[42%] bg-black text-white p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden">
+      <!-- Glow de fondo decorativo -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-red-600/10 blur-3xl pointer-events-none"></div>
 
-      .brand h1 {
-        margin-bottom: 8px;
-        color: #182631;
-        font-size: 27px;
-      }
-
-      .brand p {
-        margin: 0;
-        color: #667085;
-        font-size: 14px;
-      }
-
-      .field {
-        margin-bottom: 20px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #344054;
-      }
-
-      input {
-        width: 100%;
-        padding: 13px;
-        border: 1px solid #d0d5dd;
-        border-radius: 8px;
-        font-size: 15px;
-      }
-
-      input:focus {
-        outline: 2px solid #9bb9cf;
-        border-color: #527c98;
-      }
-
-      button {
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 8px;
-        background: #1e4258;
-        color: white;
-        font-size: 15px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background: #285a76;
-      }
-
-      .message {
-        margin-bottom: 18px;
-        padding: 12px;
-        border-radius: 8px;
-        font-size: 14px;
-        text-align: center;
-      }
-
-      .error {
-        background: #fee4e2;
-        color: #b42318;
-      }
-
-      .success {
-        background: #dcfae6;
-        color: #067647;
-      }
-
-      .footer {
-        margin-top: 22px;
-        text-align: center;
-        color: #667085;
-        font-size: 12px;
-      }
-
-      .back-home {
-        display: block;
-        width: 100%;
-        margin-top: 12px;
-        padding: 13px;
-        text-align: center;
-        text-decoration: none;
-        border: 1px solid #d0d5dd;
-        border-radius: 8px;
-        color: #344054;
-        font-size: 14px;
-        font-weight: bold;
-        transition: background 0.2s ease;
-      }
-
-      .back-home:hover {
-        background: #f2f4f7;
-      }
-    </style>
-  </head>
-
-  <body>
-    <main class="login-card">
-      <header class="brand">
-        <h1>Sunkku Sinchi</h1>
-        <p>Sistema de administración</p>
-      </header>
-
-      <div th:if="${param.error}" class="message error">
-        Usuario o contraseña incorrectos, o cuenta deshabilitada.
+      <!-- Encabezado con línea roja -->
+      <div>
+        <div class="w-12 h-1.5 bg-[#FF2400] rounded-full mb-10 sm:mb-14"></div>
+        <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight leading-[1.12] mb-5">
+          La disciplina<br />
+          también se<br />
+          administra.
+        </h1>
+        <p class="text-neutral-400 text-base sm:text-lg max-w-md leading-relaxed font-normal">
+          Un espacio para mantener en orden las categorías, los productos y los servicios de nuestra academia.
+        </p>
       </div>
 
-      <div th:if="${param.logout}" class="message success">
-        Has cerrado sesión correctamente.
+      <!-- Logo centrado en el espacio intermedio -->
+      <div class="flex-1 my-8 flex items-center justify-center">
+        <div class="p-4 sm:p-5 bg-white rounded-2xl border border-neutral-800/80 logo-container">
+          <img 
+            th:src="@{/img/logo_dojo.png}" 
+            src="/img/logo_dojo.png" 
+            alt="Logo Sunkku Sinchi" 
+            class="w-36 h-36 sm:w-44 sm:h-44 lg:w-52 lg:h-52 object-contain" 
+          />
+        </div>
       </div>
 
-      <form th:action="@{/login}" method="post">
-        <div class="field">
-          <label for="username">Usuario</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Ingresa tu usuario"
-            autocomplete="username"
-            required
-            autofocus
-          />
+      <!-- Footer Columna Izquierda: Valores -->
+      <div class="pt-6 sm:pt-8 border-t border-neutral-900">
+        <p class="text-xs sm:text-sm font-bold tracking-widest text-[#EAB308] uppercase mb-2">
+          RESPETO &nbsp;/&nbsp; CONSTANCIA &nbsp;/&nbsp; FORTALEZA
+        </p>
+        <p class="text-neutral-400 text-xs sm:text-sm font-medium">
+          Sunkku Sinchi &middot; Academia de karate
+        </p>
+      </div>
+    </section>
+
+    <!-- Columna Derecha: Formulario de Autenticación -->
+    <main class="flex-1 bg-white flex flex-col justify-center items-center p-6 sm:p-10 lg:p-16 min-h-full">
+      <div class="w-full max-w-[430px]">
+
+        <!-- Encabezado del Formulario -->
+        <div class="mb-8">
+          <span class="inline-block text-[11px] sm:text-xs font-bold tracking-wider text-neutral-500 uppercase mb-2">
+            CONSOLA ADMINISTRATIVA
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight mb-2">
+            Bienvenido de nuevo
+          </h2>
+          <p class="text-sm text-neutral-500">
+            Ingresa con tu cuenta para gestionar la academia.
+          </p>
         </div>
 
-        <div class="field">
-          <label for="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Ingresa tu contraseña"
-            autocomplete="current-password"
-            required
-          />
+        <!-- Banner de Error de Spring Security -->
+        <div th:if="${param.error}"
+          class="mb-6 p-4 rounded-xl bg-red-50/90 border-l-4 border-[#FF2400] flex items-start gap-3.5 transition-all shadow-sm">
+          <svg class="w-5 h-5 text-[#FF2400] shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <div class="text-left">
+            <h4 class="text-xs sm:text-sm font-bold text-red-900">
+              No pudimos iniciar sesión
+            </h4>
+            <p class="text-xs text-red-700 mt-0.5 leading-snug">
+              Usuario o contraseña incorrectos. Revisa tus datos e inténtalo de nuevo.
+            </p>
+          </div>
         </div>
 
-        <button type="submit">Iniciar sesión</button>
-        <a href="/" class="back-home"> ← Volver al inicio </a>
-      </form>
+        <!-- Banner de Cierre de Sesión -->
+        <div th:if="${param.logout}"
+          class="mb-6 p-4 rounded-xl bg-emerald-50 border-l-4 border-emerald-600 flex items-start gap-3.5 text-left shadow-sm">
+          <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <div>
+            <h4 class="text-xs sm:text-sm font-bold text-emerald-950">
+              Sesión finalizada
+            </h4>
+            <p class="text-xs text-emerald-700 mt-0.5">
+              Has cerrado sesión correctamente.
+            </p>
+          </div>
+        </div>
 
-      <footer class="footer">Acceso exclusivo para personal autorizado</footer>
+        <!-- Formulario de Login -->
+        <form th:action="@{/login}" method="post" class="space-y-5">
+          <!-- Campo Usuario / Correo -->
+          <div>
+            <label for="username" class="block text-xs sm:text-sm font-semibold text-neutral-800 mb-2">
+              Usuario o correo electrónico
+            </label>
+            <input type="text" id="username" name="username" placeholder="ana.rojas@sunkkusinchi.pe"
+              autocomplete="username" required
+              class="w-full px-4 py-3 rounded-lg border border-neutral-300 text-sm text-neutral-900 placeholder-neutral-400 input-brand transition" />
+          </div>
+
+          <!-- Campo Contraseña con Toggle de visibilidad -->
+          <div>
+            <label for="password" class="block text-xs sm:text-sm font-semibold text-neutral-800 mb-2">
+              Contraseña
+            </label>
+            <div class="relative">
+              <input type="password" id="password" name="password" placeholder="••••••••••••"
+                autocomplete="current-password" required
+                class="w-full px-4 py-3 pr-11 rounded-lg border border-neutral-300 text-sm text-neutral-900 placeholder-neutral-400 input-brand transition" />
+              <button type="button" id="togglePassword" title="Mostrar u ocultar contraseña"
+                class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-neutral-700 focus:outline-none transition">
+                <!-- Ícono Ojo visible -->
+                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <!-- Ícono Ojo tachado -->
+                <svg id="eyeOffIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              </button>
+            </div>
+            <p class="text-[11px] text-neutral-400 mt-1.5">
+              Verifica tus credenciales asignadas por administración.
+            </p>
+          </div>
+
+          <!-- Checkbox Recordar Sesión -->
+          <div class="flex items-center justify-between pt-1">
+            <label class="flex items-center gap-2.5 cursor-pointer select-none">
+              <input type="checkbox" name="remember-me" checked
+                class="w-4 h-4 rounded border-neutral-300 text-black focus:ring-black accent-black cursor-pointer" />
+              <span class="text-xs sm:text-sm font-medium text-neutral-700">Recordar sesión</span>
+            </label>
+          </div>
+
+          <!-- Botón Principal Ingresar -->
+          <button type="submit"
+            class="w-full mt-2 py-3.5 px-6 rounded-lg bg-[#FF2400] hover:bg-[#d61f00] active:scale-[0.99] text-white text-sm font-bold tracking-wide flex items-center justify-center gap-2 shadow-sm transition duration-150 ease-in-out cursor-pointer">
+            <span>&rarr;</span>
+            <span>Ingresar</span>
+          </button>
+        </form>
+
+        <!-- Pie del formulario -->
+        <div class="mt-8 pt-6 text-center border-t border-neutral-100">
+          <p class="text-xs text-neutral-400">
+            Acceso exclusivo para la administración de Sunkku Sinchi.
+          </p>
+          <a th:href="@{/}" href="/"
+            class="inline-block mt-3 text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition">
+            &larr; Volver a la página principal
+          </a>
+        </div>
+      </div>
     </main>
-  </body>
+  </div>
+
+  <!-- Script JS externo vinculado con Thymeleaf -->
+  <script th:src="@{/js/login.js}" src="/js/login.js"></script>
+</body>
+
 </html>

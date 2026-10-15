@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <title>Vista previa | Sunkku Sinchi</title>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+
+    <script th:src="@{/js/productos/vista-nueva.js}" defer></script>
+  </head>
+
+  <body>
+    <main
+      class="vista-nueva"
+      th:attr="
+        data-api-productos=@{/api/productos},
+        data-listado-url=@{/admin/productos}
+      "
+    >
+      <header class="vista-nueva__header">
+        <a class="vista-nueva__brand" th:href="@{/admin/productos}">
+          <span class="vista-nueva__brand-mark">SS</span>
+
+          <span>
+            <strong>SUNKKU SINCHI</strong>
+            <small>Productos y servicios</small>
+          </span>
+        </a>
+
+        <a class="vista-nueva__back" th:href="@{/admin/productos}">
+          ← Volver a productos
+        </a>
+      </header>
+
+      <section class="vista-nueva__content">
+        <nav class="vista-nueva__breadcrumb" aria-label="Ruta">
+          Inicio / Gestión / Productos / Vista previa
+        </nav>
+
+        <div class="vista-nueva__heading">
+          <span class="vista-nueva__eyebrow"> PRESENTACIÓN DEL PRODUCTO </span>
+
+          <h1>Vista previa</h1>
+
+          <p>Así se visualizará la información del producto en el catálogo.</p>
+        </div>
+
+        <div
+          id="vistaProductoCargando"
+          class="vista-nueva__message"
+          role="status"
+        >
+          Cargando información del producto...
+        </div>
+
+        <div
+          id="vistaProductoError"
+          class="vista-nueva__message vista-nueva__message--error"
+          role="alert"
+          hidden
+        >
+          No se pudo cargar el producto.
+        </div>
+
+        <article id="vistaProductoCard" class="vista-nueva__card" hidden>
+          <div class="vista-nueva__image-container">
+            <div id="vistaProductoPlaceholder" class="vista-nueva__placeholder">
+              <span aria-hidden="true">🥋</span>
+              <p>Imagen del producto</p>
+            </div>
+
+            <img
+              id="vistaProductoImagen"
+              class="vista-nueva__image"
+              alt=""
+              hidden
+            />
+
+            <span id="vistaProductoEstado" class="vista-nueva__status"></span>
+          </div>
+
+          <div class="vista-nueva__details">
+            <span id="vistaProductoCategoria" class="vista-nueva__category">
+              Categoría
+            </span>
+
+            <h2 id="vistaProductoNombre">Nombre del producto</h2>
+
+            <p class="vista-nueva__code">
+              Código:
+              <span id="vistaProductoCodigo">—</span>
+            </p>
+
+            <p id="vistaProductoPrecio" class="vista-nueva__price">S/ 0.00</p>
+
+            <div class="vista-nueva__separator"></div>
+
+            <h3>Descripción</h3>
+
+            <p id="vistaProductoDescripcion" class="vista-nueva__description">
+              Sin descripción disponible.
+            </p>
+
+            <div class="vista-nueva__availability">
+              <span aria-hidden="true">●</span>
+              <span id="vistaProductoDisponibilidad">
+                Consultando disponibilidad...
+              </span>
+            </div>
+
+            <p class="vista-nueva__note">
+              Esta es una vista previa administrativa. Todavía no procesa
+              compras ni reservas.
+            </p>
+
+            <a class="vista-nueva__button" th:href="@{/admin/productos}">
+              Volver al listado
+            </a>
+          </div>
+        </article>
+      </section>
+
+      <footer class="vista-nueva__footer">
+        <p>© Sunkku Sinchi · Catálogo de productos y servicios</p>
+      </footer>
+    </main>
+  </body>
+</html>

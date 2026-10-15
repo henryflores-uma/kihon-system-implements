@@ -1,29 +1,232 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+/* =====================================================
+   1. VARIABLES LOCALES
+   ===================================================== */
 
-:root {
-  --brand-red: #FF2400;
-  --brand-red-hover: #e01e00;
-  --brand-gold: #D6A800;
-  --brand-dark: #050505;
-}
+$login-red-hover: #D61F00;
+$login-red-focus: rgba($color-red, 0.20);
+
+$login-shadow: 0 10px 35px rgba($color-red, 0.15);
+$login-shadow-hover: 0 16px 42px rgba($color-red, 0.28);
+
+$login-transition: 0.25s ease;
+
+
+/* =====================================================
+   2. ESTILOS GENERALES
+   ===================================================== */
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: $font-family-base;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Efectos visuales de la tarjeta del logo */
+::selection {
+  color: $color-white;
+  background-color: $color-red;
+}
+
+
+/* =====================================================
+   3. CONTENEDOR DEL LOGO
+   ===================================================== */
+
 .logo-container {
-  box-shadow: 0 10px 35px rgba(255, 36, 0, 0.15);
-  transition: transform 0.3s ease;
+  position: relative;
+  border-radius: 1rem;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+
+  box-shadow: $login-shadow;
+
+  transition:
+    transform $login-transition,
+    box-shadow $login-transition,
+    border-color $login-transition;
+
+  /* Efecto hover de la tarjeta */
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $login-shadow-hover;
+    border-color: rgba($color-red, 0.25);
+
+    /* Efecto aplicado directamente a la imagen */
+    img {
+      transform: scale(1.05);
+    }
+  }
+
+  /* Imagen del logotipo */
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+
+    transform: scale(1);
+    transform-origin: center;
+
+    transition:
+      transform 0.35s ease,
+      filter 0.35s ease;
+
+    /* Evita que la imagen se deforme */
+    &:hover {
+      filter: drop-shadow(0 4px 6px rgba($color-red, 0.18));
+    }
+  }
 }
 
-.logo-container:hover {
-  transform: scale(1.05);
+
+/* =====================================================
+   4. CAMPOS DEL FORMULARIO
+   ===================================================== */
+
+.input-brand {
+  display: block;
+  width: 100%;
+
+  background-color: $color-white;
+  color: $color-gray-900;
+
+  border: 1px solid $color-gray-200;
+  border-radius: 0.5rem;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+
+  &::placeholder {
+    color: $color-gray-600;
+    opacity: 0.7;
+  }
+
+  &:hover {
+    border-color: $color-gray-600;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-red;
+    box-shadow: 0 0 0 3px $login-red-focus;
+  }
 }
 
-/* Estilos de foco para inputs */
-.input-brand:focus {
-  outline: none;
-  border-color: var(--brand-red);
-  box-shadow: 0 0 0 3px rgba(255, 36, 0, 0.25);
+
+/* =====================================================
+   5. BOTÓN PRINCIPAL: INGRESAR
+   ===================================================== */
+
+form button[type="submit"] {
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    background-color: $login-red-hover;
+    box-shadow: 0 5px 16px rgba($color-red, 0.25);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &:focus-visible {
+    outline: 3px solid $color-yellow;
+    outline-offset: 3px;
+  }
+}
+
+
+/* =====================================================
+   6. BOTÓN MOSTRAR / OCULTAR CONTRASEÑA
+   ===================================================== */
+
+#togglePassword {
+  cursor: pointer;
+  border-radius: 0.375rem;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover {
+    color: $color-gray-900;
+    background-color: $color-gray-100;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-red;
+    outline-offset: 2px;
+  }
+}
+
+
+/* =====================================================
+   7. MENSAJES Y ALERTAS
+   ===================================================== */
+
+/* Evita que textos extensos desborden los banners */
+[role="alert"],
+.alert,
+.alert-error,
+.alert-success {
+  overflow-wrap: anywhere;
+}
+
+
+/* =====================================================
+   8. ENLACES Y ACCESIBILIDAD
+   ===================================================== */
+
+a {
+  transition: color 0.2s ease;
+
+  &:focus-visible {
+    outline: 2px solid $color-red;
+    outline-offset: 3px;
+  }
+}
+
+input:focus-visible {
+  outline-offset: 3px;
+}
+
+
+/* =====================================================
+   9. DISEÑO RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 640px) {
+  .logo-container {
+    border-radius: 0.875rem;
+  }
+
+  /* Evita movimientos inesperados en dispositivos táctiles */
+  .logo-container:hover {
+    transform: none;
+  }
+
+  .logo-container:hover img {
+    transform: scale(1.02);
+  }
+}
+
+
+/* =====================================================
+   10. REDUCCIÓN DE MOVIMIENTO
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

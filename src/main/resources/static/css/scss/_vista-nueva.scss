@@ -1,0 +1,353 @@
+/* ==========================================
+   VISTA PREVIA DEL CATÁLOGO
+   ========================================== */
+
+.vista-nueva {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-gray-100;
+    color: $color-gray-900;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 5%;
+        background-color: $color-gray-900;
+        color: $color-white;
+    }
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: inherit;
+        text-decoration: none;
+
+        strong,
+        small {
+            display: block;
+        }
+
+        strong {
+            font-size: 1rem;
+            letter-spacing: 0.04em;
+        }
+
+        small {
+            margin-top: 0.2rem;
+            color: #d1d5db;
+            font-size: 0.8rem;
+        }
+    }
+
+    &__brand-mark {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        background-color: $color-red;
+        color: $color-white;
+        font-weight: 800;
+    }
+
+    &__back {
+        color: $color-white;
+        font-size: 0.9rem;
+        text-decoration: none;
+
+        &:hover {
+            color: $color-yellow;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $color-yellow;
+            outline-offset: 4px;
+        }
+    }
+
+    &__content {
+        width: min(1100px, 90%);
+        margin: 0 auto;
+        padding: 2rem 0;
+        flex: 1;
+    }
+
+    &__breadcrumb {
+        margin-bottom: 1.5rem;
+        color: $color-gray-600;
+        font-size: 0.85rem;
+    }
+
+    &__heading {
+        margin-bottom: 2rem;
+
+        h1 {
+            margin: 0.4rem 0;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+        }
+
+        p {
+            margin: 0;
+            color: $color-gray-600;
+            line-height: 1.6;
+        }
+    }
+
+    &__eyebrow {
+        color: $color-red;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+    }
+
+    &__message {
+        padding: 2rem;
+        border: 1px solid $color-gray-200;
+        border-radius: 10px;
+        background-color: $color-white;
+        text-align: center;
+
+        &[hidden] {
+            display: none;
+        }
+
+        &--error {
+            border-color: #fecaca;
+            color: #b91c1c;
+        }
+    }
+
+    &__card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        overflow: hidden;
+        border: 1px solid $color-gray-200;
+        border-radius: 14px;
+        background-color: $color-white;
+        box-shadow: 0 8px 24px rgb(0 0 0 / 5%);
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &__image-container {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 420px;
+        padding: 2rem;
+        background-color: #f9fafb;
+    }
+
+    &__image {
+        display: block;
+        width: 100%;
+        max-height: 500px;
+        object-fit: contain;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &__placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 300px;
+        border: 1px dashed $color-gray-200;
+        border-radius: 10px;
+        color: $color-gray-600;
+
+        &[hidden] {
+            display: none;
+        }
+
+        span {
+            font-size: 5rem;
+        }
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    &__status {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        padding: 0.4rem 0.7rem;
+        border-radius: 5px;
+        background-color: $color-gray-200;
+        color: $color-gray-900;
+        font-size: 0.75rem;
+        font-weight: 800;
+
+        &--active {
+            background-color: #def7ec;
+            color: #03543f;
+        }
+
+        &--inactive {
+            background-color: #fde8e8;
+            color: #9b1c1c;
+        }
+    }
+
+    &__details {
+        padding: clamp(1.5rem, 4vw, 3rem);
+
+        h2 {
+            margin: 0.7rem 0;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        h3 {
+            margin: 1.5rem 0 0.5rem;
+            font-size: 1rem;
+        }
+    }
+
+    &__category {
+        color: $color-gray-600;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    &__code {
+        margin: 0;
+        color: $color-gray-600;
+        font-size: 0.85rem;
+    }
+
+    &__price {
+        margin: 1.25rem 0;
+        color: $color-red;
+        font-size: clamp(1.7rem, 4vw, 2.2rem);
+        font-weight: 800;
+    }
+
+    &__separator {
+        height: 1px;
+        margin: 1.5rem 0;
+        background-color: $color-gray-200;
+    }
+
+    &__description {
+        color: $color-gray-600;
+        line-height: 1.8;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+    }
+
+    &__availability {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        color: #047857;
+        font-size: 0.9rem;
+        font-weight: 700;
+
+        span:first-child {
+            font-size: 0.75rem;
+        }
+
+        &--unavailable {
+            color: #b91c1c;
+        }
+    }
+
+    &__note {
+        margin: 1.25rem 0;
+        color: $color-gray-600;
+        font-size: 0.8rem;
+        line-height: 1.6;
+    }
+
+    &__button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        padding: 0.75rem 1.25rem;
+        border-radius: 6px;
+        background-color: $color-red;
+        color: $color-white;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: darken($color-red, 7%);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $color-yellow;
+            outline-offset: 3px;
+        }
+    }
+
+    &__footer {
+        padding: 1.25rem;
+        border-top: 1px solid $color-gray-200;
+        background-color: $color-white;
+        color: $color-gray-600;
+        text-align: center;
+        font-size: 0.8rem;
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+/* ==========================================
+   DISEÑO RESPONSIVE
+   ========================================== */
+
+@media (max-width: 700px) {
+    .vista-nueva {
+        &__header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 1rem 5%;
+        }
+
+        &__content {
+            width: 92%;
+            padding: 1.25rem 0;
+        }
+
+        &__card {
+            grid-template-columns: 1fr;
+        }
+
+        &__image-container {
+            min-height: 260px;
+            padding: 1.25rem;
+        }
+
+        &__placeholder {
+            min-height: 220px;
+        }
+
+        &__details {
+            padding: 1.5rem;
+        }
+
+        &__button {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+}

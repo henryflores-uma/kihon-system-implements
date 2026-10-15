@@ -3,10 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
     <title>Gestión de Productos | Sunkku Sinchi</title>
+
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+
     <script th:src="@{/js/acordeon.js}" defer></script>
+    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+    <script th:src="@{/js/topbar.js}" defer></script>
+    <script th:src="@{/js/logout.js}" defer></script>
+    <script th:src="@{/js/productos/productos-form.js}" defer></script>
   </head>
+
   <body>
     <main class="app-layout">
       <div th:replace="~{fragments/sidebar :: sidebar}"></div>
@@ -14,254 +25,224 @@
 
       <section class="main-content">
         <div class="mobile-nav">
-          <button type="button" class="mobile-menu-button" id="mobileMenuButton" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainSidebar">
+          <button
+            type="button"
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="mainSidebar"
+          >
             <span id="mobileMenuIcon">☰</span>
           </button>
+
           <strong class="mobile-nav__logo">SUNKKU SINCHI</strong>
         </div>
 
         <div th:replace="~{fragments/topbar :: topbar}"></div>
 
-        <div class="content-wrapper" style="padding: 2rem; max-width: 800px; margin: 0 auto;">
-          <div style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">
-            Inicio / Productos / <span id="breadcrumbAccion">Nuevo</span>
-          </div>
+        <div
+          class="productos-form-page content-wrapper"
+          th:attr="
+            data-api-productos=@{/api/productos},
+            data-api-categorias=@{/api/categorias},
+            data-listado-url=@{/admin/productos},
+            data-producto-id=${productoId}
+          "
+        >
+          <nav
+            class="productos-form__breadcrumb"
+            aria-label="Ruta de navegación"
+          >
+            Inicio / Productos /
+            <span id="breadcrumbAccion">Nuevo</span>
+          </nav>
 
-          <div style="margin-bottom: 1.5rem;">
-            <h1 id="tituloPagina" style="font-size: 1.75rem; font-weight: bold; margin: 0 0 0.25rem 0; color: #111;">Nuevo producto</h1>
-            <p id="subtituloPagina" style="color: #666; margin: 0; font-size: 0.95rem;">Completa los datos obligatorios del artículo, precios, stock y estado.</p>
-          </div>
+          <header class="productos-form__header">
+            <h1 id="tituloPagina">Nuevo producto</h1>
 
-          <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <p id="subtituloPagina">
+              Completa los datos obligatorios del artículo, precios, stock y
+              estado.
+            </p>
+          </header>
+
+          <section class="productos-form__card">
             <form id="formProducto">
-              <!-- Captura segura del ID inyectado por el controlador (si existe) -->
-              <input type="hidden" id="productoId" th:value="${productoId}" />
+              <input type="hidden" id="productoId" />
 
-              <!-- Código del producto (Obligatorio según el Entity) -->
-              <div style="margin-bottom: 1.25rem;">
-                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Código del producto *</label>
-                <input type="text" id="codigo" placeholder="Ej. PROD-001" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+              <div
+                id="mensajeFormulario"
+                class="productos-form__message"
+                role="status"
+                aria-live="polite"
+                hidden
+              ></div>
+
+              <div class="productos-form__field">
+                <label for="codigo">Código del producto *</label>
+                <input
+                  type="text"
+                  id="codigo"
+                  name="codigo"
+                  placeholder="Ej. PROD-001"
+                  maxlength="50"
+                  autocomplete="off"
+                  required
+                />
               </div>
 
-              <!-- Nombre -->
-              <div style="margin-bottom: 1.25rem;">
-                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Nombre *</label>
-                <input type="text" id="nombre" placeholder="Ej. Karategi blanco" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+              <div class="productos-form__field">
+                <label for="nombre">Nombre *</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Ej. Karategi blanco"
+                  maxlength="150"
+                  required
+                />
               </div>
 
-              <!-- Categoría (Cargada dinámicamente desde /api/categorias) -->
-              <div style="margin-bottom: 1.25rem;">
-                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Categoría *</label>
-                <select id="categoriaId" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; background: white;">
-                  <option value="" disabled selected>Cargando categorías...</option>
+              <div class="productos-form__field">
+                <label for="categoriaId">Categoría *</label>
+                <select id="categoriaId" name="categoriaId" required>
+                  <option value="">Cargando categorías...</option>
                 </select>
               </div>
 
-              <!-- Estado del producto (ACTIVO / INACTIVO) -->
-              <div style="margin-bottom: 1.25rem;">
-                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Estado *</label>
-                <select id="estado" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; background: white;">
-                  <option value="ACTIVO" selected>ACTIVO</option>
+              <div class="productos-form__field">
+                <label for="estado">Estado *</label>
+                <select id="estado" name="estado" required>
+                  <option value="ACTIVO">ACTIVO</option>
                   <option value="INACTIVO">INACTIVO</option>
                 </select>
               </div>
 
-              <!-- Descripción -->
-              <div style="margin-bottom: 1.25rem;">
-                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Descripción</label>
-                <textarea id="descripcion" rows="3" placeholder="Describe las características." style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; resize: vertical;"></textarea>
+              <div class="productos-form__field">
+                <label for="descripcion">Descripción</label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  rows="3"
+                  maxlength="1000"
+                  placeholder="Describe las características del producto."
+                ></textarea>
               </div>
 
-              <!-- Precios (Compra y Venta obligatorios) -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
-                <div>
-                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Precio Compra (S/) *</label>
-                  <input type="number" step="0.01" id="precioCompra" value="0.00" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+              <div class="productos-form__grid">
+                <div class="productos-form__field">
+                  <label for="precioCompra">Precio de compra (S/) *</label>
+                  <input
+                    type="number"
+                    id="precioCompra"
+                    name="precioCompra"
+                    min="0"
+                    step="0.01"
+                    value="0.00"
+                    required
+                  />
                 </div>
-                <div>
-                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Precio Venta (S/) *</label>
-                  <input type="number" step="0.01" id="precioVenta" value="0.00" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+
+                <div class="productos-form__field">
+                  <label for="precioVenta">Precio de venta (S/) *</label>
+                  <input
+                    type="number"
+                    id="precioVenta"
+                    name="precioVenta"
+                    min="0"
+                    step="0.01"
+                    value="0.00"
+                    required
+                  />
                 </div>
               </div>
 
-              <!-- Stock Actual y Stock Mínimo -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
-                <div>
-                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Stock Actual *</label>
-                  <input type="number" id="stockActual" value="0" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+              <div class="productos-form__grid">
+                <div class="productos-form__field">
+                  <label for="stockActual">Stock actual *</label>
+                  <input
+                    type="number"
+                    id="stockActual"
+                    name="stockActual"
+                    min="0"
+                    step="1"
+                    value="0"
+                    required
+                  />
                 </div>
-                <div>
-                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Stock Mínimo *</label>
-                  <input type="number" id="stockMinimo" value="5" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+
+                <div class="productos-form__field">
+                  <label for="stockMinimo">Stock mínimo *</label>
+                  <input
+                    type="number"
+                    id="stockMinimo"
+                    name="stockMinimo"
+                    min="0"
+                    step="1"
+                    value="5"
+                    required
+                  />
                 </div>
               </div>
 
-              <!-- Imagen -->
-              <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Imagen (opcional)</label>
-                <div style="border: 1px solid #d1d5db; border-radius: 6px; padding: 1rem; background: #f9fafb; display: flex; align-items: center; justify-content: space-between;">
-                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: #374151;">
-                    <span>🖼️</span> <span id="nombreArchivo">Ningún archivo seleccionado</span>
+              <div class="productos-form__field">
+                <label for="archivo">Imagen del producto (opcional)</label>
+
+                <div class="productos-form__file-box">
+                  <div class="productos-form__file-info">
+                    <span aria-hidden="true">🖼️</span>
+                    <span id="nombreArchivo">Ningún archivo seleccionado</span>
                   </div>
-                  <label style="background: white; border: 1px solid #d1d5db; padding: 0.4rem 0.75rem; border-radius: 4px; font-weight: 500; font-size: 0.85rem; cursor: pointer; color: #374151;">
+
+                  <label for="archivo" class="productos-form__file-button">
                     Seleccionar archivo
-                    <input type="file" id="archivo" accept="image/png, image/jpeg" style="display: none;" />
                   </label>
+
+                  <input
+                    type="file"
+                    id="archivo"
+                    name="archivo"
+                    accept="image/png,image/jpeg"
+                    class="productos-form__file-input"
+                  />
+                </div>
+
+                <p class="productos-form__help">
+                  Formatos permitidos: PNG y JPG/JPEG.
+                </p>
+
+                <div
+                  id="imagenActual"
+                  class="productos-form__current-image"
+                  hidden
+                >
+                  <p>Imagen registrada actualmente:</p>
+                  <span id="nombreImagenActual"></span>
                 </div>
               </div>
 
-              <!-- Botones -->
-              <div style="display: flex; gap: 0.75rem;">
-                <button type="submit" id="btnGuardar" style="background-color: #ff3b00; color: white; border: none; padding: 0.65rem 1.25rem; font-weight: bold; border-radius: 6px; cursor: pointer;">Guardar</button>
-                <button type="button" onclick="window.location.href='/admin/productos'" style="background: white; color: #374151; border: 1px solid #d1d5db; padding: 0.65rem 1.25rem; font-weight: 500; border-radius: 6px; cursor: pointer;">Cancelar</button>
+              <div class="productos-form__actions">
+                <button
+                  type="submit"
+                  id="btnGuardar"
+                  class="productos-form__button productos-form__button--primary"
+                >
+                  Guardar
+                </button>
+
+                <button
+                  type="button"
+                  id="btnCancelar"
+                  class="productos-form__button productos-form__button--secondary"
+                >
+                  Cancelar
+                </button>
               </div>
             </form>
-          </div>
+          </section>
         </div>
       </section>
     </main>
-
-    <script th:src="@{/js/nav-acordeon.js}" defer></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", async () => {
-        const inputId = document.getElementById("productoId").value;
-        const productoId = inputId ? inputId.trim() : "";
-
-        const inputArchivo = document.getElementById("archivo");
-        const spanNombreArchivo = document.getElementById("nombreArchivo");
-        const selectCategoria = document.getElementById("categoriaId");
-        const selectEstado = document.getElementById("estado");
-
-        inputArchivo.addEventListener("change", (e) => {
-          if (e.target.files.length > 0) {
-            spanNombreArchivo.textContent = e.target.files[0].name;
-          }
-        });
-
-        // 1. Cargar las categorías dinámicamente desde el backend
-        async function cargarCategorias(categoriaSeleccionadaId = null) {
-          try {
-            const res = await fetch("/api/categorias");
-            if (res.ok) {
-              const categorias = await res.json();
-              selectCategoria.innerHTML = '<option value="" disabled selected>Selecciona una categoría</option>';
-              categorias.forEach(cat => {
-                const option = document.createElement("option");
-                option.value = cat.id;
-                option.textContent = cat.nombre;
-                if (categoriaSeleccionadaId && cat.id === Number(categoriaSeleccionadaId)) {
-                  option.selected = true;
-                }
-                selectCategoria.appendChild(option);
-              });
-            } else {
-              selectCategoria.innerHTML = '<option value="" disabled selected>Error al cargar categorías</option>';
-            }
-          } catch (err) {
-            console.error("Error cargando categorías:", err);
-            selectCategoria.innerHTML = '<option value="" disabled selected>Error de conexión</option>';
-          }
-        }
-
-        // Cargar categorías al inicio
-        await cargarCategorias();
-
-        // 2. Si el ID existe, cargamos los datos del producto para EDITAR
-        if (productoId !== "") {
-          document.getElementById("breadcrumbAccion").textContent = "Editar";
-          document.getElementById("tituloPagina").textContent = "Editar producto";
-          document.getElementById("subtituloPagina").textContent = "Actualiza los datos, precios, stock y estado del producto seleccionado.";
-          document.getElementById("btnGuardar").textContent = "Guardar cambios";
-
-          try {
-            const res = await fetch(`/api/productos/${productoId}`);
-            if (res.ok) {
-              const p = await res.json();
-              document.getElementById("codigo").value = p.codigo || "";
-              document.getElementById("nombre").value = p.nombre || "";
-              
-              if (p.categoria && p.categoria.id) {
-                selectCategoria.value = p.categoria.id;
-              }
-
-              if (p.estado) {
-                selectEstado.value = p.estado;
-              }
-
-              document.getElementById("descripcion").value = p.descripcion || "";
-              document.getElementById("precioCompra").value = p.precioCompra || 0.00;
-              document.getElementById("precioVenta").value = p.precioVenta || 0.00;
-              document.getElementById("stockActual").value = p.stockActual !== null ? p.stockActual : 0;
-              document.getElementById("stockMinimo").value = p.stockMinimo !== null ? p.stockMinimo : 5;
-              
-              if (p.rutaImagen) {
-                spanNombreArchivo.textContent = p.rutaImagen.split('/').pop();
-              }
-            } else {
-              alert("No se encontró el producto.");
-              window.location.href = "/admin/productos";
-            }
-          } catch (err) {
-            console.error(err);
-          }
-        }
-
-        // 3. Envío del formulario (POST para crear, PUT para actualizar)
-        const formProducto = document.getElementById("formProducto");
-        formProducto.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const id = document.getElementById("productoId").value.trim();
-          const isEdit = id !== "";
-
-          const producto = {
-            codigo: document.getElementById("codigo").value.trim(),
-            nombre: document.getElementById("nombre").value.trim(),
-            categoria: { id: Number(selectCategoria.value) },
-            estado: selectEstado.value,
-            descripcion: document.getElementById("descripcion").value.trim(),
-            precioCompra: Number(document.getElementById("precioCompra").value),
-            precioVenta: Number(document.getElementById("precioVenta").value),
-            stockActual: Number(document.getElementById("stockActual").value),
-            stockMinimo: Number(document.getElementById("stockMinimo").value)
-          };
-
-          const endpoint = isEdit ? `/api/productos/${id}` : "/api/productos";
-          const method = isEdit ? "PUT" : "POST";
-
-          try {
-            const response = await fetch(endpoint, {
-              method: method,
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(producto)
-            });
-
-            if (response.ok) {
-              const resultado = await response.json();
-              const targetId = isEdit ? id : resultado.id;
-
-              // Subir imagen si se seleccionó un archivo nuevo
-              if (inputArchivo.files.length > 0) {
-                const formData = new FormData();
-                formData.append("archivo", inputArchivo.files[0]);
-                await fetch(`/api/productos/${targetId}/imagen`, {
-                  method: "POST",
-                  body: formData
-                });
-              }
-
-              alert(isEdit ? "¡Cambios guardados con éxito!" : "¡Producto registrado con éxito!");
-              window.location.href = "/admin/productos";
-            } else {
-              const errorData = await response.json().catch(() => ({}));
-              const mensajeError = errorData.mensaje || errorData.message || "Ocurrió un error al validar los campos obligatorios.";
-              alert("Error: " + mensajeError);
-            }
-          } catch (err) {
-            console.error(err);
-            alert("Error de conexión con el servidor.");
-          }
-        });
-      });
-    </script>
   </body>
 </html>

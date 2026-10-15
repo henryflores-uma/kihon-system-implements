@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ServicioRepository extends JpaRepository<Servicio, Long> {
+public interface ServicioRepository
+        extends JpaRepository<Servicio, Long> {
 
     boolean existsByCodigoIgnoreCase(String codigo);
 
-    boolean existsByCodigoIgnoreCaseAndIdNot(String codigo, Long id);
+    boolean existsByCodigoIgnoreCaseAndIdNot(
+            String codigo, Long id);
 
     Optional<Servicio> findByCodigoIgnoreCase(String codigo);
 

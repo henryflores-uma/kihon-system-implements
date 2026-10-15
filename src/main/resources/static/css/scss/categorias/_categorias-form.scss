@@ -1,0 +1,241 @@
+.categoria-form-page,
+.categoria-form-page * {
+    box-sizing: border-box;
+}
+
+.categoria-form-page {
+    min-height: calc(100vh - 70px);
+    padding: 32px 34px;
+    background: $color-gray-100;
+    color: $color-gray-900;
+    font-family: $font-family-base;
+}
+
+.categoria-form__ruta {
+    margin: 0 0 13px;
+    color: $color-gray-600;
+    font-size: 11px;
+}
+
+.categoria-form__titulo {
+    margin: 0 0 9px;
+    font-size: 29px;
+    font-weight: 750;
+}
+
+.categoria-form__subtitulo {
+    margin: 0 0 25px;
+    color: $color-gray-600;
+    font-size: 13px;
+}
+
+.categoria-form__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(260px, 0.92fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.categoria-form__tarjeta {
+    padding: 23px;
+    border: 1px solid $color-gray-200;
+    border-radius: 8px;
+    background: $color-white;
+    box-shadow: 0 2px 6px rgba($color-black, 0.025);
+}
+
+.categoria-form__seccion-titulo {
+    margin: 0 0 21px;
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.categoria-form__modo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.categoria-form__modo-texto {
+    margin: 0;
+    color: $color-gray-600;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.categoria-form__estado {
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: $color-yellow;
+    color: $color-gray-900;
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.categoria-form__estado.inactivo {
+    background: $color-gray-200;
+    color: $color-gray-600;
+}
+
+.categoria-form__ayuda {
+    margin: 0 0 17px;
+    color: $color-gray-600;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.categoria-form__campo {
+    margin-bottom: 20px;
+
+    label {
+        display: block;
+        margin-bottom: 9px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 12px 13px;
+        border: 1px solid $color-gray-200;
+        border-radius: 5px;
+        outline: none;
+        background: $color-white;
+        color: $color-gray-900;
+        font-family: inherit;
+        font-size: 13px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input,
+    select {
+        min-height: 44px;
+    }
+
+    textarea {
+        min-height: 115px;
+        resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: $color-red;
+        box-shadow: 0 0 0 3px rgba($color-red, 0.08);
+    }
+
+    small {
+        display: block;
+        margin-top: 8px;
+        color: $color-gray-600;
+        font-size: 11px;
+    }
+}
+
+.categoria-form__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.categoria-form__btn-guardar,
+.categoria-form__btn-cancelar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.categoria-form__btn-guardar {
+    border-color: $color-red;
+    background: $color-red;
+    color: $color-white;
+
+    &:hover:not(:disabled) {
+        background: $color-gray-900;
+        border-color: $color-gray-900;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: wait;
+    }
+}
+
+.categoria-form__btn-cancelar {
+    border-color: $color-gray-200;
+    background: $color-white;
+    color: $color-gray-900;
+
+    &:hover {
+        background: $color-gray-100;
+    }
+}
+
+.categoria-form__tarjeta-lateral {
+
+    .categoria-form__btn-guardar,
+    .categoria-form__btn-cancelar {
+        width: 100%;
+        margin-top: 9px;
+    }
+}
+
+.categoria-form__error {
+    min-height: 18px;
+    margin-top: 14px;
+    color: $color-red;
+    font-size: 12px;
+}
+
+.categoria-form__pie {
+    margin-top: 30px;
+    color: $color-gray-600;
+    font-size: 11px;
+}
+
+@media (max-width: 980px) {
+    .categoria-form__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 750px) {
+    .categoria-form-page {
+        padding: 22px 16px;
+    }
+
+    .categoria-form__titulo {
+        font-size: 25px;
+    }
+
+    .categoria-form__tarjeta {
+        padding: 18px;
+    }
+
+    .categoria-form__botones {
+        flex-direction: column;
+    }
+
+    .categoria-form__botones {
+
+        .categoria-form__btn-guardar,
+        .categoria-form__btn-cancelar {
+            width: 100%;
+        }
+    }
+}

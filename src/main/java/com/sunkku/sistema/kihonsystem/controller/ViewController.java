@@ -138,6 +138,11 @@ public class ViewController {
         return "admin/servicio-form";
     }
 
+    @GetMapping("/admin/vista-nueva")
+    public String mostrarVistaNueva() {
+        return "admin/vista-nueva";
+    }
+
     // ==========================================
     // SECRETARÍA
     // ==========================================

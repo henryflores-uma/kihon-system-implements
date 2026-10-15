@@ -1,0 +1,475 @@
+
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nueva categoría | Sunkku Sinchi</title>
+
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+
+  <meta name="_csrf" th:content="${_csrf != null ? _csrf.token : ''}">
+  <meta name="_csrf_header" th:content="${_csrf != null ? _csrf.headerName : ''}">
+
+  <style>
+    .categoria-form-page,
+    .categoria-form-page * {
+      box-sizing: border-box;
+    }
+
+    .categoria-form-page {
+      background: #f6f6f6;
+      min-height: calc(100vh - 70px);
+      padding: 32px 34px;
+      color: #242424;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .ruta {
+      font-size: 11px;
+      color: #999;
+      margin: 0 0 13px;
+    }
+
+    .titulo {
+      font-size: 29px;
+      font-weight: 750;
+      margin: 0 0 9px;
+    }
+
+    .subtitulo {
+      font-size: 13px;
+      color: #888;
+      margin: 0 0 25px;
+    }
+
+    .formulario-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.9fr) minmax(260px, .92fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .tarjeta {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      padding: 23px;
+      box-shadow: 0 2px 6px #00000006;
+    }
+
+    .tarjeta h2 {
+      font-size: 16px;
+      font-weight: 750;
+      margin: 0 0 21px;
+    }
+
+    .modo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .modo-texto {
+      font-size: 10px;
+      color: #999;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .estado {
+      background: #fff7d6;
+      color: #574900;
+      border-radius: 20px;
+      padding: 7px 11px;
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .estado.inactivo {
+      background: #eee;
+      color: #555;
+    }
+
+    .ayuda {
+      font-size: 11px;
+      color: #999;
+      line-height: 1.5;
+      margin: 0 0 17px;
+    }
+
+    .campo {
+      margin-bottom: 20px;
+    }
+
+    .campo label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .campo input,
+    .campo textarea,
+    .campo select {
+      width: 100%;
+      border: 1px solid #e1e1e1;
+      border-radius: 5px;
+      padding: 12px 13px;
+      background: white;
+      font-family: inherit;
+      font-size: 13px;
+      color: #333;
+      outline: none;
+    }
+
+    .campo input,
+    .campo select {
+      min-height: 44px;
+    }
+
+    .campo textarea {
+      min-height: 115px;
+      resize: vertical;
+    }
+
+    .campo input:focus,
+    .campo textarea:focus,
+    .campo select:focus {
+      border-color: #ff2600;
+      box-shadow: 0 0 0 3px #ff260010;
+    }
+
+    .campo small {
+      display: block;
+      margin-top: 8px;
+      color: #999;
+      font-size: 11px;
+    }
+
+    .botones {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-guardar,
+    .btn-cancelar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      padding: 12px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-guardar {
+      background: #ff2600;
+      color: white;
+      border: 1px solid #ff2600;
+    }
+
+    .btn-guardar:hover {
+      background: #df2100;
+    }
+
+    .btn-guardar:disabled {
+      opacity: .5;
+      cursor: wait;
+    }
+
+    .btn-cancelar {
+      background: white;
+      color: #333;
+      border: 1px solid #e2e2e2;
+    }
+
+    .tarjeta-lateral .btn-guardar,
+    .tarjeta-lateral .btn-cancelar {
+      width: 100%;
+      margin-top: 9px;
+    }
+
+    .error {
+      color: #c5221b;
+      font-size: 12px;
+      margin-top: 14px;
+      min-height: 18px;
+    }
+
+    .pie {
+      color: #aaa;
+      font-size: 11px;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 980px) {
+      .formulario-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 750px) {
+      .categoria-form-page {
+        padding: 22px 16px;
+      }
+    }
+  </style>
+
+  <script th:src="@{/js/acordeon.js}" defer></script>
+  <script th:src="@{/js/nav-acordeon.js}" defer></script>
+</head>
+
+<body>
+<main class="app-layout">
+
+  <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+  <div id="mobileMenuOverlay"
+       class="mobile-menu-overlay"
+       hidden></div>
+
+  <section class="main-content">
+
+    <div class="mobile-nav">
+      <button type="button"
+              class="mobile-menu-button"
+              id="mobileMenuButton"
+              aria-label="Abrir menú"
+              aria-expanded="false"
+              aria-controls="mainSidebar">
+        <span id="mobileMenuIcon">☰</span>
+      </button>
+
+      <strong class="mobile-nav__logo">
+        SUNKKU SINCHI
+      </strong>
+    </div>
+
+    <div th:replace="~{fragments/topbar :: topbar}"></div>
+
+    <div class="categoria-form-page">
+
+      <p class="ruta">
+        Inicio / Categorías / Nueva
+      </p>
+
+      <h1 class="titulo">
+        Nueva categoría
+      </h1>
+
+      <p class="subtitulo">
+        Registra una nueva categoría para los productos de la academia.
+      </p>
+
+      <div class="formulario-grid">
+
+        <section class="tarjeta">
+
+          <h2>Información de la categoría</h2>
+
+          <div class="modo">
+            <p class="modo-texto">MODO CREACIÓN</p>
+            <span class="estado" id="estadoActual">
+              Activo
+            </span>
+          </div>
+
+          <p class="ayuda">
+            Los campos con * son obligatorios.
+          </p>
+
+          <form id="formCategoria">
+
+            <div class="campo">
+              <label for="nombre">Nombre *</label>
+
+              <input type="text"
+                     id="nombre"
+                     maxlength="100"
+                     placeholder="Ej. Uniformes"
+                     required>
+
+              <small>Usa un nombre breve y único.</small>
+            </div>
+
+            <div class="campo">
+              <label for="descripcion">Descripción</label>
+
+              <textarea id="descripcion"
+                        rows="5"
+                        placeholder="Describe los productos de esta categoría."></textarea>
+            </div>
+
+            <div class="campo">
+              <label for="estado">Estado *</label>
+
+              <select id="estado" required>
+                <option value="ACTIVO">Activo</option>
+                <option value="INACTIVO">Inactivo</option>
+              </select>
+
+              <small>
+                Las categorías inactivas se conservan en el catálogo.
+              </small>
+            </div>
+
+            <div class="botones">
+
+              <button class="btn-guardar"
+                      id="btnGuardar"
+                      type="submit">
+                Guardar categoría
+              </button>
+
+              <a class="btn-cancelar"
+                 th:href="@{/admin/categorias}"
+                 href="/admin/categorias">
+                Cancelar
+              </a>
+            </div>
+
+            <p class="error" id="mensajeError" role="alert"></p>
+          </form>
+        </section>
+
+        <aside class="tarjeta tarjeta-lateral">
+
+          <h2>Nueva categoría</h2>
+
+          <p class="ayuda">
+            <strong>MODO CREACIÓN</strong> · Estado inicial del formulario.
+          </p>
+
+          <p class="ayuda">
+            Completa la información necesaria para registrar una categoría.
+          </p>
+
+          <p class="ayuda">
+            El nombre debe ser breve, único y fácil de identificar.
+          </p>
+
+          <button type="button"
+                  class="btn-guardar"
+                  id="guardarLateral">
+            Guardar
+          </button>
+
+          <a class="btn-cancelar"
+             th:href="@{/admin/categorias}"
+             href="/admin/categorias">
+            Cancelar
+          </a>
+        </aside>
+
+      </div>
+
+      <p class="pie">
+        Sunkku Sinchi · Panel de administración
+      </p>
+    </div>
+
+  </section>
+</main>
+
+<script th:inline="javascript">
+document.addEventListener("DOMContentLoaded", () => {
+
+  const API =
+    /*[[@{/api/categorias}]]*/ "/api/categorias";
+
+  const LISTADO =
+    /*[[@{/admin/categorias}]]*/ "/admin/categorias";
+
+  const csrfToken =
+    document.querySelector('meta[name="_csrf"]')?.content;
+
+  const csrfHeader =
+    document.querySelector('meta[name="_csrf_header"]')?.content;
+
+  const formulario = document.getElementById("formCategoria");
+  const guardar = document.getElementById("btnGuardar");
+  const guardarLateral = document.getElementById("guardarLateral");
+  const mensajeError = document.getElementById("mensajeError");
+
+  const nombre = document.getElementById("nombre");
+  const descripcion = document.getElementById("descripcion");
+  const estado = document.getElementById("estado");
+
+  estado.addEventListener("change", () => {
+    const etiqueta = document.getElementById("estadoActual");
+    const activo = estado.value === "ACTIVO";
+
+    etiqueta.textContent = activo ? "Activo" : "Inactivo";
+    etiqueta.classList.toggle("inactivo", !activo);
+  });
+
+  formulario.addEventListener("submit", async evento => {
+    evento.preventDefault();
+    mensajeError.textContent = "";
+
+    const datos = {
+      nombre: nombre.value.trim(),
+      descripcion: descripcion.value.trim(),
+      estado: estado.value
+    };
+
+    if (!datos.nombre) {
+      mensajeError.textContent = "Ingresa el nombre de la categoría.";
+      return;
+    }
+
+    guardar.disabled = true;
+    guardarLateral.disabled = true;
+
+    try {
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (csrfToken && csrfHeader) {
+        headers[csrfHeader] = csrfToken;
+      }
+
+      const respuesta = await fetch(API, {
+        method: "POST",
+        credentials: "same-origin",
+        headers,
+        body: JSON.stringify(datos)
+      });
+
+      if (!respuesta.ok) {
+        let mensaje = `Error HTTP ${respuesta.status}`;
+
+        try {
+          const error = await respuesta.json();
+          mensaje = error.mensaje || error.message || mensaje;
+        } catch (_) {}
+
+        throw new Error(mensaje);
+      }
+
+      window.location.href = LISTADO;
+
+    } catch (error) {
+      mensajeError.textContent = error.message;
+      guardar.disabled = false;
+      guardarLateral.disabled = false;
+    }
+  });
+
+  guardarLateral.addEventListener("click", () => {
+    formulario.requestSubmit();
+  });
+});
+</script>
+
+</body>
+</html>

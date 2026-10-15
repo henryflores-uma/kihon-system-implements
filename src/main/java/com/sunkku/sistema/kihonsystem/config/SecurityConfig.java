@@ -1,4 +1,3 @@
-
 package com.sunkku.sistema.kihonsystem.config;
 
 import com.sunkku.sistema.kihonsystem.security.CustomUserDetailsService;
@@ -15,60 +14,67 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-        @Bean
-        public DaoAuthenticationProvider authenticationProvider(
-                        CustomUserDetailsService userDetailsService,
-                        PasswordEncoder passwordEncoder) {
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(
+            CustomUserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
 
-                DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
 
-                provider.setPasswordEncoder(passwordEncoder);
-                return provider;
-        }
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            DaoAuthenticationProvider authenticationProvider)
+            throws Exception {
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(
-                        HttpSecurity http,
-                        DaoAuthenticationProvider authenticationProvider)
-                        throws Exception {
+        http
+                .authenticationProvider(authenticationProvider)
 
-                http
-                                .authenticationProvider(authenticationProvider)
+                // Solución para el error 403: Deshabilitar CSRF únicamente en las rutas de la API
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
+                )
 
-                                .sessionManagement(session -> session
-                                                .sessionCreationPolicy(
-                                                                SessionCreationPolicy.IF_REQUIRED))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(
+                                SessionCreationPolicy.IF_REQUIRED))
 
-                                .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers(
-                                                                "/", "/login", "/registro",
-                                                                "/css/**", "/js/**", "/img/**")
-                                                .permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/", "/login", "/registro",
+                                "/css/**", "/js/**", "/img/**")
+                        .permitAll()
 
-                                                .requestMatchers("/admin/**")
-                                                .hasRole("ADMINISTRADOR")
+                        // Permitir el consumo de las APIs de productos y categorías desde los formularios
+                        .requestMatchers("/api/productos/**", "/api/categorias/**").permitAll()
 
-                                                .requestMatchers("/api/auth/me")
-                                                .authenticated()
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMINISTRADOR")
 
-                                                .anyRequest().authenticated())
+                        .requestMatchers("/api/auth/me")
+                        .authenticated()
 
-                                .formLogin(form -> form
-                                                .loginPage("/login")
-                                                .loginProcessingUrl("/login")
-                                                .defaultSuccessUrl("/admin/admin", true)
-                                                .failureUrl("/login?error")
-                                                .permitAll())
+                        .anyRequest().authenticated())
 
-                                .httpBasic(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/admin/admin", true)
+                        .failureUrl("/login?error")
+                        .permitAll())
 
-                                .logout(logout -> logout
-                                                .logoutUrl("/logout")
-                                                .logoutSuccessUrl("/login?logout")
-                                                .invalidateHttpSession(true)
-                                                .clearAuthentication(true)
-                                                .deleteCookies("JSESSIONID"));
+                .httpBasic(Customizer.withDefaults())
 
-                return http.build();
-        }
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID"));
+
+        return http.build();
+    }
 }

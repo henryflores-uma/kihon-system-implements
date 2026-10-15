@@ -1,0 +1,26 @@
+<aside th:fragment="sidebar" class="sidebar" id="mainSidebar">
+  <div class="sidebar__logo">SUNK​​KU SINCHI</div>
+
+  <nav class="sidebar__nav" aria-label="Navegación principal">
+    <a th:href="@{/admin/admin}" class="sidebar__link"> Dashboard </a>
+
+    <button
+      type="button"
+      class="sidebar__accordion-button"
+      data-target="gestionSubmenu"
+      aria-expanded="false"
+      aria-controls="gestionSubmenu"
+    >
+      <span>Gestión</span>
+      <span class="sidebar__accordion-arrow">▶</span>
+    </button>
+
+    <div id="gestionSubmenu" class="sidebar__submenu" hidden>
+      <a th:href="@{/admin/categorias}" class="sidebar__link"> Categorías </a>
+
+      <a th:href="@{/admin/productos}" class="sidebar__link"> Productos </a>
+
+      <a th:href="@{/admin/servicios}" class="sidebar__link"> Servicios </a>
+    </div>
+  </nav>
+</aside>

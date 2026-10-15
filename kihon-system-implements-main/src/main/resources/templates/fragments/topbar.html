@@ -1,0 +1,27 @@
+<header th:fragment="topbar" class="topbar">
+  <div class="topbar__role">
+    <span class="topbar__role-label">Rol</span> <strong>Administrador</strong>
+  </div>
+  <div class="topbar__actions">
+    <div class="topbar__profile" id="profileMenuContainer">
+      <button
+        type="button"
+        class="topbar__profile-button"
+        id="profileMenuButton"
+        aria-expanded="false"
+        aria-controls="profileMenu"
+      >
+        <div class="topbar__avatar"><span>U</span></div>
+        <div class="topbar__profile-info">
+          <strong>Usuario</strong> <span>Administrador</span>
+        </div>
+        <span class="topbar__profile-arrow">▼</span>
+      </button>
+      <div class="topbar__profile-menu" id="profileMenu" hidden>
+        <a th:href="@{/admin/admin}" class="topbar__profile-menu-item">
+          Panel principal
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

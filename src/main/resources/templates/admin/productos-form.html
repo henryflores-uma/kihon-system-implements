@@ -1,0 +1,267 @@
+﻿<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Productos | Sunkku Sinchi</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script th:src="@{/js/acordeon.js}" defer></script>
+  </head>
+  <body>
+    <main class="app-layout">
+      <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+      <div id="mobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
+
+      <section class="main-content">
+        <div class="mobile-nav">
+          <button type="button" class="mobile-menu-button" id="mobileMenuButton" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainSidebar">
+            <span id="mobileMenuIcon">☰</span>
+          </button>
+          <strong class="mobile-nav__logo">SUNKKU SINCHI</strong>
+        </div>
+
+        <div th:replace="~{fragments/topbar :: topbar}"></div>
+
+        <div class="content-wrapper" style="padding: 2rem; max-width: 800px; margin: 0 auto;">
+          <div style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">
+            Inicio / Productos / <span id="breadcrumbAccion">Nuevo</span>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h1 id="tituloPagina" style="font-size: 1.75rem; font-weight: bold; margin: 0 0 0.25rem 0; color: #111;">Nuevo producto</h1>
+            <p id="subtituloPagina" style="color: #666; margin: 0; font-size: 0.95rem;">Completa los datos obligatorios del artículo, precios, stock y estado.</p>
+          </div>
+
+          <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <form id="formProducto">
+              <!-- Captura segura del ID inyectado por el controlador (si existe) -->
+              <input type="hidden" id="productoId" th:value="${productoId}" />
+
+              <!-- Código del producto (Obligatorio según el Entity) -->
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Código del producto *</label>
+                <input type="text" id="codigo" placeholder="Ej. PROD-001" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+              </div>
+
+              <!-- Nombre -->
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Nombre *</label>
+                <input type="text" id="nombre" placeholder="Ej. Karategi blanco" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+              </div>
+
+              <!-- Categoría (Cargada dinámicamente desde /api/categorias) -->
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Categoría *</label>
+                <select id="categoriaId" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; background: white;">
+                  <option value="" disabled selected>Cargando categorías...</option>
+                </select>
+              </div>
+
+              <!-- Estado del producto (ACTIVO / INACTIVO) -->
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Estado *</label>
+                <select id="estado" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; background: white;">
+                  <option value="ACTIVO" selected>ACTIVO</option>
+                  <option value="INACTIVO">INACTIVO</option>
+                </select>
+              </div>
+
+              <!-- Descripción -->
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Descripción</label>
+                <textarea id="descripcion" rows="3" placeholder="Describe las características." style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; resize: vertical;"></textarea>
+              </div>
+
+              <!-- Precios (Compra y Venta obligatorios) -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+                <div>
+                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Precio Compra (S/) *</label>
+                  <input type="number" step="0.01" id="precioCompra" value="0.00" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+                </div>
+                <div>
+                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Precio Venta (S/) *</label>
+                  <input type="number" step="0.01" id="precioVenta" value="0.00" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+                </div>
+              </div>
+
+              <!-- Stock Actual y Stock Mínimo -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+                <div>
+                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Stock Actual *</label>
+                  <input type="number" id="stockActual" value="0" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+                </div>
+                <div>
+                  <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Stock Mínimo *</label>
+                  <input type="number" id="stockMinimo" value="5" required style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+                </div>
+              </div>
+
+              <!-- Imagen -->
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-weight: 600; font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Imagen (opcional)</label>
+                <div style="border: 1px solid #d1d5db; border-radius: 6px; padding: 1rem; background: #f9fafb; display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: #374151;">
+                    <span>🖼️</span> <span id="nombreArchivo">Ningún archivo seleccionado</span>
+                  </div>
+                  <label style="background: white; border: 1px solid #d1d5db; padding: 0.4rem 0.75rem; border-radius: 4px; font-weight: 500; font-size: 0.85rem; cursor: pointer; color: #374151;">
+                    Seleccionar archivo
+                    <input type="file" id="archivo" accept="image/png, image/jpeg" style="display: none;" />
+                  </label>
+                </div>
+              </div>
+
+              <!-- Botones -->
+              <div style="display: flex; gap: 0.75rem;">
+                <button type="submit" id="btnGuardar" style="background-color: #ff3b00; color: white; border: none; padding: 0.65rem 1.25rem; font-weight: bold; border-radius: 6px; cursor: pointer;">Guardar</button>
+                <button type="button" onclick="window.location.href='/admin/productos'" style="background: white; color: #374151; border: 1px solid #d1d5db; padding: 0.65rem 1.25rem; font-weight: 500; border-radius: 6px; cursor: pointer;">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const inputId = document.getElementById("productoId").value;
+        const productoId = inputId ? inputId.trim() : "";
+
+        const inputArchivo = document.getElementById("archivo");
+        const spanNombreArchivo = document.getElementById("nombreArchivo");
+        const selectCategoria = document.getElementById("categoriaId");
+        const selectEstado = document.getElementById("estado");
+
+        inputArchivo.addEventListener("change", (e) => {
+          if (e.target.files.length > 0) {
+            spanNombreArchivo.textContent = e.target.files[0].name;
+          }
+        });
+
+        // 1. Cargar las categorías dinámicamente desde el backend
+        async function cargarCategorias(categoriaSeleccionadaId = null) {
+          try {
+            const res = await fetch("/api/categorias");
+            if (res.ok) {
+              const categorias = await res.json();
+              selectCategoria.innerHTML = '<option value="" disabled selected>Selecciona una categoría</option>';
+              categorias.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat.id;
+                option.textContent = cat.nombre;
+                if (categoriaSeleccionadaId && cat.id === Number(categoriaSeleccionadaId)) {
+                  option.selected = true;
+                }
+                selectCategoria.appendChild(option);
+              });
+            } else {
+              selectCategoria.innerHTML = '<option value="" disabled selected>Error al cargar categorías</option>';
+            }
+          } catch (err) {
+            console.error("Error cargando categorías:", err);
+            selectCategoria.innerHTML = '<option value="" disabled selected>Error de conexión</option>';
+          }
+        }
+
+        // Cargar categorías al inicio
+        await cargarCategorias();
+
+        // 2. Si el ID existe, cargamos los datos del producto para EDITAR
+        if (productoId !== "") {
+          document.getElementById("breadcrumbAccion").textContent = "Editar";
+          document.getElementById("tituloPagina").textContent = "Editar producto";
+          document.getElementById("subtituloPagina").textContent = "Actualiza los datos, precios, stock y estado del producto seleccionado.";
+          document.getElementById("btnGuardar").textContent = "Guardar cambios";
+
+          try {
+            const res = await fetch(`/api/productos/${productoId}`);
+            if (res.ok) {
+              const p = await res.json();
+              document.getElementById("codigo").value = p.codigo || "";
+              document.getElementById("nombre").value = p.nombre || "";
+              
+              if (p.categoria && p.categoria.id) {
+                selectCategoria.value = p.categoria.id;
+              }
+
+              if (p.estado) {
+                selectEstado.value = p.estado;
+              }
+
+              document.getElementById("descripcion").value = p.descripcion || "";
+              document.getElementById("precioCompra").value = p.precioCompra || 0.00;
+              document.getElementById("precioVenta").value = p.precioVenta || 0.00;
+              document.getElementById("stockActual").value = p.stockActual !== null ? p.stockActual : 0;
+              document.getElementById("stockMinimo").value = p.stockMinimo !== null ? p.stockMinimo : 5;
+              
+              if (p.rutaImagen) {
+                spanNombreArchivo.textContent = p.rutaImagen.split('/').pop();
+              }
+            } else {
+              alert("No se encontró el producto.");
+              window.location.href = "/admin/productos";
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        // 3. Envío del formulario (POST para crear, PUT para actualizar)
+        const formProducto = document.getElementById("formProducto");
+        formProducto.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const id = document.getElementById("productoId").value.trim();
+          const isEdit = id !== "";
+
+          const producto = {
+            codigo: document.getElementById("codigo").value.trim(),
+            nombre: document.getElementById("nombre").value.trim(),
+            categoria: { id: Number(selectCategoria.value) },
+            estado: selectEstado.value,
+            descripcion: document.getElementById("descripcion").value.trim(),
+            precioCompra: Number(document.getElementById("precioCompra").value),
+            precioVenta: Number(document.getElementById("precioVenta").value),
+            stockActual: Number(document.getElementById("stockActual").value),
+            stockMinimo: Number(document.getElementById("stockMinimo").value)
+          };
+
+          const endpoint = isEdit ? `/api/productos/${id}` : "/api/productos";
+          const method = isEdit ? "PUT" : "POST";
+
+          try {
+            const response = await fetch(endpoint, {
+              method: method,
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(producto)
+            });
+
+            if (response.ok) {
+              const resultado = await response.json();
+              const targetId = isEdit ? id : resultado.id;
+
+              // Subir imagen si se seleccionó un archivo nuevo
+              if (inputArchivo.files.length > 0) {
+                const formData = new FormData();
+                formData.append("archivo", inputArchivo.files[0]);
+                await fetch(`/api/productos/${targetId}/imagen`, {
+                  method: "POST",
+                  body: formData
+                });
+              }
+
+              alert(isEdit ? "¡Cambios guardados con éxito!" : "¡Producto registrado con éxito!");
+              window.location.href = "/admin/productos";
+            } else {
+              const errorData = await response.json().catch(() => ({}));
+              const mensajeError = errorData.mensaje || errorData.message || "Ocurrió un error al validar los campos obligatorios.";
+              alert("Error: " + mensajeError);
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Error de conexión con el servidor.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

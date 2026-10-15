@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Panel de administración | Sunkku Sinchi</title>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script th:src="@{/js/acordeon.js}" defer></script>
+  </head>
+
+  <body>
+    <main class="app-layout">
+      <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+      <div id="mobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
+
+      <section class="main-content">
+        <div class="mobile-nav">
+          <button
+            type="button"
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="mainSidebar"
+          >
+            <span id="mobileMenuIcon">☰</span>
+          </button>
+
+          <strong class="mobile-nav__logo">SUNK​​KU SINCHI</strong>
+        </div>
+
+        <div th:replace="~{fragments/topbar :: topbar}"></div>
+
+        <!-- Aquí va el contenido propio de cada página -->
+      </section>
+    </main>
+    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+  </body>
+</html>

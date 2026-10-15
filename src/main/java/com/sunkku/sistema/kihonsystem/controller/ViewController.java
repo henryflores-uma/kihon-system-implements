@@ -112,7 +112,16 @@ public class ViewController {
 
     @GetMapping("/admin/productos/nuevo")
     public String nuevoProducto() {
-        return "admin/producto-form";
+        return "admin/productos-form";
+    }
+
+    // ¡AÑADE ESTE MÉTODO PARA EDITAR PRODUCTOS!
+    @GetMapping("/admin/productos/editar/{id}")
+    public String editarProductoForm(
+            @PathVariable Long id,
+            Model model) {
+        model.addAttribute("productoId", id);
+        return "admin/productos-form";
     }
 
     // ==========================================

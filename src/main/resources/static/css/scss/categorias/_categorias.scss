@@ -1,0 +1,466 @@
+/* ==========================================
+   PÁGINA: LISTADO DE CATEGORÍAS
+   ========================================== */
+
+.categorias-page,
+.categorias-page * {
+    box-sizing: border-box;
+}
+
+.categorias-page {
+    min-height: calc(100vh - 70px);
+    background: $color-gray-100;
+    padding: 32px 34px;
+    font-family: $font-family-base;
+    color: $color-gray-900;
+}
+
+/* ==========================================
+   ENCABEZADO
+   ========================================== */
+
+.categorias-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.categorias-ruta {
+    color: $color-gray-600;
+    font-size: 11px;
+    margin: 0 0 14px;
+}
+
+.categorias-titulo {
+    font-size: 29px;
+    font-weight: 750;
+    margin: 0 0 10px;
+    color: $color-gray-900;
+}
+
+.categorias-subtitulo {
+    font-size: 13px;
+    color: $color-gray-600;
+    margin: 0;
+}
+
+/* ==========================================
+   BOTÓN PRINCIPAL
+   ========================================== */
+
+.btn-principal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 13px 19px;
+
+    background: $color-red;
+    color: $color-white;
+    border: 1px solid $color-red;
+    border-radius: 5px;
+
+    font-family: $font-family-base;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background: darken($color-red, 7%);
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-black;
+        outline-offset: 3px;
+    }
+}
+
+/* ==========================================
+   TARJETAS
+   ========================================== */
+
+.tarjeta {
+    background: $color-white;
+    border: 1px solid $color-gray-200;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba($color-black, 0.025);
+}
+
+.buscador-tarjeta {
+    padding: 22px;
+    margin-bottom: 20px;
+
+    label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: $color-gray-900;
+    }
+}
+
+/* ==========================================
+   BUSCADOR
+   ========================================== */
+
+.buscador-fila {
+    display: flex;
+    gap: 12px;
+
+    input {
+        flex: 1;
+        min-width: 0;
+        height: 45px;
+        padding: 0 14px;
+
+        background: $color-white;
+        color: $color-gray-900;
+        border: 1px solid $color-gray-200;
+        border-radius: 5px;
+
+        font-family: $font-family-base;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s ease;
+
+        &::placeholder {
+            color: $color-gray-600;
+        }
+
+        &:focus {
+            border-color: $color-red;
+        }
+    }
+}
+
+.btn-buscar {
+    border: 1px solid $color-gray-200;
+    background: $color-white;
+    color: $color-gray-900;
+    border-radius: 5px;
+
+    padding: 0 18px;
+
+    font-family: $font-family-base;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background: $color-gray-100;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-red;
+        outline-offset: 2px;
+    }
+}
+
+.contador {
+    font-size: 11px;
+    color: $color-gray-600;
+    margin: 16px 0 0;
+}
+
+.mensaje {
+    margin-top: 15px;
+    font-size: 12px;
+    color: $color-red;
+}
+
+/* ==========================================
+   TABLA DE CATEGORÍAS
+   ========================================== */
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+.tabla-categorias {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    text-align: left;
+
+    thead {
+        background: $color-gray-100;
+    }
+
+    th {
+        font-size: 12px;
+        font-weight: 700;
+        color: $color-gray-900;
+        padding: 18px 22px;
+
+        &:first-child {
+            width: 65%;
+        }
+
+        &:nth-child(2) {
+            width: 12%;
+        }
+    }
+
+    td {
+        padding: 20px 22px;
+        border-bottom: 1px solid $color-gray-200;
+        vertical-align: middle;
+        color: $color-gray-900;
+        font-size: 13px;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+}
+
+.nombre-categoria {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: $color-gray-900;
+    margin-bottom: 7px;
+}
+
+.descripcion-categoria {
+    display: block;
+    font-size: 11px;
+    color: $color-gray-600;
+}
+
+/* ==========================================
+   ESTADO DE CATEGORÍA
+   ========================================== */
+
+.estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    border-radius: 20px;
+    padding: 7px 11px;
+
+    font-size: 11px;
+    font-weight: 650;
+
+    &::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        background: currentColor;
+        border-radius: 50%;
+    }
+
+    &.activo {
+        background: rgba($color-yellow, 0.25);
+        color: $color-gray-900;
+    }
+
+    &.inactivo {
+        background: $color-gray-200;
+        color: $color-gray-600;
+    }
+}
+
+/* ==========================================
+   ACCIONES
+   ========================================== */
+
+.acciones {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-editar,
+.btn-eliminar {
+    padding: 11px 13px;
+
+    border-radius: 5px;
+
+    font-family: $font-family-base;
+    font-size: 12px;
+    font-weight: 650;
+
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.btn-editar {
+    background: $color-white;
+    color: $color-gray-900;
+    border: 1px solid $color-gray-200;
+
+    &:hover {
+        background: $color-gray-100;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-red;
+        outline-offset: 2px;
+    }
+}
+
+.btn-eliminar {
+    background: rgba($color-red, 0.08);
+    color: $color-red;
+    border: 1px solid transparent;
+
+    &:hover:not(:disabled) {
+        background: rgba($color-red, 0.15);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: wait;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $color-red;
+        outline-offset: 2px;
+    }
+}
+
+.sin-resultados {
+    text-align: center;
+    color: $color-gray-600;
+    font-size: 13px;
+    padding: 35px !important;
+}
+
+/* ==========================================
+   PAGINACIÓN
+   ========================================== */
+
+.paginacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 23px;
+
+    font-size: 11px;
+    color: $color-gray-600;
+
+    button {
+        border: 1px solid $color-gray-200;
+        border-radius: 5px;
+
+        padding: 11px 13px;
+
+        background: $color-gray-100;
+        color: $color-gray-900;
+
+        font-family: $font-family-base;
+        font-size: 11px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover:not(:disabled):not(.actual) {
+            background: $color-gray-200;
+        }
+
+        &.actual {
+            background: $color-black;
+            color: $color-white;
+            border-color: $color-black;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $color-red;
+            outline-offset: 2px;
+        }
+    }
+}
+
+.paginacion-botones,
+#numerosPagina {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+/* ==========================================
+   PIE DE PÁGINA
+   ========================================== */
+
+.pie-pagina {
+    margin-top: 30px;
+    color: $color-gray-600;
+    font-size: 11px;
+}
+
+/* ==========================================
+   RESPONSIVE: TABLET Y MÓVIL
+   ========================================== */
+
+@media (max-width: 750px) {
+    .categorias-page {
+        padding: 22px 16px;
+    }
+
+    .categorias-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-principal {
+        align-self: flex-start;
+    }
+
+    .buscador-fila {
+        flex-direction: column;
+    }
+
+    .btn-buscar {
+        min-height: 43px;
+    }
+
+    .paginacion {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE: MÓVIL PEQUEÑO
+   ========================================== */
+
+@media (max-width: 420px) {
+    .categorias-titulo {
+        font-size: 25px;
+    }
+
+    .buscador-tarjeta {
+        padding: 16px;
+    }
+
+    .tabla-categorias th,
+    .tabla-categorias td {
+        padding: 15px;
+    }
+
+    .acciones {
+        gap: 6px;
+    }
+
+    .btn-editar,
+    .btn-eliminar {
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+}

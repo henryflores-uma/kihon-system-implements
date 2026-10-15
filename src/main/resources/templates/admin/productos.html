@@ -3,10 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
     <title>Productos | Sunkku Sinchi</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+
     <script th:src="@{/js/acordeon.js}" defer></script>
+    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+    <script th:src="@{/js/topbar.js}" defer></script>
+    <script th:src="@{/js/logout.js}" defer></script>
+    <script th:src="@{/js/productos/productos.js}" defer></script>
   </head>
+
   <body>
     <main class="app-layout">
       <div th:replace="~{fragments/sidebar :: sidebar}"></div>
@@ -14,208 +24,114 @@
 
       <section class="main-content">
         <div class="mobile-nav">
-          <button type="button" class="mobile-menu-button" id="mobileMenuButton" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainSidebar">
+          <button
+            type="button"
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="mainSidebar"
+          >
             <span id="mobileMenuIcon">☰</span>
           </button>
+
           <strong class="mobile-nav__logo">SUNKKU SINCHI</strong>
         </div>
 
         <div th:replace="~{fragments/topbar :: topbar}"></div>
 
-        <div class="content-wrapper" style="padding: 2rem;">
-          <div style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">
+        <div
+          class="productos-page content-wrapper"
+          th:attr="
+            data-api-productos=@{/api/productos},
+            data-api-categorias=@{/api/categorias},
+            data-nuevo-url=@{/admin/productos/nuevo},
+            data-editar-url=@{/admin/productos/editar/},
+            data-vista-previa-url=@{/admin/vista-nueva}
+          "
+        >
+          <nav class="productos-breadcrumb" aria-label="Ruta de navegación">
             Inicio / Gestión / Productos
-          </div>
+          </nav>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <header class="productos-header">
             <div>
-              <h1 style="font-size: 1.75rem; font-weight: bold; margin: 0 0 0.25rem 0; color: #111;">Productos</h1>
-              <p style="color: #666; margin: 0; font-size: 0.95rem;">Gestiona el equipamiento y los artículos del dojo.</p>
+              <h1 class="productos-title">Productos</h1>
+              <p class="productos-description">
+                Gestiona el equipamiento y los artículos del dojo.
+              </p>
             </div>
-            <button 
-              type="button" 
-              id="btnNuevoProducto" 
-              onclick="window.location.href='/admin/productos/nuevo'"
-              style="background-color: #ff3b00; color: white; border: none; padding: 0.65rem 1.25rem; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;"
+
+            <button
+              type="button"
+              id="btnNuevoProducto"
+              class="productos-button productos-button--primary"
             >
-              + Nuevo producto
+              <span aria-hidden="true">+</span>
+              Nuevo producto
             </button>
-          </div>
+          </header>
 
-          <!-- Filtros y Búsqueda -->
-          <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
-            <!-- Búsqueda dinámica por Nombre o Código -->
-            <div>
-              <label for="inputBuscar" style="display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; color: #374151;">Buscar por Nombre o Código</label>
-              <input type="text" id="inputBuscar" placeholder="Ej. Karategi o PROD-001" style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem;" />
+          <section class="productos-filters" aria-label="Filtros de productos">
+            <div class="productos-field">
+              <label for="inputBuscar">Buscar por nombre o código</label>
+              <input
+                type="search"
+                id="inputBuscar"
+                placeholder="Ej. Karategi o PROD-001"
+                autocomplete="off"
+              />
             </div>
-            <!-- Búsqueda estática por Categoría -->
-            <div>
-              <label for="selectFiltroCategoria" style="display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; color: #374151;">Filtrar por Categoría</label>
-              <select id="selectFiltroCategoria" style="width: 100%; padding: 0.65rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; background: white;">
+
+            <div class="productos-field">
+              <label for="selectFiltroCategoria"> Filtrar por categoría </label>
+              <select id="selectFiltroCategoria">
                 <option value="">Todas las categorías</option>
               </select>
             </div>
-            <span id="contadorProductos" style="grid-column: span 2; font-size: 0.85rem; color: #6b7280; margin-top: -0.5rem;">Cargando productos...</span>
-          </div>
 
-          <!-- Tabla Completa con todos los atributos -->
-          <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; white-space: nowrap;">
+            <p
+              id="contadorProductos"
+              class="productos-counter"
+              role="status"
+              aria-live="polite"
+            >
+              Cargando productos...
+            </p>
+          </section>
+
+          <section
+            class="productos-table-container"
+            aria-label="Catálogo de productos"
+          >
+            <table class="productos-table">
               <thead>
-                <tr style="background-color: #f3f4f6; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
-                  
-                  <th style="padding: 0.75rem 1rem;">Código</th>
-                  <th style="padding: 0.75rem 1rem;">Producto / Nombre</th>
-                  <th style="padding: 0.75rem 1rem;">Categoría</th>
-                  <th style="padding: 0.75rem 1rem;">P. Compra</th>
-                  <th style="padding: 0.75rem 1rem;">P. Venta</th>
-                  <th style="padding: 0.75rem 1rem;">Stock Actual</th>
-                  <th style="padding: 0.75rem 1rem;">Stock Mín.</th>
-                  <th style="padding: 0.75rem 1rem;">Estado</th>
-                  <th style="padding: 0.75rem 1rem; text-align: right;">Acciones</th>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Producto / Nombre</th>
+                  <th scope="col">Categoría</th>
+                  <th scope="col">P. Compra</th>
+                  <th scope="col">P. Venta</th>
+                  <th scope="col">Stock actual</th>
+                  <th scope="col">Stock mín.</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col" class="productos-actions-heading">
+                    Acciones
+                  </th>
                 </tr>
               </thead>
-              <tbody id="tablaProductosBody"></tbody>
+
+              <tbody id="tablaProductosBody">
+                <tr>
+                  <td colspan="9" class="productos-table-message">
+                    Cargando productos...
+                  </td>
+                </tr>
+              </tbody>
             </table>
-          </div>
+          </section>
         </div>
       </section>
     </main>
-
-    <script th:src="@{/js/nav-acordeon.js}" defer></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const tbody = document.getElementById("tablaProductosBody");
-        const contadorProductos = document.getElementById("contadorProductos");
-        const inputBuscar = document.getElementById("inputBuscar");
-        const selectFiltroCategoria = document.getElementById("selectFiltroCategoria");
-
-        let listaProductosGlobal = [];
-
-        // 1. Cargar las categorías en el selector de filtro estático
-        async function cargarFiltroCategorias() {
-          try {
-            const res = await fetch("/api/categorias");
-            if (res.ok) {
-              const categorias = await res.json();
-              categorias.forEach(cat => {
-                const option = document.createElement("option");
-                option.value = cat.id;
-                option.textContent = cat.nombre;
-                selectFiltroCategoria.appendChild(option);
-              });
-            }
-          } catch (err) {
-            console.error("Error al cargar categorías para el filtro:", err);
-          }
-        }
-
-        // 2. Cargar todos los productos iniciales
-        async function cargarProductos() {
-          try {
-            const response = await fetch("/api/productos");
-            if (!response.ok) throw new Error("Error en la respuesta del servidor");
-            listaProductosGlobal = await response.json();
-            filtrarYRenderizar();
-          } catch (error) {
-            console.error(error);
-            tbody.innerHTML = `<tr><td colspan="10" style="padding: 1.5rem; text-align: center; color: #ef4444;">No se pudieron cargar los datos del servidor.</td></tr>`;
-            contadorProductos.textContent = "0 productos en el catálogo";
-          }
-        }
-
-        // 3. Filtrar y renderizar dinámicamente en el cliente (por texto y categoría)
-        function filtrarYRenderizar() {
-          const textoBusqueda = inputBuscar.value.toLowerCase().trim();
-          const categoriaSeleccionada = selectFiltroCategoria.value;
-
-          const productosFiltrados = listaProductosGlobal.filter(p => {
-            const coincideTexto = !textoBusqueda || 
-              (p.nombre && p.nombre.toLowerCase().includes(textoBusqueda)) || 
-              (p.codigo && p.codigo.toLowerCase().includes(textoBusqueda));
-
-            const coincideCategoria = !categoriaSeleccionada || 
-              (p.categoria && String(p.categoria.id) === String(categoriaSeleccionada));
-
-            return coincideTexto && coincideCategoria;
-          });
-
-          renderizarTabla(productosFiltrados);
-        }
-
-        // 4. Renderizar filas de la tabla con todos los atributos de Producto
-        function renderizarTabla(productos) {
-          tbody.innerHTML = "";
-          contadorProductos.textContent = `${productos.length} producto(s) encontrado(s) en el catálogo`;
-
-          if (productos.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10" style="padding: 1.5rem; text-align: center; color: #6b7280;">No se encontraron registros coincidentes.</td></tr>`;
-            return;
-          }
-
-          productos.forEach(p => {
-            const tr = document.createElement("tr");
-            tr.style.borderBottom = "1px solid #e5e7eb";
-
-            const categoriaNombre = p.categoria ? (p.categoria.nombre || "Sin categoría") : "Sin categoría";
-            const precioCompraTxt = p.precioCompra !== null ? `S/ ${Number(p.precioCompra).toFixed(2)}` : "—";
-            const precioVentaTxt = `S/ ${Number(p.precioVenta || 0).toFixed(2)}`;
-            const stockActualTxt = p.stockActual !== null ? p.stockActual : "—";
-            const stockMinimoTxt = p.stockMinimo !== null ? p.stockMinimo : "—";
-            const estadoBadge = p.estado === 'ACTIVO' 
-              ? '<span style="background: #def7ec; color: #03543f; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">ACTIVO</span>' 
-              : `<span style="background: #fde8e8; color: #9b1c1c; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">${p.estado}</span>`;
-
-            tr.innerHTML = `
-        
-              <td style="padding: 0.75rem 1rem; font-weight: 600; color: #111827;">${p.codigo || ''}</td>
-              <td style="padding: 0.75rem 1rem; font-weight: 600; color: #111827;">${p.nombre || ''}</td>
-              <td style="padding: 0.75rem 1rem; color: #4b5563;">${categoriaNombre}</td>
-              <td style="padding: 0.75rem 1rem; color: #374151;">${precioCompraTxt}</td>
-              <td style="padding: 0.75rem 1rem; color: #374151; font-weight: 600;">${precioVentaTxt}</td>
-              <td style="padding: 0.75rem 1rem; color: #374151;">${stockActualTxt}</td>
-              <td style="padding: 0.75rem 1rem; color: #6b7280;">${stockMinimoTxt}</td>
-              <td style="padding: 0.75rem 1rem;">${estadoBadge}</td>
-              <td style="padding: 0.75rem 1rem; text-align: right;">
-                <button onclick="editarProducto(${p.id})" style="padding: 0.35rem 0.75rem; margin-right: 0.5rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">Editar</button>
-                <button onclick="eliminarProducto(${p.id})" style="padding: 0.35rem 0.75rem; background: #fff5f5; border: 1px solid #feb2b2; border-radius: 4px; cursor: pointer; color: #c53030; font-size: 0.85rem;">Eliminar</button>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        }
-
-        // Redirección para Editar
-        window.editarProducto = function(id) {
-          window.location.href = `/admin/productos/editar/${id}`;
-        };
-
-        // Eliminar producto
-        window.eliminarProducto = async function(id) {
-          if (confirm("¿Estás seguro de eliminar este producto?")) {
-            try {
-              const res = await fetch(`/api/productos/${id}`, { method: 'DELETE' });
-              if (res.ok) {
-                cargarProductos();
-              } else {
-                alert("No se pudo eliminar el registro.");
-              }
-            } catch (err) {
-              console.error(err);
-              alert("Error de conexión al intentar eliminar.");
-            }
-          }
-        };
-
-        // Eventos de filtrado en tiempo real
-        inputBuscar.addEventListener("input", filtrarYRenderizar);
-        selectFiltroCategoria.addEventListener("change", filtrarYRenderizar);
-
-        // Inicializar datos al cargar la vista
-        cargarFiltroCategorias();
-        cargarProductos();
-      });
-    </script>
   </body>
 </html>

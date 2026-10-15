@@ -14,67 +14,79 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider(
-            CustomUserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
+        @Bean
+        public DaoAuthenticationProvider authenticationProvider(
+                        CustomUserDetailsService userDetailsService,
+                        PasswordEncoder passwordEncoder) {
 
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        return provider;
-    }
+                DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            DaoAuthenticationProvider authenticationProvider)
-            throws Exception {
+                provider.setPasswordEncoder(passwordEncoder);
+                return provider;
+        }
 
-        http
-                .authenticationProvider(authenticationProvider)
+        @Bean
+        public SecurityFilterChain securityFilterChain(
+                        HttpSecurity http,
+                        DaoAuthenticationProvider authenticationProvider)
+                        throws Exception {
 
-                // Solución para el error 403: Deshabilitar CSRF únicamente en las rutas de la API
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/**")
-                )
+                http
+                                .authenticationProvider(authenticationProvider)
 
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(
-                                SessionCreationPolicy.IF_REQUIRED))
+                                .csrf(csrf -> csrf
+                                                .ignoringRequestMatchers("/api/**"))
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/", "/login", "/registro",
-                                "/css/**", "/js/**", "/img/**")
-                        .permitAll()
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(
+                                                                SessionCreationPolicy.IF_REQUIRED))
 
-                        // Permitir el consumo de las APIs de productos y categorías desde los formularios
-                        .requestMatchers("/api/productos/**", "/api/categorias/**").permitAll()
+                                .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/admin/**")
-                        .hasRole("ADMINISTRADOR")
+                                                // Páginas públicas
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/login",
+                                                                "/registro",
+                                                                "/catalogo",
+                                                                "/css/**",
+                                                                "/js/**",
+                                                                "/img/**")
+                                                .permitAll()
 
-                        .requestMatchers("/api/auth/me")
-                        .authenticated()
+                                                // APIs públicas existentes
+                                                .requestMatchers(
+                                                                "/api/productos/**",
+                                                                "/api/categorias/**",
+                                                                "/api/servicios/**")
+                                                .permitAll()
 
-                        .anyRequest().authenticated())
+                                                // Administración protegida
+                                                .requestMatchers("/admin/**")
+                                                .hasRole("ADMINISTRADOR")
 
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/admin/admin", true)
-                        .failureUrl("/login?error")
-                        .permitAll())
+                                                .requestMatchers("/api/auth/me")
+                                                .authenticated()
 
-                .httpBasic(Customizer.withDefaults())
+                                                // El resto requiere autenticación
+                                                .anyRequest().authenticated())
 
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID"));
+                                .formLogin(form -> form
+                                                .loginPage("/login")
+                                                .loginProcessingUrl("/login")
+                                                .defaultSuccessUrl("/admin/admin", true)
+                                                .failureUrl("/login?error")
+                                                .permitAll())
 
-        return http.build();
-    }
+                                .httpBasic(Customizer.withDefaults())
+
+                                .logout(logout -> logout
+                                                .logoutUrl("/logout")
+                                                .logoutSuccessUrl("/login?logout")
+                                                .invalidateHttpSession(true)
+                                                .clearAuthentication(true)
+                                                .deleteCookies("JSESSIONID"));
+
+                return http.build();
+        }
 }

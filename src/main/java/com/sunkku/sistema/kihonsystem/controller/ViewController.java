@@ -1,5 +1,6 @@
-
 package com.sunkku.sistema.kihonsystem.controller;
+
+import com.sunkku.sistema.kihonsystem.service.CatalogoService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class ViewController {
 
+    private final CatalogoService catalogoService;
+
+    public ViewController(CatalogoService catalogoService) {
+        this.catalogoService = catalogoService;
+    }
+
     // ==========================================
     // PÁGINAS PÚBLICAS
     // ==========================================
@@ -16,6 +23,12 @@ public class ViewController {
     @GetMapping("/")
     public String index() {
         return "index";
+    }
+
+    @GetMapping("/catalogo")
+    public String catalogo(Model model) {
+        catalogoService.cargarCatalogo(model);
+        return "catalogo";
     }
 
     @GetMapping("/login")
@@ -97,7 +110,6 @@ public class ViewController {
             Model model) {
 
         model.addAttribute("categoriaId", id);
-
         return "admin/categoria-editar";
     }
 
@@ -115,11 +127,11 @@ public class ViewController {
         return "admin/productos-form";
     }
 
-    // ¡AÑADE ESTE MÉTODO PARA EDITAR PRODUCTOS!
     @GetMapping("/admin/productos/editar/{id}")
     public String editarProductoForm(
             @PathVariable Long id,
             Model model) {
+
         model.addAttribute("productoId", id);
         return "admin/productos-form";
     }
@@ -136,6 +148,11 @@ public class ViewController {
     @GetMapping("/admin/servicios/nuevo")
     public String nuevoServicio() {
         return "admin/servicio-form";
+    }
+
+    @GetMapping("/admin/vista-nueva")
+    public String mostrarVistaNueva() {
+        return "admin/vista-nueva";
     }
 
     // ==========================================

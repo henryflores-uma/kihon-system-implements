@@ -1,0 +1,332 @@
+/* ==========================================
+   FORMULARIO DE PRODUCTOS
+   ========================================== */
+
+.productos-form-page {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: $color-gray-900;
+}
+
+/* ==========================================
+   MIGAS DE PAN
+   ========================================== */
+
+.productos-form__breadcrumb {
+    margin-bottom: 1rem;
+    color: $color-gray-600;
+    font-size: 0.85rem;
+}
+
+/* ==========================================
+   ENCABEZADO
+   ========================================== */
+
+.productos-form__header {
+    margin-bottom: 1.5rem;
+
+    h1 {
+        margin: 0 0 0.25rem;
+        color: $color-gray-900;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    p {
+        margin: 0;
+        color: $color-gray-600;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+}
+
+/* ==========================================
+   TARJETA DEL FORMULARIO
+   ========================================== */
+
+.productos-form__card {
+    padding: 2rem;
+    border: 1px solid $color-gray-200;
+    border-radius: 8px;
+    background-color: $color-white;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
+}
+
+/* ==========================================
+   CAMPOS
+   ========================================== */
+
+.productos-form__field {
+    min-width: 0;
+    margin-bottom: 1.25rem;
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #374151;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    input:not([type="file"]),
+    select,
+    textarea {
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        padding: 0.65rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background-color: $color-white;
+        color: $color-gray-900;
+        font: inherit;
+        font-size: 0.95rem;
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+
+        &:focus {
+            border-color: $color-red;
+            outline: none;
+            box-shadow: 0 0 0 3px rgb(255 36 0 / 12%);
+        }
+
+        &:disabled {
+            background-color: $color-gray-100;
+            cursor: not-allowed;
+        }
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #9ca3af;
+    }
+}
+
+/* ==========================================
+   CAMPOS EN DOS COLUMNAS
+   ========================================== */
+
+.productos-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+/* ==========================================
+   SELECCIÓN DE IMAGEN
+   ========================================== */
+
+.productos-form__file-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: $color-gray-100;
+}
+
+.productos-form__file-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    color: #374151;
+    font-size: 0.9rem;
+
+    span:last-child {
+        overflow-wrap: anywhere;
+    }
+}
+
+.productos-form__file-button {
+    flex-shrink: 0;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: $color-white;
+    color: #374151;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $color-gray-100;
+    }
+
+    &:focus-within {
+        outline: 2px solid $color-red;
+        outline-offset: 2px;
+    }
+}
+
+.productos-form__file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
+.productos-form__file-input:focus-visible+.productos-form__file-button {
+    outline: 2px solid $color-red;
+    outline-offset: 2px;
+}
+
+.productos-form__help {
+    margin: 0.5rem 0 0;
+    color: $color-gray-600;
+    font-size: 0.8rem;
+}
+
+.productos-form__current-image {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    background-color: $color-gray-100;
+    font-size: 0.85rem;
+
+    p {
+        margin: 0 0 0.25rem;
+        color: $color-gray-600;
+    }
+
+    span {
+        overflow-wrap: anywhere;
+        font-weight: 600;
+    }
+}
+
+/* ==========================================
+   MENSAJES DEL FORMULARIO
+   ========================================== */
+
+.productos-form__message {
+    margin-bottom: 1.25rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    background-color: #fef2f2;
+    color: #991b1b;
+    font-size: 0.9rem;
+    line-height: 1.5;
+
+    &[hidden] {
+        display: none;
+    }
+
+    &--success {
+        border-color: #a7f3d0;
+        background-color: #ecfdf5;
+        color: #065f46;
+    }
+}
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+
+.productos-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.productos-form__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0.65rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+
+    &:focus-visible {
+        outline: 2px solid $color-yellow;
+        outline-offset: 3px;
+    }
+
+    &:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+
+    &--primary {
+        background-color: $color-red;
+        color: $color-white;
+
+        &:hover:not(:disabled) {
+            background-color: darken($color-red, 7%);
+        }
+    }
+
+    &--secondary {
+        border-color: #d1d5db;
+        background-color: $color-white;
+        color: #374151;
+
+        &:hover:not(:disabled) {
+            background-color: $color-gray-100;
+        }
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 600px) {
+    .productos-form-page {
+        padding: 1rem;
+    }
+
+    .productos-form__header h1 {
+        font-size: 1.5rem;
+    }
+
+    .productos-form__card {
+        padding: 1.25rem;
+    }
+
+    .productos-form__grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .productos-form__file-box {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .productos-form__file-button {
+        align-self: flex-start;
+    }
+
+    .productos-form__actions {
+        flex-direction: column;
+    }
+
+    .productos-form__button {
+        width: 100%;
+    }
+}

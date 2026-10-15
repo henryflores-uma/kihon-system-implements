@@ -3,12 +3,9 @@ package com.sunkku.sistema.kihonsystem.controller;
 
 import com.sunkku.sistema.kihonsystem.model.Servicio;
 import com.sunkku.sistema.kihonsystem.service.ServicioService;
-
 import jakarta.validation.Valid;
-
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +27,8 @@ public class ServicioController {
 
     // BUSCAR POR ID
     @GetMapping("/{id:\\d+}")
-    public ResponseEntity<Servicio> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Servicio> buscarPorId(
+            @PathVariable Long id) {
         return servicioService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -89,7 +87,8 @@ public class ServicioController {
     public ResponseEntity<?> crear(
             @Valid @RequestBody Servicio servicio) {
         try {
-            return ResponseEntity.ok(servicioService.guardar(servicio));
+            return ResponseEntity.ok(
+                    servicioService.guardar(servicio));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("mensaje", e.getMessage()));
@@ -114,9 +113,11 @@ public class ServicioController {
         servicioExistente.setCodigo(servicio.getCodigo());
         servicioExistente.setNombre(servicio.getNombre());
         servicioExistente.setDescripcion(servicio.getDescripcion());
+        servicioExistente.setRutaImagen(servicio.getRutaImagen());
         servicioExistente.setPrecio(servicio.getPrecio());
         servicioExistente.setDuracionMinutos(
                 servicio.getDuracionMinutos());
+        servicioExistente.setCapacidad(servicio.getCapacidad());
         servicioExistente.setEstado(servicio.getEstado());
 
         try {

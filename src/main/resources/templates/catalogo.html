@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Catálogo | Sunkku Sinchi</title>
+    <meta
+      name="description"
+      content="Conoce los productos y servicios de la Academia de Karate Sunkku Sinchi."
+    />
+
+    <style>
+      :root {
+        --fondo: #101010;
+        --superficie: #1b1b1b;
+        --superficie-hover: #242424;
+        --rojo: #d71920;
+        --amarillo: #ffc928;
+        --blanco: #ffffff;
+        --gris: #b8b8b8;
+        --borde: #333333;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 100px;
+      }
+
+      body {
+        margin: 0;
+        background: var(--fondo);
+        color: var(--blanco);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      /* BARRA SUPERIOR */
+
+      .barra-superior {
+        background: var(--rojo);
+        padding: 8px 5%;
+        text-align: center;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      /* NAVEGACIÓN FIJA */
+
+      .navegacion {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 12px 5%;
+        background: #080808;
+        border-bottom: 1px solid var(--borde);
+        box-shadow: 0 5px 18px rgb(0 0 0 / 25%);
+      }
+
+      .marca {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        white-space: nowrap;
+      }
+
+      .marca img {
+        display: block;
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+      }
+
+      .marca-texto {
+        color: var(--blanco);
+      }
+
+      .marca-texto span {
+        color: var(--amarillo);
+      }
+
+      .enlaces {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px 22px;
+      }
+
+      .enlaces a {
+        color: #dddddd;
+        font-size: 13px;
+        font-weight: bold;
+        transition: color 0.2s;
+      }
+
+      .enlaces a:hover,
+      .enlaces a.activo {
+        color: var(--amarillo);
+      }
+
+      /* PORTADA */
+
+      .hero {
+        padding: 76px 20px;
+        text-align: center;
+        background:
+          radial-gradient(ellipse at top, #492020 0%, transparent 60%),
+          linear-gradient(135deg, #171717, #090909);
+        border-bottom: 3px solid var(--rojo);
+      }
+
+      .etiqueta {
+        color: var(--amarillo);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        margin: 14px 0;
+        font-size: clamp(32px, 5vw, 56px);
+        line-height: 1.1;
+        text-transform: uppercase;
+      }
+
+      .hero h1 span {
+        color: var(--rojo);
+      }
+
+      .hero p {
+        max-width: 650px;
+        margin: 18px auto 0;
+        color: var(--gris);
+      }
+
+      .atajos {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .boton {
+        display: inline-block;
+        padding: 12px 20px;
+        border: 1px solid var(--amarillo);
+        border-radius: 4px;
+        background: var(--amarillo);
+        color: #111111;
+        font-size: 13px;
+        font-weight: 900;
+        text-align: center;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .boton:hover {
+        transform: translateY(-2px);
+        background: #ffda63;
+      }
+
+      .boton-secundario {
+        background: transparent;
+        color: var(--blanco);
+        border-color: #777777;
+      }
+
+      .boton-secundario:hover {
+        background: var(--superficie-hover);
+      }
+
+      /* BUSCADOR Y FILTROS */
+
+      .zona-busqueda {
+        padding: 35px 20px 28px;
+        background: #151515;
+        border-bottom: 1px solid var(--borde);
+      }
+
+      .busqueda-contenedor {
+        width: min(850px, 100%);
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .titulo-busqueda {
+        display: block;
+        margin-bottom: 15px;
+        color: var(--blanco);
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .campo-busqueda {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 16px;
+        background: #222;
+        border: 1px solid #444;
+        border-radius: 7px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .campo-busqueda:focus-within {
+        border-color: var(--amarillo);
+        box-shadow: 0 0 0 3px rgb(255 201 40 / 12%);
+      }
+
+      .icono-busqueda {
+        color: var(--amarillo);
+        font-size: 27px;
+        line-height: 1;
+      }
+
+      .campo-busqueda input {
+        width: 100%;
+        min-width: 0;
+        padding: 16px 0;
+        border: 0;
+        outline: none;
+        background: transparent;
+        color: var(--blanco);
+        font: inherit;
+      }
+
+      .campo-busqueda input::placeholder {
+        color: #999;
+      }
+
+      .limpiar-busqueda {
+        padding: 6px 9px;
+        border: 0;
+        border-radius: 4px;
+        background: #383838;
+        color: white;
+        cursor: pointer;
+      }
+
+      .limpiar-busqueda:hover {
+        background: var(--rojo);
+      }
+
+      .filtros-catalogo {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .filtro-btn {
+        padding: 10px 23px;
+        border: 1px solid #4a4a4a;
+        border-radius: 5px;
+        background: #222;
+        color: #ddd;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .filtro-btn:hover {
+        border-color: var(--amarillo);
+        color: var(--amarillo);
+      }
+
+      .filtro-btn.activo {
+        border-color: var(--amarillo);
+        background: var(--amarillo);
+        color: #111;
+      }
+
+      .filtro-btn:focus-visible,
+      .boton:focus-visible,
+      .enlaces a:focus-visible {
+        outline: 2px solid var(--amarillo);
+        outline-offset: 4px;
+      }
+
+      .resultado-busqueda {
+        min-height: 22px;
+        margin: 15px 0 0;
+        color: var(--gris);
+        font-size: 13px;
+      }
+
+      /* CONTENIDO */
+
+      .contenedor {
+        width: min(1200px, 90%);
+        margin: 0 auto;
+      }
+
+      .seccion {
+        padding: 64px 0;
+        scroll-margin-top: 100px;
+      }
+
+      .seccion + .seccion {
+        border-top: 1px solid var(--borde);
+      }
+
+      .cabecera-seccion {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+
+      .cabecera-seccion h2 {
+        margin: 5px 0 0;
+        font-size: clamp(25px, 4vw, 36px);
+        text-transform: uppercase;
+      }
+
+      .cabecera-seccion h2 span {
+        color: var(--amarillo);
+      }
+
+      .cabecera-seccion p {
+        margin: 0;
+        color: var(--gris);
+        font-size: 14px;
+      }
+
+      /* TARJETAS */
+
+      .rejilla {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .tarjeta {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow: hidden;
+        background: var(--superficie);
+        border: 1px solid var(--borde);
+        border-radius: 8px;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+
+      .tarjeta:hover {
+        transform: translateY(-5px);
+        border-color: var(--rojo);
+      }
+
+      .tarjeta.oculto-filtro {
+        display: none !important;
+      }
+
+      .seccion.oculta-filtro {
+        display: none !important;
+      }
+
+      .imagen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 230px;
+        overflow: hidden;
+        background: #252525;
+        border-bottom: 2px solid var(--rojo);
+      }
+
+      .imagen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .imagen-vacia {
+        padding: 15px;
+        color: #888888;
+        font-size: 13px;
+        letter-spacing: 1px;
+        text-align: center;
+      }
+
+      .contenido-tarjeta {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px;
+      }
+
+      .categoria {
+        margin-bottom: 8px;
+        color: var(--amarillo);
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+      }
+
+      .contenido-tarjeta h3 {
+        margin: 0 0 10px;
+        font-size: 20px;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+      }
+
+      .descripcion {
+        flex: 1;
+        width: 100%;
+        margin: 0 0 18px;
+        color: var(--gris);
+        font-size: 14px;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+      }
+
+      .detalles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .detalle {
+        padding: 5px 9px;
+        border: 1px solid #454545;
+        border-radius: 3px;
+        color: #dddddd;
+        font-size: 12px;
+      }
+
+      .precio {
+        margin-bottom: 16px;
+        color: var(--amarillo);
+        font-size: 25px;
+        font-weight: 900;
+      }
+
+      .precio small {
+        color: var(--gris);
+        font-size: 12px;
+        font-weight: normal;
+      }
+
+      .aviso-vacio {
+        grid-column: 1 / -1;
+        padding: 35px 20px;
+        background: var(--superficie);
+        border: 1px dashed #555555;
+        border-radius: 8px;
+        color: var(--gris);
+        text-align: center;
+      }
+
+      .aviso-vacio strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--blanco);
+        font-size: 18px;
+      }
+
+      .sin-coincidencias {
+        margin: 25px 0;
+        padding: 30px 20px;
+        background: var(--superficie);
+        border: 1px dashed #555;
+        border-radius: 8px;
+        color: var(--gris);
+        text-align: center;
+      }
+
+      .sin-coincidencias strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--blanco);
+        font-size: 18px;
+      }
+
+      /* CONTACTO Y PIE */
+
+      .contacto {
+        padding: 48px 20px;
+        background: #191919;
+        border-top: 3px solid var(--amarillo);
+        text-align: center;
+      }
+
+      .contacto h2 {
+        margin: 0 0 10px;
+        text-transform: uppercase;
+      }
+
+      .contacto p {
+        margin: 0 auto 22px;
+        color: var(--gris);
+      }
+
+      footer {
+        padding: 22px 5%;
+        background: #080808;
+        color: #999999;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 850px) {
+        .rejilla {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .navegacion {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .enlaces {
+          justify-content: flex-start;
+          gap: 12px 18px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        html {
+          scroll-padding-top: 135px;
+        }
+
+        .hero {
+          padding: 54px 18px;
+        }
+
+        .rejilla {
+          grid-template-columns: 1fr;
+        }
+
+        .cabecera-seccion {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .imagen {
+          height: 250px;
+        }
+
+        .seccion {
+          padding: 45px 0;
+          scroll-margin-top: 135px;
+        }
+
+        .zona-busqueda {
+          padding: 28px 16px 22px;
+        }
+
+        .filtros-catalogo {
+          gap: 7px;
+        }
+
+        .filtro-btn {
+          padding: 10px 15px;
+        }
+
+        .marca {
+          font-size: 18px;
+        }
+
+        .marca img {
+          width: 42px;
+          height: 42px;
+        }
+
+        .enlaces {
+          gap: 10px 14px;
+        }
+
+        .enlaces a {
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- BARRA SUPERIOR -->
+    <div class="barra-superior">DISCIPLINA · RESPETO · SUPERACIÓN</div>
+
+    <!-- NAVEGACIÓN -->
+    <nav class="navegacion">
+      <a class="marca" th:href="@{/}">
+        <!-- Cambia /img/logo.png por la ruta REAL del logo de index.html -->
+        <img
+          th:src="@{/img/logo_dojo.png}"
+          alt="Logo de la Academia Sunkku Sinchi"
+          onerror="this.style.display = 'none'"
+        />
+
+        <span class="marca-texto"> SUNKKU <span>SINCHI</span> </span>
+      </a>
+
+      <div class="enlaces">
+        <a th:href="@{/}">INICIO</a>
+        <a th:href="@{/catalogo}" class="activo"> PRODUCTOS Y SERVICIOS </a>
+        <a th:href="@{/login}">INICIAR SESIÓN</a>
+      </div>
+    </nav>
+
+    <!-- PORTADA -->
+    <header class="hero">
+      <div class="etiqueta">Academia de Karate</div>
+
+      <h1>Nuestro <span>catálogo</span></h1>
+
+      <p>
+        Conoce los productos y servicios disponibles en Sunkku Sinchi. Encuentra
+        lo que necesitas para acompañar tu formación marcial.
+      </p>
+
+      <div class="atajos">
+        <a class="boton" href="#productos">Ver productos</a>
+        <a class="boton boton-secundario" href="#servicios"> Ver servicios </a>
+      </div>
+    </header>
+
+    <!-- BUSCADOR Y FILTROS -->
+    <section class="zona-busqueda">
+      <div class="busqueda-contenedor">
+        <label for="buscadorCatalogo" class="titulo-busqueda">
+          Encuentra lo que necesitas
+        </label>
+
+        <div class="campo-busqueda">
+          <span class="icono-busqueda" aria-hidden="true">⌕</span>
+
+          <input
+            type="search"
+            id="buscadorCatalogo"
+            placeholder="Buscar productos, servicios o categorías..."
+            autocomplete="off"
+            aria-label="Buscar en el catálogo"
+          />
+
+          <button
+            type="button"
+            id="limpiarBusqueda"
+            class="limpiar-busqueda"
+            aria-label="Limpiar búsqueda"
+            hidden
+          >
+            ✕
+          </button>
+        </div>
+
+        <div
+          class="filtros-catalogo"
+          role="group"
+          aria-label="Filtrar por tipo"
+        >
+          <button
+            type="button"
+            class="filtro-btn activo"
+            data-filtro="todos"
+            aria-pressed="true"
+          >
+            Todos
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            data-filtro="producto"
+            aria-pressed="false"
+          >
+            Productos
+          </button>
+
+          <button
+            type="button"
+            class="filtro-btn"
+            data-filtro="servicio"
+            aria-pressed="false"
+          >
+            Servicios
+          </button>
+        </div>
+
+        <p id="resultadoBusqueda" class="resultado-busqueda" aria-live="polite">
+          Mostrando todo el catálogo
+        </p>
+      </div>
+    </section>
+
+    <main class="contenedor">
+      <!-- PRODUCTOS -->
+      <section class="seccion" id="productos">
+        <div class="cabecera-seccion">
+          <div>
+            <div class="etiqueta">Equipamiento y artículos</div>
+            <h2>Nuestros <span>productos</span></h2>
+          </div>
+
+          <p th:text="${#lists.size(productos)} + ' registrados'">
+            0 registrados
+          </p>
+        </div>
+
+        <div class="rejilla">
+          <article
+            class="tarjeta tarjeta-catalogo"
+            data-tipo="producto"
+            th:attr="data-nombre=${producto.nombre},
+                                  data-descripcion=${producto.descripcion},
+                                  data-categoria=${producto.categoria.nombre}"
+            th:each="producto : ${productos}"
+          >
+            <div class="imagen">
+              <img
+                th:if="${imagenesProductos[producto.id] != null}"
+                th:src="${imagenesProductos[producto.id]}"
+                th:alt="${producto.nombre}"
+                loading="lazy"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.hidden = false;
+                "
+              />
+
+              <div
+                class="imagen-vacia"
+                th:hidden="${imagenesProductos[producto.id] != null}"
+              >
+                IMAGEN NO DISPONIBLE
+              </div>
+            </div>
+
+            <div class="contenido-tarjeta">
+              <div class="categoria" th:text="${producto.categoria.nombre}">
+                Categoría
+              </div>
+
+              <h3 th:text="${producto.nombre}">Nombre del producto</h3>
+
+              <p
+                class="descripcion"
+                th:text="${producto.descripcion != null and !producto.descripcion.isBlank()
+                               ? producto.descripcion
+                               : 'Consulta más información sobre este producto.'}"
+              >
+                Descripción del producto
+              </p>
+
+              <div class="detalles">
+                <span
+                  class="detalle"
+                  th:if="${producto.stockActual != null
+                                      and producto.stockActual > 0}"
+                >
+                  Disponible
+                </span>
+
+                <span
+                  class="detalle"
+                  th:if="${producto.stockActual == null
+                                      or producto.stockActual <= 0}"
+                >
+                  Consultar disponibilidad
+                </span>
+              </div>
+
+              <div class="precio">
+                S/
+                <span
+                  th:text="${producto.precioVenta != null
+                                ? #numbers.formatDecimal(producto.precioVenta, 1, 2)
+                                : '0.00'}"
+                >
+                  0.00
+                </span>
+              </div>
+
+              <a class="boton boton-secundario" th:href="@{/login}">
+                Consultar producto
+              </a>
+            </div>
+          </article>
+
+          <div class="aviso-vacio" th:if="${#lists.isEmpty(productos)}">
+            <strong>Aún no hay productos disponibles</strong>
+            Estamos actualizando nuestro catálogo. Vuelve pronto.
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICIOS -->
+      <section class="seccion" id="servicios">
+        <div class="cabecera-seccion">
+          <div>
+            <div class="etiqueta">Formación y entrenamiento</div>
+            <h2>Nuestros <span>servicios</span></h2>
+          </div>
+
+          <p th:text="${#lists.size(servicios)} + ' registrados'">
+            0 registrados
+          </p>
+        </div>
+
+        <div class="rejilla">
+          <article
+            class="tarjeta tarjeta-catalogo"
+            data-tipo="servicio"
+            th:attr="data-nombre=${servicio.nombre},
+                                  data-descripcion=${servicio.descripcion},
+                                  data-categoria=${servicio.categoria.nombre}"
+            th:each="servicio : ${servicios}"
+          >
+            <div class="imagen">
+              <img
+                th:if="${imagenesServicios[servicio.id] != null}"
+                th:src="${imagenesServicios[servicio.id]}"
+                th:alt="${servicio.nombre}"
+                loading="lazy"
+                onerror="
+                  this.style.display = 'none';
+                  this.nextElementSibling.hidden = false;
+                "
+              />
+
+              <div
+                class="imagen-vacia"
+                th:hidden="${imagenesServicios[servicio.id] != null}"
+              >
+                IMAGEN NO DISPONIBLE
+              </div>
+            </div>
+
+            <div class="contenido-tarjeta">
+              <div class="categoria" th:text="${servicio.categoria.nombre}">
+                Categoría
+              </div>
+
+              <h3 th:text="${servicio.nombre}">Nombre del servicio</h3>
+
+              <p
+                class="descripcion"
+                th:text="${servicio.descripcion != null and !servicio.descripcion.isBlank()
+                               ? servicio.descripcion
+                               : 'Consulta más información sobre este servicio.'}"
+              >
+                Descripción del servicio
+              </p>
+
+              <div class="detalles">
+                <span
+                  class="detalle"
+                  th:if="${servicio.duracionMinutos != null}"
+                  th:text="${servicio.duracionMinutos + ' minutos'}"
+                >
+                  Duración
+                </span>
+
+                <span
+                  class="detalle"
+                  th:if="${servicio.capacidad != null}"
+                  th:text="${'Capacidad: ' + servicio.capacidad}"
+                >
+                  Capacidad
+                </span>
+              </div>
+
+              <div class="precio">
+                S/
+                <span
+                  th:text="${servicio.precio != null
+                                ? #numbers.formatDecimal(servicio.precio, 1, 2)
+                                : '0.00'}"
+                >
+                  0.00
+                </span>
+              </div>
+
+              <a class="boton boton-secundario" th:href="@{/login}">
+                Consultar servicio
+              </a>
+            </div>
+          </article>
+
+          <div class="aviso-vacio" th:if="${#lists.isEmpty(servicios)}">
+            <strong>Aún no hay servicios disponibles</strong>
+            Pronto publicaremos más información sobre nuestros servicios.
+          </div>
+        </div>
+      </section>
+
+      <!-- MENSAJE GLOBAL PARA BÚSQUEDAS SIN RESULTADOS -->
+      <div id="sinCoincidencias" class="sin-coincidencias" hidden>
+        <strong>No encontramos coincidencias</strong>
+        Prueba con otro nombre, descripción o categoría.
+      </div>
+    </main>
+
+    <!-- CONTACTO -->
+    <section class="contacto">
+      <h2>¿Quieres conocer más?</h2>
+
+      <p>
+        Inicia sesión o comunícate con la academia para obtener información.
+      </p>
+
+      <a class="boton" th:href="@{/login}"> Acceder a mi cuenta </a>
+    </section>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+      © <span th:text="${#dates.year(#dates.createNow())}">2026</span>
+      Academia de Karate Sunkku Sinchi. Todos los derechos reservados.
+    </footer>
+
+    <!-- BUSCADOR DINÁMICO Y FILTROS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const buscador = document.getElementById("buscadorCatalogo");
+
+        const limpiar = document.getElementById("limpiarBusqueda");
+
+        const botones = document.querySelectorAll(".filtro-btn");
+
+        const tarjetas = document.querySelectorAll(".tarjeta-catalogo");
+
+        const resultado = document.getElementById("resultadoBusqueda");
+
+        const sinCoincidencias = document.getElementById("sinCoincidencias");
+
+        const seccionProductos = document.getElementById("productos");
+
+        const seccionServicios = document.getElementById("servicios");
+
+        let filtroActual = "todos";
+
+        function normalizar(texto) {
+          return (texto || "")
+            .toLocaleLowerCase("es")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+        }
+
+        function actualizarCatalogo() {
+          const consulta = normalizar(buscador.value);
+
+          let visibles = 0;
+          let productosVisibles = 0;
+          let serviciosVisibles = 0;
+
+          tarjetas.forEach((tarjeta) => {
+            const tipo = tarjeta.dataset.tipo || "";
+
+            const contenido = normalizar(
+              [
+                tarjeta.dataset.nombre,
+                tarjeta.dataset.descripcion,
+                tarjeta.dataset.categoria,
+              ].join(" "),
+            );
+
+            const coincideTexto = contenido.includes(consulta);
+
+            const coincideTipo =
+              filtroActual === "todos" || tipo === filtroActual;
+
+            const mostrar = coincideTexto && coincideTipo;
+
+            tarjeta.classList.toggle("oculto-filtro", !mostrar);
+
+            if (mostrar) {
+              visibles++;
+
+              if (tipo === "producto") {
+                productosVisibles++;
+              } else if (tipo === "servicio") {
+                serviciosVisibles++;
+              }
+            }
+          });
+
+          const mostrarProductos =
+            (filtroActual === "todos" || filtroActual === "producto") &&
+            productosVisibles > 0;
+
+          const mostrarServicios =
+            (filtroActual === "todos" || filtroActual === "servicio") &&
+            serviciosVisibles > 0;
+
+          seccionProductos.classList.toggle("oculta-filtro", !mostrarProductos);
+
+          seccionServicios.classList.toggle("oculta-filtro", !mostrarServicios);
+
+          sinCoincidencias.hidden = visibles !== 0;
+          limpiar.hidden = buscador.value.length === 0;
+
+          if (visibles === 0) {
+            resultado.textContent = "No se encontraron resultados.";
+          } else if (consulta === "" && filtroActual === "todos") {
+            resultado.textContent = `Mostrando todo el catálogo: ${visibles} elementos`;
+          } else {
+            let tipoTexto;
+
+            if (filtroActual === "producto") {
+              tipoTexto = productosVisibles === 1 ? "producto" : "productos";
+            } else if (filtroActual === "servicio") {
+              tipoTexto = serviciosVisibles === 1 ? "servicio" : "servicios";
+            } else {
+              tipoTexto = "elementos";
+            }
+
+            resultado.textContent = `Se encontraron ${visibles} ${tipoTexto}`;
+          }
+        }
+
+        botones.forEach((boton) => {
+          boton.addEventListener("click", () => {
+            filtroActual = boton.dataset.filtro;
+
+            botones.forEach((otro) => {
+              const seleccionado = otro === boton;
+
+              otro.classList.toggle("activo", seleccionado);
+
+              otro.setAttribute("aria-pressed", String(seleccionado));
+            });
+
+            actualizarCatalogo();
+          });
+        });
+
+        buscador.addEventListener("input", actualizarCatalogo);
+
+        limpiar.addEventListener("click", () => {
+          buscador.value = "";
+          actualizarCatalogo();
+          buscador.focus();
+        });
+
+        actualizarCatalogo();
+      });
+    </script>
+  </body>
+</html>

@@ -17,17 +17,22 @@
    ========================================== */
 
 @import "layout";
+@import "topbar";
 
 /* ==========================================
    PÁGINAS DE ADMINISTRACIÓN
    ========================================== */
 
 @import "dashboard";
+@import "categorias/categorias";
+@import "categorias/categorias-form";
+@import "productos/productos";
+@import "productos/productos-form";
 
 /* ==========================================
    PÁGINA PRINCIPAL
    ========================================== */
 
 @import "home";
-
+@import "vista-nueva";
 @import "loginIMP";

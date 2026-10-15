@@ -5,10 +5,8 @@ import com.sunkku.sistema.kihonsystem.model.Categoria;
 import com.sunkku.sistema.kihonsystem.model.Servicio;
 import com.sunkku.sistema.kihonsystem.repository.CategoriaRepository;
 import com.sunkku.sistema.kihonsystem.repository.ServicioRepository;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +23,23 @@ public class ServicioService {
         this.categoriaRepository = categoriaRepository;
     }
 
+    // LISTAR TODOS
     @Transactional(readOnly = true)
     public List<Servicio> listarTodas() {
         return servicioRepository.findAll();
     }
 
+    // BUSCAR POR ID
     @Transactional(readOnly = true)
     public Optional<Servicio> buscarPorId(Long id) {
         return servicioRepository.findById(id);
     }
 
+    // GUARDAR O ACTUALIZAR
     @Transactional
     public Servicio guardar(Servicio servicio) {
 
+        // Validar categoría
         if (servicio.getCategoria() == null
                 || servicio.getCategoria().getId() == null) {
             throw new IllegalArgumentException(
@@ -52,6 +54,7 @@ public class ServicioService {
 
         servicio.setCategoria(categoria);
 
+        // Validar código
         if (servicio.getCodigo() == null
                 || servicio.getCodigo().isBlank()) {
             throw new IllegalArgumentException(
@@ -60,6 +63,7 @@ public class ServicioService {
 
         servicio.setCodigo(servicio.getCodigo().trim());
 
+        // Validar nombre
         if (servicio.getNombre() == null
                 || servicio.getNombre().isBlank()) {
             throw new IllegalArgumentException(
@@ -68,18 +72,28 @@ public class ServicioService {
 
         servicio.setNombre(servicio.getNombre().trim());
 
+        // Validar precio
         if (servicio.getPrecio() == null
                 || servicio.getPrecio().signum() < 0) {
             throw new IllegalArgumentException(
                     "El precio debe ser mayor o igual a cero");
         }
 
+        // Validar duración opcional
         if (servicio.getDuracionMinutos() != null
                 && servicio.getDuracionMinutos() <= 0) {
             throw new IllegalArgumentException(
                     "La duración debe ser mayor que cero");
         }
 
+        // Validar capacidad opcional
+        if (servicio.getCapacidad() != null
+                && servicio.getCapacidad() <= 0) {
+            throw new IllegalArgumentException(
+                    "La capacidad debe ser mayor que cero");
+        }
+
+        // Validar código duplicado
         boolean codigoDuplicado;
 
         if (servicio.getId() == null) {
@@ -100,6 +114,7 @@ public class ServicioService {
         return servicioRepository.save(servicio);
     }
 
+    // BUSCAR POR CÓDIGO
     @Transactional(readOnly = true)
     public Optional<Servicio> buscarPorCodigo(String codigo) {
         if (codigo == null || codigo.isBlank()) {
@@ -107,9 +122,11 @@ public class ServicioService {
                     "Debes indicar el código del servicio");
         }
 
-        return servicioRepository.findByCodigoIgnoreCase(codigo.trim());
+        return servicioRepository.findByCodigoIgnoreCase(
+                codigo.trim());
     }
 
+    // BUSCAR POR NOMBRE
     @Transactional(readOnly = true)
     public List<Servicio> buscarPorNombre(String nombre) {
         if (nombre == null || nombre.isBlank()) {
@@ -121,6 +138,7 @@ public class ServicioService {
                 .findByNombreContainingIgnoreCase(nombre.trim());
     }
 
+    // BUSCAR POR CATEGORÍA
     @Transactional(readOnly = true)
     public List<Servicio> buscarPorCategoria(Long categoriaId) {
         if (categoriaId == null || categoriaId <= 0) {
@@ -136,6 +154,7 @@ public class ServicioService {
         return servicioRepository.findByCategoriaId(categoriaId);
     }
 
+    // BUSCAR POR ESTADO
     @Transactional(readOnly = true)
     public List<Servicio> buscarPorEstado(String estado) {
         if (estado == null || estado.isBlank()) {
@@ -143,9 +162,11 @@ public class ServicioService {
                     "Debes indicar el estado del servicio");
         }
 
-        return servicioRepository.findByEstadoIgnoreCase(estado.trim());
+        return servicioRepository.findByEstadoIgnoreCase(
+                estado.trim());
     }
 
+    // ELIMINAR
     @Transactional
     public void eliminar(Long id) {
         if (!servicioRepository.existsById(id)) {

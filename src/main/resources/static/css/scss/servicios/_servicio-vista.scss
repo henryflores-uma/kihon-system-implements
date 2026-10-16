@@ -1,0 +1,390 @@
+.servicio-vista {
+    min-height: 100vh;
+    background: #f4f6fa;
+    color: #263244;
+}
+
+.servicio-vista__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px 5%;
+    background: #fff;
+    border-bottom: 1px solid #e5e9f0;
+}
+
+.servicio-vista__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #183b65;
+    text-decoration: none;
+}
+
+.servicio-vista__brand-mark {
+    display: grid;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: #183b65;
+    color: #fff;
+    font-weight: 800;
+}
+
+.servicio-vista__brand small {
+    display: block;
+    margin-top: 3px;
+    color: #778195;
+}
+
+.servicio-vista__back {
+    color: #183b65;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.servicio-vista__back:hover {
+    text-decoration: underline;
+}
+
+.servicio-vista__content {
+    width: min(1050px, 90%);
+    margin: 0 auto;
+    padding: 32px 0 48px;
+}
+
+.servicio-vista__breadcrumb {
+    margin-bottom: 25px;
+    color: #778195;
+    font-size: 13px;
+}
+
+.servicio-vista__heading {
+    margin-bottom: 28px;
+}
+
+.servicio-vista__eyebrow {
+    color: #1c4e91;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.servicio-vista__heading h1 {
+    margin: 8px 0;
+    font-size: clamp(27px, 4vw, 36px);
+}
+
+.servicio-vista__heading p {
+    margin: 0;
+    color: #778195;
+    line-height: 1.6;
+}
+
+.servicio-vista__message {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #dce4ef;
+    border-radius: 10px;
+    background: #fff;
+    line-height: 1.6;
+}
+
+.servicio-vista__message--error {
+    border-color: #f2c7c4;
+    color: #a32929;
+}
+
+.servicio-vista__card {
+    overflow: hidden;
+    border: 1px solid #e5e9f0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 12px 35px rgba(24, 59, 101, 0.07);
+}
+
+/* Imagen del servicio */
+
+.servicio-vista__image-container {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 260px;
+    max-height: 440px;
+    overflow: hidden;
+    background: #f1f4f8;
+    border-bottom: 1px solid #e5e9f0;
+}
+
+.servicio-vista__image {
+    display: block;
+    width: 100%;
+    max-height: 440px;
+    object-fit: contain;
+}
+
+.servicio-vista__image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 260px;
+    padding: 24px;
+    color: #778195;
+    text-align: center;
+}
+
+.servicio-vista__image-placeholder span {
+    font-size: 54px;
+}
+
+.servicio-vista__image-placeholder p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Banner */
+
+.servicio-vista__banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 28px;
+    background: #183b65;
+    color: #fff;
+}
+
+.servicio-vista__banner-icon {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 34px;
+}
+
+.servicio-vista__banner-info {
+    flex: 1;
+    min-width: 180px;
+}
+
+.servicio-vista__banner-label {
+    margin: 0 0 7px;
+    color: #d9e7fa;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.servicio-vista__banner h2 {
+    margin: 0;
+    font-size: clamp(22px, 3vw, 30px);
+    overflow-wrap: anywhere;
+}
+
+/* Estado */
+
+.servicio-vista__status {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: #edf0f4;
+    color: #566176;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.servicio-vista__status.activo {
+    background: #d8f7e4;
+    color: #166534;
+}
+
+.servicio-vista__status.inactivo {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Detalles */
+
+.servicio-vista__details {
+    padding: 28px;
+}
+
+.servicio-vista__category {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #e6efff;
+    color: #1c4e91;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.servicio-vista__code {
+    margin: 0;
+    color: #778195;
+    font-size: 13px;
+}
+
+.servicio-vista__price {
+    margin: 20px 0;
+    color: #183b65;
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 800;
+}
+
+.servicio-vista__separator {
+    height: 1px;
+    margin: 24px 0;
+    background: #e5e9f0;
+}
+
+.servicio-vista__section-title {
+    margin: 0 0 14px;
+    font-size: 18px;
+}
+
+.servicio-vista__description {
+    color: #566176;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+/* Características */
+
+.servicio-vista__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.servicio-vista__fact {
+    padding: 17px;
+    border: 1px solid #e5e9f0;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.servicio-vista__fact-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #778195;
+    font-size: 12px;
+}
+
+.servicio-vista__fact-value {
+    font-size: 17px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.servicio-vista__note {
+    padding: 14px;
+    margin-top: 25px;
+    border-radius: 8px;
+    background: #f2f5fa;
+    color: #667085;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* Botones */
+
+.servicio-vista__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.servicio-vista__button {
+    display: inline-block;
+    padding: 11px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #183b65;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.servicio-vista__button:hover {
+    background: #245184;
+}
+
+.servicio-vista__button--secondary {
+    background: #e9edf3;
+    color: #263244;
+}
+
+.servicio-vista__button--secondary:hover {
+    background: #dce3ed;
+}
+
+/* Pie de página */
+
+.servicio-vista__footer {
+    padding: 22px;
+    color: #778195;
+    text-align: center;
+    font-size: 12px;
+}
+
+.servicio-vista__footer p {
+    margin: 0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* Diseño adaptable */
+
+@media (max-width: 650px) {
+    .servicio-vista__header {
+        padding: 16px 5%;
+    }
+
+    .servicio-vista__content {
+        width: 92%;
+        padding-top: 22px;
+    }
+
+    .servicio-vista__banner,
+    .servicio-vista__details {
+        padding: 20px;
+    }
+
+    .servicio-vista__image-container {
+        min-height: 210px;
+        max-height: 320px;
+    }
+
+    .servicio-vista__image {
+        max-height: 320px;
+    }
+
+    .servicio-vista__image-placeholder {
+        min-height: 210px;
+    }
+
+    .servicio-vista__facts {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vista previa del servicio | Sunkku Sinchi</title>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/servicios/servicio-vista.css}" />
+
+    <script th:src="@{/js/servicios/servicio-vista.js}" defer></script>
+  </head>
+
+  <body>
+    <main
+      class="servicio-vista"
+      th:attr="
+        data-api-servicios=@{/api/servicios},
+        data-listado-url=@{/admin/servicios}
+      "
+    >
+      <!-- Encabezado -->
+      <header class="servicio-vista__header">
+        <a class="servicio-vista__brand" th:href="@{/admin/servicios}">
+          <span class="servicio-vista__brand-mark">SS</span>
+
+          <span>
+            <strong>SUNKKU SINCHI</strong>
+            <small>Productos y servicios</small>
+          </span>
+        </a>
+
+        <a class="servicio-vista__back" th:href="@{/admin/servicios}">
+          ← Volver a servicios
+        </a>
+      </header>
+
+      <!-- Contenido principal -->
+      <section class="servicio-vista__content">
+        <nav class="servicio-vista__breadcrumb" aria-label="Ruta">
+          Inicio / Gestión / Servicios / Vista previa
+        </nav>
+
+        <div class="servicio-vista__heading">
+          <span class="servicio-vista__eyebrow">
+            PRESENTACIÓN DEL SERVICIO
+          </span>
+
+          <h1>Vista previa</h1>
+
+          <p>
+            Revisa cómo se presenta la información del servicio en el catálogo.
+          </p>
+        </div>
+
+        <!-- Estado de carga -->
+        <div
+          id="vistaServicioCargando"
+          class="servicio-vista__message"
+          role="status"
+          aria-live="polite"
+        >
+          Cargando información del servicio...
+        </div>
+
+        <!-- Mensaje de error -->
+        <div
+          id="vistaServicioError"
+          class="servicio-vista__message servicio-vista__message--error"
+          role="alert"
+          hidden
+        >
+          No se pudo cargar el servicio.
+        </div>
+
+        <!-- Tarjeta del servicio -->
+        <article id="vistaServicioCard" class="servicio-vista__card" hidden>
+          <!-- Imagen del servicio -->
+          <div class="servicio-vista__image-container">
+            <!-- Se muestra cuando el servicio no tiene imagen -->
+            <div
+              id="vistaServicioPlaceholder"
+              class="servicio-vista__image-placeholder"
+            >
+              <span aria-hidden="true">🥋</span>
+              <p>Imagen del servicio</p>
+            </div>
+
+            <!-- Se muestra cuando existe una URL de imagen válida -->
+            <img
+              id="vistaServicioImagen"
+              class="servicio-vista__image"
+              alt="Imagen del servicio"
+              hidden
+            />
+          </div>
+
+          <!-- Banner del servicio -->
+          <div class="servicio-vista__banner">
+            <div class="servicio-vista__banner-icon" aria-hidden="true">🥋</div>
+
+            <div class="servicio-vista__banner-info">
+              <p class="servicio-vista__banner-label">SERVICIO</p>
+
+              <h2 id="vistaServicioNombreBanner">Nombre del servicio</h2>
+            </div>
+
+            <span id="vistaServicioEstado" class="servicio-vista__status">
+              SIN ESTADO
+            </span>
+          </div>
+
+          <!-- Detalles del servicio -->
+          <div class="servicio-vista__details">
+            <span id="vistaServicioCategoria" class="servicio-vista__category">
+              Categoría
+            </span>
+
+            <p class="servicio-vista__code">
+              Código:
+              <span id="vistaServicioCodigo">—</span>
+            </p>
+
+            <p id="vistaServicioPrecio" class="servicio-vista__price">
+              Precio no especificado
+            </p>
+
+            <div class="servicio-vista__separator"></div>
+
+            <!-- Descripción -->
+            <h3 class="servicio-vista__section-title">Descripción</h3>
+
+            <p
+              id="vistaServicioDescripcion"
+              class="servicio-vista__description"
+            >
+              Sin descripción disponible.
+            </p>
+
+            <!-- Características -->
+            <div class="servicio-vista__facts">
+              <div class="servicio-vista__fact">
+                <span class="servicio-vista__fact-label"> Duración </span>
+
+                <span
+                  id="vistaServicioDuracion"
+                  class="servicio-vista__fact-value"
+                >
+                  No especificada
+                </span>
+              </div>
+
+              <div class="servicio-vista__fact">
+                <span class="servicio-vista__fact-label"> Capacidad </span>
+
+                <span
+                  id="vistaServicioCapacidad"
+                  class="servicio-vista__fact-value"
+                >
+                  No especificada
+                </span>
+              </div>
+
+              <div class="servicio-vista__fact">
+                <span class="servicio-vista__fact-label"> Estado </span>
+
+                <span
+                  id="vistaServicioEstadoDetalle"
+                  class="servicio-vista__fact-value"
+                >
+                  Sin estado
+                </span>
+              </div>
+            </div>
+
+            <!-- Nota informativa -->
+            <div class="servicio-vista__note">
+              Esta es una vista previa administrativa. No procesa pagos ni
+              reservas.
+            </div>
+
+            <!-- Acciones -->
+            <div class="servicio-vista__actions">
+              <a
+                class="servicio-vista__button servicio-vista__button--secondary"
+                th:href="@{/admin/servicios}"
+              >
+                Volver al listado
+              </a>
+
+              <a
+                id="vistaServicioEditar"
+                class="servicio-vista__button"
+                href="#"
+              >
+                Editar servicio
+              </a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Pie de página -->
+      <footer class="servicio-vista__footer">
+        <p>© Sunkku Sinchi · Catálogo de productos y servicios</p>
+      </footer>
+    </main>
+  </body>
+</html>

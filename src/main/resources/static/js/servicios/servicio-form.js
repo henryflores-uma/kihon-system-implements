@@ -20,8 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const mensajeFormulario = $("mensajeFormulario");
 
   const inputImagen = $("imagen");
+  const nombreArchivoImagen = $("nombreArchivoImagen");
+  const imagenActual = $("imagenActual");
+  const nombreImagenActual = $("nombreImagenActual");
   const vistaPreviaImagen = $("vistaPreviaImagen");
   const contenedorVistaPrevia = $("contenedorVistaPrevia");
+  const tituloVistaPrevia = $("tituloVistaPrevia");
   const btnQuitarImagen = $("btnQuitarImagen");
 
   const campos = {
@@ -43,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let imagenSeleccionada = null;
   let urlVistaPrevia = null;
   let rutaImagenActual = null;
+  let nombreArchivoActual = null;
 
   // --------------------------------------------------
   // CSRF Y PETICIONES
@@ -57,21 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector('meta[name="_csrf_header"]')?.content ||
       "X-CSRF-TOKEN"
     );
-  }
-
-  function crearCabecerasJSON() {
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    };
-
-    const token = obtenerTokenCSRF();
-
-    if (token) {
-      headers[obtenerCabeceraCSRF()] = token;
-    }
-
-    return headers;
   }
 
   function crearCabecerasMultipart() {
@@ -159,10 +149,27 @@ document.addEventListener("DOMContentLoaded", () => {
   // IMAGEN DEL SERVICIO
   // --------------------------------------------------
 
+  function actualizarNombreArchivo(nombre = "") {
+    nombreArchivoImagen.textContent = nombre || "Ningún archivo seleccionado";
+  }
+
   function liberarVistaPreviaTemporal() {
     if (urlVistaPrevia) {
       URL.revokeObjectURL(urlVistaPrevia);
       urlVistaPrevia = null;
+    }
+  }
+
+  function obtenerNombreDesdeURL(urlImagen) {
+    if (!urlImagen) return "";
+
+    try {
+      const url = new URL(urlImagen, window.location.href);
+      const nombre = url.pathname.split("/").filter(Boolean).pop() || "";
+
+      return decodeURIComponent(nombre);
+    } catch {
+      return "";
     }
   }
 
@@ -172,11 +179,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!rutaImagenActual) {
       vistaPreviaImagen.removeAttribute("src");
       contenedorVistaPrevia.hidden = true;
+      imagenActual.hidden = true;
+      nombreImagenActual.textContent = "";
       return;
     }
 
     vistaPreviaImagen.src = rutaImagenActual;
     contenedorVistaPrevia.hidden = false;
+
+    tituloVistaPrevia.textContent = "Imagen registrada actualmente:";
+    btnQuitarImagen.textContent = "Quitar nueva imagen";
+
+    imagenActual.hidden = false;
+
+    nombreImagenActual.textContent =
+      nombreArchivoActual ||
+      obtenerNombreDesdeURL(rutaImagenActual) ||
+      "Imagen registrada";
   }
 
   function mostrarImagenSeleccionada(archivo) {
@@ -184,7 +203,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     urlVistaPrevia = URL.createObjectURL(archivo);
     vistaPreviaImagen.src = urlVistaPrevia;
+
     contenedorVistaPrevia.hidden = false;
+    tituloVistaPrevia.textContent = "Vista previa de la nueva imagen:";
+
+    // La imagen anterior sigue guardada en el servidor.
+    // Aquí solo ocultamos su etiqueta para destacar la selección nueva.
+    imagenActual.hidden = true;
   }
 
   function configurarEventosImagen() {
@@ -195,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!archivo) {
         imagenSeleccionada = null;
+        actualizarNombreArchivo();
         mostrarImagenActual();
         return;
       }
@@ -204,6 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!tiposPermitidos.includes(archivo.type)) {
         inputImagen.value = "";
         imagenSeleccionada = null;
+
+        actualizarNombreArchivo();
         mostrarImagenActual();
 
         mostrarMensaje("Selecciona una imagen JPG, PNG o WEBP.");
@@ -213,6 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (archivo.size > 5 * 1024 * 1024) {
         inputImagen.value = "";
         imagenSeleccionada = null;
+
+        actualizarNombreArchivo();
         mostrarImagenActual();
 
         mostrarMensaje("La imagen no puede superar los 5 MB.");
@@ -220,12 +250,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       imagenSeleccionada = archivo;
+
+      actualizarNombreArchivo(archivo.name);
       mostrarImagenSeleccionada(archivo);
     });
 
     btnQuitarImagen.addEventListener("click", () => {
       inputImagen.value = "";
       imagenSeleccionada = null;
+
+      actualizarNombreArchivo();
       mostrarImagenActual();
     });
   }
@@ -355,6 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectEstado.value = servicio.estado === "INACTIVO" ? "INACTIVO" : "ACTIVO";
 
     const categoriaId = servicio.categoria?.id ?? "";
+
     selectCategoria.value = categoriaId === "" ? "" : String(categoriaId);
 
     if (categoriaId !== "" && selectCategoria.value !== String(categoriaId)) {
@@ -363,10 +398,18 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
-    // Para un bucket privado, el backend debe devolver una URL firmada
-    // vigente en imagenUrl. rutaImagen por sí sola es una ruta interna.
-    rutaImagenActual = servicio.imagenUrl || servicio.urlImagen || null;
+    // Ajusta estos nombres si tu API usa otras propiedades.
+    rutaImagenActual =
+      servicio.imagenUrl || servicio.urlImagen || servicio.imagen || null;
 
+    nombreArchivoActual =
+      servicio.nombreImagen ||
+      servicio.nombreArchivoImagen ||
+      servicio.imagenNombre ||
+      obtenerNombreDesdeURL(rutaImagenActual) ||
+      null;
+
+    actualizarNombreArchivo();
     mostrarImagenActual();
   }
 
@@ -471,8 +514,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnGuardar.textContent = modoEdicion
       ? "Guardando cambios..."
       : "Registrando servicio...";
-
-    let urlVistaPreviaGuardada = urlVistaPrevia;
 
     try {
       const datosServicio = obtenerDatosFormulario();

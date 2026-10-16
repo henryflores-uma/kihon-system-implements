@@ -4,14 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Panel de administración | Sunkku Sinchi</title>
+    <title>Dashboard | Sunkku Sinchi</title>
 
-    <!-- Token CSRF generado por Spring Security -->
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+
     <script th:src="@{/js/acordeon.js}" defer></script>
+    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+    <script th:src="@{/js/topbar.js}" defer></script>
+    <script th:src="@{/js/logout.js}" defer></script>
+    <script th:src="@{/js/admin-dashboard.js}" defer></script>
+    <script th:src="@{/js/dashboard-category-chart.js}" defer></script>
   </head>
 
   <body>
@@ -21,6 +26,7 @@
       <div id="mobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
 
       <section class="main-content">
+        <!-- Navegación móvil -->
         <div class="mobile-nav">
           <button
             type="button"
@@ -33,16 +39,324 @@
             <span id="mobileMenuIcon">☰</span>
           </button>
 
-          <strong class="mobile-nav__logo">SUNK​​KU SINCHI</strong>
+          <strong class="mobile-nav__logo">SUNK​KU SINCHI</strong>
         </div>
 
+        <!-- Encabezado compartido -->
         <div th:replace="~{fragments/topbar :: topbar}"></div>
 
-        <!-- Aquí va el contenido propio de cada página -->
+        <!-- Dashboard -->
+        <div class="dashboard-page">
+          <!-- Ruta de navegación -->
+          <nav class="dashboard-breadcrumb" aria-label="Ruta">
+            <span>Inicio</span>
+            <span aria-hidden="true">/</span>
+            <strong>Dashboard</strong>
+          </nav>
+
+          <!-- Bienvenida -->
+          <section class="dashboard-welcome">
+            <div class="dashboard-welcome__content">
+              <span class="dashboard-welcome__eyebrow"> PANEL DE CONTROL </span>
+
+              <h1>
+                Todo en orden<span class="dashboard-welcome__comma">,</span>
+                <span
+                  th:text="${nombreUsuario != null ? nombreUsuario : 'administrador'}"
+                  >administrador</span
+                >
+              </h1>
+
+              <p class="dashboard-welcome__subtitle">
+                Una vista general del catálogo de tu academia.
+              </p>
+            </div>
+
+            <div class="dashboard-welcome__icon" aria-hidden="true">
+              <span>🥋</span>
+            </div>
+          </section>
+
+          <!-- Mensaje de la academia -->
+          <section class="dashboard-message">
+            <span class="dashboard-message__icon" aria-hidden="true">✦</span>
+
+            <div>
+              <h2>La constancia empieza con una buena gestión.</h2>
+
+              <p>Mantén tu catálogo actualizado para trabajar con claridad.</p>
+            </div>
+          </section>
+
+          <!-- Resumen del catálogo -->
+          <section class="dashboard-section">
+            <div class="dashboard-section__header">
+              <div>
+                <h2>Resumen del catálogo</h2>
+                <p>Consulta el estado general de tu información.</p>
+              </div>
+
+              <span class="dashboard-section__label">VISTA GENERAL</span>
+            </div>
+
+            <div class="dashboard-stats">
+              <!-- Categorías -->
+              <article class="dashboard-stat dashboard-stat--categories">
+                <div class="dashboard-stat__top">
+                  <div class="dashboard-stat__icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                      <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                      <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                      <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                    </svg>
+                  </div>
+
+                  <span class="dashboard-stat__tag">ORGANIZACIÓN</span>
+                </div>
+
+                <p class="dashboard-stat__label">Categorías</p>
+
+                <p id="dashboardTotalCategorias" class="dashboard-stat__number">
+                  —
+                </p>
+
+                <p class="dashboard-stat__description">
+                  <span
+                    id="dashboardCategoriasActivas"
+                    class="dashboard-stat__positive"
+                    >—</span
+                  >
+                  activas ·
+                  <span id="dashboardCategoriasInactivas">—</span>
+                  inactiva(s)
+                </p>
+
+                <a class="dashboard-stat__link" th:href="@{/admin/categorias}">
+                  Ver categorías
+                  <span aria-hidden="true">→</span>
+                </a>
+              </article>
+
+              <!-- Productos -->
+              <article class="dashboard-stat dashboard-stat--products">
+                <div class="dashboard-stat__top">
+                  <div class="dashboard-stat__icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+                      <path d="m3 12 9 5 9-5" />
+                      <path d="m3 16 9 5 9-5" />
+                    </svg>
+                  </div>
+
+                  <span class="dashboard-stat__tag">CATÁLOGO</span>
+                </div>
+
+                <p class="dashboard-stat__label">Productos</p>
+
+                <p id="dashboardTotalProductos" class="dashboard-stat__number">
+                  —
+                </p>
+
+                <p class="dashboard-stat__description">Equipamiento del dojo</p>
+
+                <a class="dashboard-stat__link" th:href="@{/admin/productos}">
+                  Ver productos
+                  <span aria-hidden="true">→</span>
+                </a>
+              </article>
+
+              <!-- Servicios -->
+              <article class="dashboard-stat dashboard-stat--services">
+                <div class="dashboard-stat__top">
+                  <div class="dashboard-stat__icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M8 12 6 21l6-3 6 3-2-9" />
+                    </svg>
+                  </div>
+
+                  <span class="dashboard-stat__tag">FORMACIÓN</span>
+                </div>
+
+                <p class="dashboard-stat__label">Servicios</p>
+
+                <p id="dashboardTotalServicios" class="dashboard-stat__number">
+                  —
+                </p>
+
+                <p class="dashboard-stat__description">
+                  Entrenamiento y formación
+                </p>
+
+                <a class="dashboard-stat__link" th:href="@{/admin/servicios}">
+                  Ver servicios
+                  <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            </div>
+
+            <p
+              id="dashboardDataStatus"
+              class="dashboard-disclaimer"
+              role="status"
+              aria-live="polite"
+            >
+              Cargando estadísticas...
+            </p>
+          </section>
+
+          <!-- Gráfico del catálogo y accesos rápidos -->
+          <div class="dashboard-bottom">
+            <!-- Gráfico de productos y servicios por categoría -->
+            <section
+              class="dashboard-panel dashboard-activity dashboard-category-chart"
+            >
+              <div class="dashboard-panel__header">
+                <div>
+                  <h2>Catálogo por categoría</h2>
+                  <p>Compara la cantidad de productos y servicios.</p>
+                </div>
+
+                <span class="dashboard-panel__header-icon" aria-hidden="true">
+                  ◷
+                </span>
+              </div>
+
+              <!-- Leyenda -->
+              <div class="dashboard-category-chart__legend">
+                <span>
+                  <span
+                    class="dashboard-category-chart__dot dashboard-category-chart__dot--products"
+                    aria-hidden="true"
+                  ></span>
+                  Productos
+                </span>
+
+                <span>
+                  <span
+                    class="dashboard-category-chart__dot dashboard-category-chart__dot--services"
+                    aria-hidden="true"
+                  ></span>
+                  Servicios
+                </span>
+              </div>
+
+              <!-- Barras generadas desde la API -->
+              <div
+                id="dashboardCategoryChart"
+                class="dashboard-category-chart__list"
+                role="img"
+                aria-label="Comparación de productos y servicios por categoría"
+                aria-live="polite"
+              >
+                <p class="dashboard-category-chart__message">
+                  Cargando datos del catálogo...
+                </p>
+              </div>
+
+              <!-- Estado del gráfico -->
+              <p
+                id="dashboardCategoryChartStatus"
+                class="dashboard-disclaimer"
+                role="status"
+                aria-live="polite"
+              >
+                Consultando categorías...
+              </p>
+            </section>
+
+            <!-- Accesos rápidos -->
+            <section class="dashboard-panel dashboard-shortcuts">
+              <div class="dashboard-panel__header">
+                <div>
+                  <h2>Accesos rápidos</h2>
+                  <p>Administra tu catálogo desde un solo lugar.</p>
+                </div>
+              </div>
+
+              <div class="dashboard-shortcuts__list">
+                <a class="dashboard-shortcut" th:href="@{/admin/categorias}">
+                  <span class="dashboard-shortcut__icon">▦</span>
+
+                  <span class="dashboard-shortcut__info">
+                    <strong>Gestionar categorías</strong>
+                    <small>Organiza el catálogo</small>
+                  </span>
+
+                  <span class="dashboard-shortcut__arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+
+                <a class="dashboard-shortcut" th:href="@{/admin/productos}">
+                  <span class="dashboard-shortcut__icon">▧</span>
+
+                  <span class="dashboard-shortcut__info">
+                    <strong>Gestionar productos</strong>
+                    <small>Administra el equipamiento</small>
+                  </span>
+
+                  <span class="dashboard-shortcut__arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+
+                <a class="dashboard-shortcut" th:href="@{/admin/servicios}">
+                  <span class="dashboard-shortcut__icon">🥋</span>
+
+                  <span class="dashboard-shortcut__info">
+                    <strong>Gestionar servicios</strong>
+                    <small>Administra la formación</small>
+                  </span>
+
+                  <span class="dashboard-shortcut__arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </div>
+
+              <div class="dashboard-shortcuts__footer">
+                <span aria-hidden="true">✦</span>
+                DISCIPLINA. ORDEN. PROGRESO.
+              </div>
+            </section>
+          </div>
+
+          <!-- Pie del dashboard -->
+          <footer class="dashboard-footer">
+            <span>Sunkku Sinchi</span>
+            <span class="dashboard-footer__separator">·</span>
+            <span>Consola administrativa</span>
+            <span class="dashboard-footer__separator">·</span>
+            <span>Estadísticas de la base de datos</span>
+          </footer>
+        </div>
       </section>
     </main>
-    <script th:src="@{/js/nav-acordeon.js}" defer></script>
-    <script th:src="@{/js/topbar.js}" defer></script>
-    <script th:src="@{/js/logout.js}" defer></script>
   </body>
 </html>

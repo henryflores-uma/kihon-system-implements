@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
     <title>Vista previa del servicio | Sunkku Sinchi</title>
 
     <link rel="stylesheet" th:href="@{/css/main.css}" />
-    <link rel="stylesheet" th:href="@{/css/servicios/servicio-vista.css}" />
 
     <script th:src="@{/js/servicios/servicio-vista.js}" defer></script>
   </head>
@@ -49,9 +51,7 @@
 
           <h1>Vista previa</h1>
 
-          <p>
-            Revisa cómo se presenta la información del servicio en el catálogo.
-          </p>
+          <p>Así se visualizará la información del servicio en el catálogo.</p>
         </div>
 
         <!-- Estado de carga -->
@@ -76,46 +76,35 @@
 
         <!-- Tarjeta del servicio -->
         <article id="vistaServicioCard" class="servicio-vista__card" hidden>
-          <!-- Imagen del servicio -->
+          <!-- Imagen y estado -->
           <div class="servicio-vista__image-container">
-            <!-- Se muestra cuando el servicio no tiene imagen -->
             <div
               id="vistaServicioPlaceholder"
-              class="servicio-vista__image-placeholder"
+              class="servicio-vista__placeholder"
             >
               <span aria-hidden="true">🥋</span>
               <p>Imagen del servicio</p>
             </div>
 
-            <!-- Se muestra cuando existe una URL de imagen válida -->
             <img
               id="vistaServicioImagen"
               class="servicio-vista__image"
               alt="Imagen del servicio"
               hidden
             />
-          </div>
-
-          <!-- Banner del servicio -->
-          <div class="servicio-vista__banner">
-            <div class="servicio-vista__banner-icon" aria-hidden="true">🥋</div>
-
-            <div class="servicio-vista__banner-info">
-              <p class="servicio-vista__banner-label">SERVICIO</p>
-
-              <h2 id="vistaServicioNombreBanner">Nombre del servicio</h2>
-            </div>
 
             <span id="vistaServicioEstado" class="servicio-vista__status">
               SIN ESTADO
             </span>
           </div>
 
-          <!-- Detalles del servicio -->
+          <!-- Información del servicio -->
           <div class="servicio-vista__details">
             <span id="vistaServicioCategoria" class="servicio-vista__category">
               Categoría
             </span>
+
+            <h2 id="vistaServicioNombreBanner">Nombre del servicio</h2>
 
             <p class="servicio-vista__code">
               Código:
@@ -138,10 +127,10 @@
               Sin descripción disponible.
             </p>
 
-            <!-- Características -->
+            <!-- Características del servicio -->
             <div class="servicio-vista__facts">
               <div class="servicio-vista__fact">
-                <span class="servicio-vista__fact-label"> Duración </span>
+                <span class="servicio-vista__fact-label">Duración</span>
 
                 <span
                   id="vistaServicioDuracion"
@@ -152,7 +141,7 @@
               </div>
 
               <div class="servicio-vista__fact">
-                <span class="servicio-vista__fact-label"> Capacidad </span>
+                <span class="servicio-vista__fact-label">Capacidad</span>
 
                 <span
                   id="vistaServicioCapacidad"
@@ -163,7 +152,7 @@
               </div>
 
               <div class="servicio-vista__fact">
-                <span class="servicio-vista__fact-label"> Estado </span>
+                <span class="servicio-vista__fact-label">Estado</span>
 
                 <span
                   id="vistaServicioEstadoDetalle"
@@ -175,10 +164,10 @@
             </div>
 
             <!-- Nota informativa -->
-            <div class="servicio-vista__note">
+            <p class="servicio-vista__note">
               Esta es una vista previa administrativa. No procesa pagos ni
               reservas.
-            </div>
+            </p>
 
             <!-- Acciones -->
             <div class="servicio-vista__actions">

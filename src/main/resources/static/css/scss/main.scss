@@ -24,11 +24,13 @@
    ========================================== */
 
 @import "dashboard";
+@import "admin-dashboard";
 @import "categorias/categorias";
 @import "categorias/categorias-form";
 @import "productos/productos";
 @import "productos/productos-form";
-// @import "servicios/servicios";
+@import "servicios/servicios";
+@import "servicios/servicio-form";
 @import "servicios/servicio-vista";
 /* ==========================================
    PÁGINA PRINCIPAL

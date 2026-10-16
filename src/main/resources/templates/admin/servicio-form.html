@@ -4,10 +4,185 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Panel de administración | Sunkku Sinchi</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <title>Gestión de Servicios | Sunkku Sinchi</title>
 
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+
     <script th:src="@{/js/acordeon.js}" defer></script>
+    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+    <script th:src="@{/js/topbar.js}" defer></script>
+    <script th:src="@{/js/logout.js}" defer></script>
+    <script th:src="@{/js/servicios/servicio-form.js}" defer></script>
+
+    <style>
+      .servicio-form-page {
+        padding: 24px;
+        color: #263244;
+      }
+
+      .servicio-form__breadcrumb {
+        margin-bottom: 20px;
+        color: #778195;
+        font-size: 13px;
+      }
+
+      .servicio-form__header {
+        margin-bottom: 24px;
+      }
+
+      .servicio-form__header h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+
+      .servicio-form__header p {
+        margin: 0;
+        color: #778195;
+        line-height: 1.5;
+      }
+
+      .servicio-form__card {
+        max-width: 900px;
+        padding: 26px;
+        background: white;
+        border: 1px solid #e5e9f0;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
+      }
+
+      .servicio-form__field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .servicio-form__field label {
+        color: #344054;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .servicio-form__field input,
+      .servicio-form__field select,
+      .servicio-form__field textarea {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 11px 12px;
+        border: 1px solid #d0d5dd;
+        border-radius: 7px;
+        background: #fff;
+        color: #263244;
+        font: inherit;
+      }
+
+      .servicio-form__field input:focus,
+      .servicio-form__field select:focus,
+      .servicio-form__field textarea:focus {
+        outline: 2px solid #c6d8f4;
+        border-color: #3869a8;
+      }
+
+      .servicio-form__field textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      .servicio-form__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .servicio-form__message {
+        padding: 13px 15px;
+        margin-bottom: 20px;
+        border: 1px solid #f0b4b4;
+        border-radius: 8px;
+        background: #fff1f0;
+        color: #a32929;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .servicio-form__message--success {
+        border-color: #a6e3b8;
+        background: #e9f9ee;
+        color: #16723b;
+      }
+
+      .servicio-form__help {
+        margin: -10px 0 20px;
+        color: #667085;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .servicio-form__actions {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid #edf0f4;
+      }
+
+      .servicio-form__button {
+        padding: 11px 18px;
+        border: 0;
+        border-radius: 7px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .servicio-form__button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
+      .servicio-form__button--primary {
+        background: #183b65;
+        color: white;
+      }
+
+      .servicio-form__button--secondary {
+        background: #e9edf3;
+        color: #263244;
+      }
+
+      @media (max-width: 600px) {
+        .servicio-form-page {
+          padding: 16px;
+        }
+
+        .servicio-form__header h1 {
+          font-size: 23px;
+        }
+
+        .servicio-form__card {
+          padding: 18px;
+        }
+
+        .servicio-form__grid {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+
+        .servicio-form__actions {
+          flex-direction: column;
+        }
+
+        .servicio-form__button {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -29,14 +204,214 @@
             <span id="mobileMenuIcon">☰</span>
           </button>
 
-          <strong class="mobile-nav__logo">SUNK​​KU SINCHI</strong>
+          <strong class="mobile-nav__logo">SUNKKU SINCHI</strong>
         </div>
 
         <div th:replace="~{fragments/topbar :: topbar}"></div>
 
-        <!-- Aquí va el contenido propio de cada página -->
+        <div
+          class="servicio-form-page content-wrapper"
+          th:attr="
+          data-api-servicios=@{/api/servicios},
+          data-api-categorias=@{/api/categorias},
+          data-listado-url=@{/admin/servicios},
+          data-servicio-id=${servicioId}
+        "
+        >
+          <nav
+            class="servicio-form__breadcrumb"
+            aria-label="Ruta de navegación"
+          >
+            Inicio / Servicios /
+            <span id="breadcrumbAccion">Nuevo</span>
+          </nav>
+
+          <header class="servicio-form__header">
+            <h1 id="tituloPagina">Nuevo servicio</h1>
+
+            <p id="subtituloPagina">
+              Completa los datos del servicio, precio, duración, capacidad y
+              estado.
+            </p>
+          </header>
+
+          <section class="servicio-form__card">
+            <form id="formServicio">
+              <input type="hidden" id="servicioId" />
+
+              <div
+                id="mensajeFormulario"
+                class="servicio-form__message"
+                role="status"
+                aria-live="polite"
+                hidden
+              ></div>
+
+              <div class="servicio-form__grid">
+                <div class="servicio-form__field">
+                  <label for="codigo">Código del servicio *</label>
+                  <input
+                    type="text"
+                    id="codigo"
+                    name="codigo"
+                    placeholder="Ej. SERV-001"
+                    maxlength="100"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+
+                <div class="servicio-form__field">
+                  <label for="nombre">Nombre del servicio *</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Ej. Clase de karate"
+                    maxlength="255"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="servicio-form__grid">
+                <div class="servicio-form__field">
+                  <label for="categoriaId">Categoría *</label>
+                  <select id="categoriaId" name="categoriaId" required>
+                    <option value="">Cargando categorías...</option>
+                  </select>
+                </div>
+
+                <div class="servicio-form__field">
+                  <label for="estado">Estado *</label>
+                  <select id="estado" name="estado" required>
+                    <option value="ACTIVO">ACTIVO</option>
+                    <option value="INACTIVO">INACTIVO</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="servicio-form__field">
+                <label for="descripcion">Descripción</label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  rows="4"
+                  maxlength="5000"
+                  placeholder="Describe el servicio, qué incluye y a quién está dirigido."
+                ></textarea>
+                <p class="servicio-form__help">
+                  Campo opcional. Puedes describir las características del
+                  servicio.
+                </p>
+              </div>
+
+              <div class="servicio-form__field">
+                <label for="imagen">Foto del servicio</label>
+
+                <input
+                  type="file"
+                  id="imagen"
+                  name="imagen"
+                  accept="image/jpeg,image/png,image/webp"
+                  aria-describedby="imagenAyuda"
+                />
+
+                <p class="servicio-form__help" id="imagenAyuda">
+                  Opcional. Formatos JPG, PNG o WEBP. Tamaño máximo: 5 MB.
+                </p>
+
+                <div id="contenedorVistaPrevia" hidden>
+                  <img
+                    id="vistaPreviaImagen"
+                    alt="Vista previa de la foto del servicio"
+                    style="
+                      display: block;
+                      max-width: 260px;
+                      max-height: 200px;
+                      object-fit: contain;
+                      border-radius: 8px;
+                      border: 1px solid #e5e9f0;
+                    "
+                  />
+
+                  <button
+                    type="button"
+                    id="btnQuitarImagen"
+                    class="servicio-form__button servicio-form__button--secondary"
+                  >
+                    Quitar nueva imagen
+                  </button>
+                </div>
+              </div>
+
+              <div class="servicio-form__grid">
+                <div class="servicio-form__field">
+                  <label for="precio">Precio (S/) *</label>
+                  <input
+                    type="number"
+                    id="precio"
+                    name="precio"
+                    min="0"
+                    step="0.01"
+                    value="0.00"
+                    required
+                  />
+                </div>
+
+                <div class="servicio-form__field">
+                  <label for="duracionMinutos">Duración (minutos)</label>
+                  <input
+                    type="number"
+                    id="duracionMinutos"
+                    name="duracionMinutos"
+                    min="1"
+                    step="1"
+                    placeholder="Ej. 60"
+                  />
+                  <p class="servicio-form__help">
+                    Opcional. Si se especifica, debe ser un entero positivo.
+                  </p>
+                </div>
+              </div>
+
+              <div class="servicio-form__field">
+                <label for="capacidad">Capacidad máxima de participantes</label>
+                <input
+                  type="number"
+                  id="capacidad"
+                  name="capacidad"
+                  min="1"
+                  step="1"
+                  placeholder="Ej. 20"
+                />
+                <p class="servicio-form__help">
+                  Opcional. Si se especifica, debe ser un entero positivo.
+                </p>
+              </div>
+
+              <div class="servicio-form__actions">
+                <button
+                  type="submit"
+                  id="btnGuardar"
+                  class="servicio-form__button servicio-form__button--primary"
+                >
+                  Guardar servicio
+                </button>
+
+                <button
+                  type="button"
+                  id="btnCancelar"
+                  class="servicio-form__button servicio-form__button--secondary"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
       </section>
     </main>
-    <script th:src="@{/js/nav-acordeon.js}" defer></script>
   </body>
 </html>

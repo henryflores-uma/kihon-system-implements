@@ -28,11 +28,13 @@
 @import "categorias/categorias-form";
 @import "productos/productos";
 @import "productos/productos-form";
-
+// @import "servicios/servicios";
+@import "servicios/servicio-vista";
 /* ==========================================
    PÁGINA PRINCIPAL
    ========================================== */
 
 @import "home";
+@import "catalogo";
 @import "vista-nueva";
 @import "loginIMP";

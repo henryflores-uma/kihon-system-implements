@@ -136,6 +136,11 @@ public class ViewController {
         return "admin/productos-form";
     }
 
+    @GetMapping("/admin/vista-nueva")
+    public String mostrarVistaNueva() {
+        return "admin/vista-nueva";
+    }
+
     // ==========================================
     // GESTIÓN DE SERVICIOS
     // ==========================================
@@ -150,9 +155,18 @@ public class ViewController {
         return "admin/servicio-form";
     }
 
-    @GetMapping("/admin/vista-nueva")
-    public String mostrarVistaNueva() {
-        return "admin/vista-nueva";
+    @GetMapping("/admin/servicios/editar/{id}")
+    public String editarServicio(
+            @PathVariable Long id,
+            Model model) {
+
+        model.addAttribute("servicioId", id);
+        return "admin/servicio-form";
+    }
+
+    @GetMapping("/admin/servicios/vista")
+    public String mostrarVistaServicio() {
+        return "admin/servicio-vista";
     }
 
     // ==========================================

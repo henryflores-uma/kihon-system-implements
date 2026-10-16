@@ -3,17 +3,278 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-    <title>Panel de administración | Sunkku Sinchi</title>
-
+    <title>Servicios | Sunkku Sinchi</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+
     <script th:src="@{/js/acordeon.js}" defer></script>
+    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+    <script th:src="@{/js/topbar.js}" defer></script>
+    <script th:src="@{/js/logout.js}" defer></script>
+    <script th:src="@{/js/servicios/servicios.js}" defer></script>
+
+    <style>
+      .servicios-page {
+        padding: 24px;
+        color: #263244;
+      }
+      .servicios-breadcrumb {
+        margin-bottom: 20px;
+        color: #778195;
+        font-size: 13px;
+      }
+      .servicios-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+      }
+      .servicios-title {
+        margin: 0 0 6px;
+        font-size: 28px;
+      }
+      .servicios-description {
+        margin: 0;
+        color: #778195;
+      }
+      .servicios-button {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .servicios-button--primary {
+        background: #183b65;
+        color: white;
+      }
+      .servicios-button--secondary {
+        background: #e9edf3;
+        color: #263244;
+      }
+      .servicios-filters {
+        display: flex;
+        align-items: end;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 18px;
+        margin-bottom: 20px;
+        background: white;
+        border: 1px solid #e5e9f0;
+        border-radius: 12px;
+      }
+      .servicios-field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        flex: 1;
+        min-width: 200px;
+      }
+      .servicios-field label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .servicios-field input,
+      .servicios-field select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        border: 1px solid #d5dce6;
+        border-radius: 7px;
+        background: white;
+        font: inherit;
+      }
+      .servicios-counter {
+        color: #667085;
+        font-size: 13px;
+      }
+      .servicios-table-container {
+        overflow-x: auto;
+        background: white;
+        border: 1px solid #e5e9f0;
+        border-radius: 12px;
+      }
+      .servicios-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 900px;
+      }
+      .servicios-table th,
+      .servicios-table td {
+        padding: 13px 14px;
+        text-align: left;
+        border-bottom: 1px solid #edf0f4;
+        font-size: 13px;
+      }
+      .servicios-table th {
+        background: #f7f9fc;
+        color: #566176;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .servicios-table tbody tr:hover {
+        background: #fafbfd;
+      }
+      .servicios-code {
+        font-weight: 700;
+        color: #183b65;
+      }
+      .servicios-name {
+        font-weight: 600;
+      }
+      .servicios-status {
+        display: inline-block;
+        border-radius: 20px;
+        padding: 5px 9px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .servicios-status--active {
+        background: #e2f7e9;
+        color: #16723b;
+      }
+      .servicios-status--inactive {
+        background: #fee8e7;
+        color: #a32929;
+      }
+      .servicios-status--unknown {
+        background: #edf0f4;
+        color: #566176;
+      }
+      .servicios-actions-cell {
+        white-space: nowrap;
+      }
+      .servicios-action-button {
+        padding: 7px 9px;
+        margin: 2px;
+        border: 0;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .servicios-action-button--preview {
+        background: #e6efff;
+        color: #1c4e91;
+      }
+      .servicios-action-button--edit {
+        background: #fff2d6;
+        color: #855600;
+      }
+      .servicios-action-button--delete {
+        background: #fee8e7;
+        color: #a32929;
+      }
+      .servicios-table-message {
+        padding: 28px !important;
+        text-align: center !important;
+        color: #667085;
+      }
+      .servicios-table-message--error {
+        color: #b42318;
+      }
+
+      .servicios-modal[hidden] {
+        display: none;
+      }
+      .servicios-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: rgba(16, 24, 40, 0.58);
+        overflow-y: auto;
+      }
+      .servicios-modal__panel {
+        width: min(650px, 100%);
+        max-height: 90vh;
+        overflow-y: auto;
+        background: white;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      }
+      .servicios-modal__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .servicios-modal__header h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+      .servicios-modal__close {
+        border: 0;
+        background: transparent;
+        font-size: 26px;
+        cursor: pointer;
+      }
+      .servicios-preview-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .servicios-preview-item {
+        padding: 13px;
+        border-radius: 8px;
+        background: #f7f9fc;
+        overflow-wrap: anywhere;
+      }
+      .servicios-preview-item strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #667085;
+        font-size: 12px;
+      }
+      .servicios-preview-item span {
+        white-space: pre-wrap;
+      }
+      .servicios-preview-description {
+        margin-top: 16px;
+        padding: 14px;
+        background: #f7f9fc;
+        border-radius: 8px;
+        overflow-wrap: anywhere;
+      }
+      .servicios-preview-description p {
+        white-space: pre-wrap;
+      }
+      .servicios-modal__footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      @media (max-width: 600px) {
+        .servicios-page {
+          padding: 16px;
+        }
+        .servicios-title {
+          font-size: 23px;
+        }
+        .servicios-preview-list {
+          grid-template-columns: 1fr;
+        }
+        .servicios-modal__panel {
+          padding: 18px;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <main class="app-layout">
       <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-
       <div id="mobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
 
       <section class="main-content">
@@ -28,15 +289,167 @@
           >
             <span id="mobileMenuIcon">☰</span>
           </button>
-
-          <strong class="mobile-nav__logo">SUNK​​KU SINCHI</strong>
+          <strong class="mobile-nav__logo">SUNKKU SINCHI</strong>
         </div>
 
         <div th:replace="~{fragments/topbar :: topbar}"></div>
 
-        <!-- Aquí va el contenido propio de cada página -->
+        <div
+          class="servicios-page"
+          th:attr="
+            data-api-servicios=@{/api/servicios},
+            data-api-categorias=@{/api/categorias},
+            data-nuevo-url=@{/admin/servicios/nuevo},
+            data-editar-url=@{/admin/servicios/editar/},
+            data-vista-url=@{/admin/servicios/vista}
+          "
+        >
+          <nav class="servicios-breadcrumb">Inicio / Gestión / Servicios</nav>
+
+          <header class="servicios-header">
+            <div>
+              <h1 class="servicios-title">Servicios</h1>
+              <p class="servicios-description">
+                Administra las clases, entrenamientos y servicios del dojo.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              id="btnNuevoServicio"
+              class="servicios-button servicios-button--primary"
+            >
+              + Nuevo servicio
+            </button>
+          </header>
+
+          <section class="servicios-filters">
+            <div class="servicios-field">
+              <label for="inputBuscarServicio"
+                >Buscar por nombre o código</label
+              >
+              <input
+                type="search"
+                id="inputBuscarServicio"
+                placeholder="Ej. Clase de karate o SERV-001"
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="servicios-field">
+              <label for="selectFiltroCategoriaServicio">Categoría</label>
+              <select id="selectFiltroCategoriaServicio">
+                <option value="">Todas las categorías</option>
+              </select>
+            </div>
+
+            <p
+              id="contadorServicios"
+              class="servicios-counter"
+              role="status"
+              aria-live="polite"
+            >
+              Cargando servicios...
+            </p>
+          </section>
+
+          <section
+            class="servicios-table-container"
+            aria-label="Catálogo de servicios"
+          >
+            <table class="servicios-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Servicio</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Duración</th>
+                  <th>Capacidad</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody id="tablaServiciosBody">
+                <tr>
+                  <td colspan="8" class="servicios-table-message">
+                    Cargando servicios...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
       </section>
     </main>
-    <script th:src="@{/js/nav-acordeon.js}" defer></script>
+
+    <!-- Modal únicamente para la vista previa -->
+    <div id="modalVistaServicio" class="servicios-modal" hidden>
+      <section
+        class="servicios-modal__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloVistaServicio"
+      >
+        <div class="servicios-modal__header">
+          <h2 id="tituloVistaServicio">Vista previa del servicio</h2>
+          <button
+            type="button"
+            id="cerrarVistaServicio"
+            class="servicios-modal__close"
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="servicios-preview-list">
+          <div class="servicios-preview-item">
+            <strong>Código</strong>
+            <span id="vistaCodigo"></span>
+          </div>
+          <div class="servicios-preview-item">
+            <strong>Nombre</strong>
+            <span id="vistaNombre"></span>
+          </div>
+          <div class="servicios-preview-item">
+            <strong>Categoría</strong>
+            <span id="vistaCategoria"></span>
+          </div>
+          <div class="servicios-preview-item">
+            <strong>Precio</strong>
+            <span id="vistaPrecio"></span>
+          </div>
+          <div class="servicios-preview-item">
+            <strong>Duración</strong>
+            <span id="vistaDuracion"></span>
+          </div>
+          <div class="servicios-preview-item">
+            <strong>Capacidad</strong>
+            <span id="vistaCapacidad"></span>
+          </div>
+          <div class="servicios-preview-item">
+            <strong>Estado</strong>
+            <span id="vistaEstado"></span>
+          </div>
+        </div>
+
+        <div class="servicios-preview-description">
+          <strong>Descripción</strong>
+          <p id="vistaDescripcion">Sin descripción.</p>
+        </div>
+
+        <div class="servicios-modal__footer">
+          <button
+            type="button"
+            id="cerrarVistaServicioFooter"
+            class="servicios-button servicios-button--secondary"
+          >
+            Cerrar
+          </button>
+        </div>
+      </section>
+    </div>
   </body>
 </html>

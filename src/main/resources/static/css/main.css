@@ -5019,6 +5019,111 @@ img {
   text-align: center;
 }
 .pagina-catalogo {
+  /* CARRUSEL BOOTSTRAP DEL CATÁLOGO */
+}
+.pagina-catalogo #carruselCatalogo {
+  width: 100%;
+  overflow: hidden;
+  background: #172235;
+}
+.pagina-catalogo #carruselCatalogo .carousel-item {
+  position: relative;
+  height: clamp(320px, 42vw, 540px);
+  background: #172235;
+}
+.pagina-catalogo #carruselCatalogo .carousel-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15, 24, 39, 0.88) 0%, rgba(15, 24, 39, 0.55) 55%, rgba(15, 24, 39, 0.15) 100%);
+  pointer-events: none;
+}
+.pagina-catalogo #carruselCatalogo .carousel-item > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.pagina-catalogo #carruselCatalogo .carousel-caption {
+  z-index: 1;
+  right: 12%;
+  bottom: 12%;
+  left: 12%;
+  text-align: left;
+  max-width: 720px;
+}
+.pagina-catalogo #carruselCatalogo .carousel-caption h2 {
+  margin: 12px 0;
+  color: #fff;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.pagina-catalogo #carruselCatalogo .carousel-caption p {
+  max-width: 560px;
+  margin-bottom: 22px;
+  color: #f1f4f8;
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.7;
+}
+.pagina-catalogo #carruselCatalogo .carousel-caption .btn {
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 8px;
+  color: #263244;
+  font-weight: 700;
+}
+.pagina-catalogo #carruselCatalogo .carrusel-etiqueta {
+  display: inline-block;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 30px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.pagina-catalogo #carruselCatalogo .carousel-indicators {
+  z-index: 2;
+  margin-bottom: 20px;
+}
+.pagina-catalogo #carruselCatalogo .carousel-indicators button {
+  width: 28px;
+  height: 4px;
+  border: 0;
+  border-radius: 5px;
+}
+.pagina-catalogo #carruselCatalogo .carousel-control-prev,
+.pagina-catalogo #carruselCatalogo .carousel-control-next {
+  z-index: 2;
+  width: 8%;
+}
+@media (max-width: 576px) {
+  .pagina-catalogo #carruselCatalogo .carousel-item {
+    height: 390px;
+  }
+  .pagina-catalogo #carruselCatalogo .carousel-caption {
+    right: 12%;
+    bottom: 48px;
+    left: 12%;
+  }
+  .pagina-catalogo #carruselCatalogo .carousel-caption h2 {
+    font-size: 27px;
+  }
+  .pagina-catalogo #carruselCatalogo .carousel-caption p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .pagina-catalogo #carruselCatalogo .carousel-caption .btn {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .pagina-catalogo #carruselCatalogo .carousel-indicators {
+    margin-bottom: 12px;
+  }
+}
+.pagina-catalogo {
   /* TABLET */
 }
 @media (max-width: 850px) {

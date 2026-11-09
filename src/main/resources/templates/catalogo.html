@@ -5,12 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Catálogo | Sunkku Sinchi</title>
+
     <meta
       name="description"
       content="Conoce los productos y servicios de la Academia de Karate Sunkku Sinchi."
     />
 
+    <!-- Bootstrap 5.3 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+
+    <!-- Estilos del proyecto -->
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+
+    <!-- JavaScript del catálogo -->
     <script th:src="@{/js/catalogo.js}" defer></script>
   </head>
 
@@ -18,6 +30,7 @@
     <div class="pagina-catalogo">
       <div class="barra-superior">DISCIPLINA · RESPETO · SUPERACIÓN</div>
 
+      <!-- NAVEGACIÓN -->
       <nav class="navegacion">
         <a class="marca" th:href="@{/}">
           <img
@@ -31,11 +44,144 @@
 
         <div class="enlaces">
           <a th:href="@{/}">INICIO</a>
-          <a th:href="@{/catalogo}" class="activo">PRODUCTOS Y SERVICIOS</a>
+
+          <a href="#carruselCatalogo" class="activo"> PRODUCTOS Y SERVICIOS </a>
+
           <a th:href="@{/login}">INICIAR SESIÓN</a>
         </div>
       </nav>
 
+      <!-- CARRUSEL BOOTSTRAP -->
+      <section
+        id="carruselCatalogo"
+        class="carousel slide carousel-fade"
+        data-bs-ride="carousel"
+        aria-label="Promociones de la Academia Sunkku Sinchi"
+      >
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#carruselCatalogo"
+            data-bs-slide-to="0"
+            class="active"
+            aria-current="true"
+            aria-label="Diapositiva 1"
+          ></button>
+
+          <button
+            type="button"
+            data-bs-target="#carruselCatalogo"
+            data-bs-slide-to="1"
+            aria-label="Diapositiva 2"
+          ></button>
+
+          <button
+            type="button"
+            data-bs-target="#carruselCatalogo"
+            data-bs-slide-to="2"
+            aria-label="Diapositiva 3"
+          ></button>
+        </div>
+
+        <!-- Diapositivas -->
+        <div class="carousel-inner">
+          <!-- Diapositiva 1 -->
+          <div class="carousel-item active">
+            <img
+              src="/img/slider1-catalogo.png"
+              class="d-block w-100"
+              alt="Entrenamiento de artes marciales"
+              fetchpriority="high"
+            />
+
+            <div class="carousel-caption">
+              <span class="carrusel-etiqueta"> Academia de Karate </span>
+
+              <h2>Disciplina que transforma</h2>
+
+              <p>
+                Desarrolla tus habilidades, fortalece tu confianza y supera tus
+                propios límites.
+              </p>
+
+              <a th:href="@{/login}" class="btn btn-light">
+                Conoce nuestra academia
+              </a>
+            </div>
+          </div>
+
+          <!-- Diapositiva 2 -->
+          <div class="carousel-item">
+            <img
+              src="/img/slider2-catalogo.png"
+              class="d-block w-100"
+              alt="Preparación física y entrenamiento deportivo"
+              loading="lazy"
+            />
+
+            <div class="carousel-caption">
+              <span class="carrusel-etiqueta"> Nuestros servicios </span>
+
+              <h2>Entrena y sigue creciendo</h2>
+
+              <p>
+                Descubre las opciones de formación y entrenamiento disponibles
+                para acompañar tu progreso.
+              </p>
+
+              <a href="#servicios" class="btn btn-light"> Ver servicios </a>
+            </div>
+          </div>
+
+          <!-- Diapositiva 3 -->
+          <div class="carousel-item">
+            <img
+              src="/img/slider3-catalogo.png"
+              class="d-block w-100"
+              alt="Equipamiento para entrenamiento deportivo"
+              loading="lazy"
+            />
+
+            <div class="carousel-caption">
+              <span class="carrusel-etiqueta"> Nuestro catálogo </span>
+
+              <h2>Equípate para cada desafío</h2>
+
+              <p>
+                Explora los productos disponibles para acompañar tu
+                entrenamiento y práctica marcial.
+              </p>
+
+              <a href="#productos" class="btn btn-light"> Ver productos </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Control anterior -->
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carruselCatalogo"
+          data-bs-slide="prev"
+          aria-label="Diapositiva anterior"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+
+        <!-- Control siguiente -->
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carruselCatalogo"
+          data-bs-slide="next"
+          aria-label="Diapositiva siguiente"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+      </section>
+
+      <!-- ENCABEZADO PRINCIPAL -->
       <header class="hero">
         <div class="etiqueta">Academia de Karate</div>
 
@@ -48,10 +194,13 @@
 
         <div class="atajos">
           <a class="boton" href="#productos">Ver productos</a>
-          <a class="boton boton-secundario" href="#servicios">Ver servicios</a>
+          <a class="boton boton-secundario" href="#servicios">
+            Ver servicios
+          </a>
         </div>
       </header>
 
+      <!-- BUSCADOR Y FILTROS -->
       <section class="zona-busqueda">
         <div class="busqueda-contenedor">
           <label for="buscadorCatalogo" class="titulo-busqueda">
@@ -142,8 +291,8 @@
               class="tarjeta tarjeta-catalogo"
               data-tipo="producto"
               th:attr="data-nombre=${producto.nombre},
-                                  data-descripcion=${producto.descripcion},
-                                  data-categoria=${producto.categoria.nombre}"
+                       data-descripcion=${producto.descripcion},
+                       data-categoria=${producto.categoria.nombre}"
               th:each="producto : ${productos}"
             >
               <div class="imagen">
@@ -176,8 +325,8 @@
                 <p
                   class="descripcion"
                   th:text="${producto.descripcion != null and !producto.descripcion.isBlank()
-                               ? producto.descripcion
-                               : 'Consulta más información sobre este producto.'}"
+                    ? producto.descripcion
+                    : 'Consulta más información sobre este producto.'}"
                 >
                   Descripción del producto
                 </p>
@@ -185,16 +334,14 @@
                 <div class="detalles">
                   <span
                     class="detalle"
-                    th:if="${producto.stockActual != null
-                                      and producto.stockActual > 0}"
+                    th:if="${producto.stockActual != null and producto.stockActual > 0}"
                   >
                     Disponible
                   </span>
 
                   <span
                     class="detalle"
-                    th:if="${producto.stockActual == null
-                                      or producto.stockActual <= 0}"
+                    th:if="${producto.stockActual == null or producto.stockActual <= 0}"
                   >
                     Consultar disponibilidad
                   </span>
@@ -204,8 +351,8 @@
                   S/
                   <span
                     th:text="${producto.precioVenta != null
-                                ? #numbers.formatDecimal(producto.precioVenta, 1, 2)
-                                : '0.00'}"
+                      ? #numbers.formatDecimal(producto.precioVenta, 1, 2)
+                      : '0.00'}"
                     >0.00</span
                   >
                 </div>
@@ -241,8 +388,8 @@
               class="tarjeta tarjeta-catalogo"
               data-tipo="servicio"
               th:attr="data-nombre=${servicio.nombre},
-                                  data-descripcion=${servicio.descripcion},
-                                  data-categoria=${servicio.categoria.nombre}"
+                       data-descripcion=${servicio.descripcion},
+                       data-categoria=${servicio.categoria.nombre}"
               th:each="servicio : ${servicios}"
             >
               <div class="imagen">
@@ -275,8 +422,8 @@
                 <p
                   class="descripcion"
                   th:text="${servicio.descripcion != null and !servicio.descripcion.isBlank()
-                               ? servicio.descripcion
-                               : 'Consulta más información sobre este servicio.'}"
+                    ? servicio.descripcion
+                    : 'Consulta más información sobre este servicio.'}"
                 >
                   Descripción del servicio
                 </p>
@@ -303,8 +450,8 @@
                   S/
                   <span
                     th:text="${servicio.precio != null
-                                ? #numbers.formatDecimal(servicio.precio, 1, 2)
-                                : '0.00'}"
+                      ? #numbers.formatDecimal(servicio.precio, 1, 2)
+                      : '0.00'}"
                     >0.00</span
                   >
                 </div>
@@ -328,6 +475,7 @@
         </div>
       </main>
 
+      <!-- CONTACTO -->
       <section class="contacto">
         <h2>¿Quieres conocer más?</h2>
 
@@ -335,13 +483,22 @@
           Inicia sesión o comunícate con la academia para obtener información.
         </p>
 
-        <a class="boton" th:href="@{/login}">Acceder a mi cuenta</a>
+        <a class="boton" th:href="@{/login}"> Acceder a mi cuenta </a>
       </section>
 
+      <!-- PIE DE PÁGINA -->
       <footer>
-        © <span th:text="${#dates.year(#dates.createNow())}">2026</span>
+        ©
+        <span th:text="${#dates.year(#dates.createNow())}">2026</span>
         Academia de Karate Sunkku Sinchi. Todos los derechos reservados.
       </footer>
     </div>
+
+    <!-- Bootstrap JavaScript: necesario para que funcione el carrusel -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

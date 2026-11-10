@@ -41,6 +41,13 @@ public class ViewController {
         return "registro";
     }
 
+    @GetMapping("/nosotros")
+    public String nosotros() {
+        return "nosotros";
+    }
+
+
+
     // ==========================================
     // ADMINISTRADOR
     // ==========================================

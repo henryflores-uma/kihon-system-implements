@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Contacto | Sunkku Sinchi</title>
+
+    <meta name="description"
+        content="Comunícate con la Academia de Karate Sunkku Sinchi. Consulta horarios, clases y ubicación del dojo." />
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+
+    <!-- Estilos del proyecto -->
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+
+    <style>
+        /* Estilos específicos para el formulario y tarjetas en tema oscuro manteniendo coherencia con main.css */
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .panel-oscuro {
+            background: rgba(20, 20, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .campo-dojo label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 0.45rem;
+        }
+
+        .campo-dojo .form-control {
+            background-color: #111;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #fff;
+            border-radius: 8px;
+            padding: 0.7rem 0.95rem;
+            font-size: 0.95rem;
+        }
+
+        .campo-dojo .form-control::placeholder {
+            color: #6b7280;
+        }
+
+        .campo-dojo .form-control:focus {
+            background-color: #161616;
+            border-color: #ff3b00;
+            box-shadow: 0 0 0 0.2rem rgba(255, 59, 0, 0.2);
+            color: #fff;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .info-icono {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: rgba(255, 59, 0, 0.12);
+            border: 1px solid rgba(255, 59, 0, 0.3);
+            color: #ff3b00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .aviso-visita {
+            background: rgba(255, 193, 7, 0.08);
+            border: 1px solid rgba(255, 193, 7, 0.28);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .mapa-contenedor {
+            background: rgba(20, 20, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 360px;
+            position: relative;
+        }
+
+        .estrellas {
+            color: #ff3b00;
+            letter-spacing: 2px;
+            font-size: 1rem;
+        }
+
+        .selector-estrellas {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            gap: 0.35rem;
+        }
+
+        .selector-estrellas input {
+            display: none;
+        }
+
+        .selector-estrellas label {
+            font-size: 1.75rem;
+            color: #4b5563;
+            cursor: pointer;
+            transition: color 0.15s ease, transform 0.15s ease;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .selector-estrellas label:hover,
+        .selector-estrellas label:hover ~ label,
+        .selector-estrellas input:checked ~ label {
+            color: #ff3b00;
+        }
+
+        .selector-estrellas label:hover {
+            transform: scale(1.12);
+        }
+
+        @media (max-width: 992px) {
+            .contacto-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .campo-dojo select.form-select {
+            background-color: #111;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #fff;
+            border-radius: 8px;
+            padding: 0.7rem 0.95rem;
+            font-size: 0.95rem;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        }
+
+        .campo-dojo select.form-select:focus {
+            background-color: #161616;
+            border-color: #ff3b00;
+            box-shadow: 0 0 0 0.2rem rgba(255, 59, 0, 0.2);
+            color: #fff;
+        }
+
+        .campo-dojo select.form-select option {
+            background-color: #161616;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pagina-catalogo">
+        <div class="barra-superior">DISCIPLINA · RESPETO · SUPERACIÓN</div>
+
+        <!-- NAVEGACIÓN (Idéntica al proyecto) -->
+        <nav class="navegacion">
+            <a class="marca" th:href="@{/}">
+                <img th:src="@{/img/logo_dojo.png}" alt="Logo de la Academia Sunkku Sinchi"
+                    onerror="this.style.display = 'none'" />
+                <span class="marca-texto"> SUNKKU <span>SINCHI</span> </span>
+            </a>
+
+            <div class="enlaces">
+                <a th:href="@{/}">INICIO</a>
+                <a th:href="@{/catalogo}">PRODUCTOS Y SERVICIOS</a>
+                <a th:href="@{/nosotros}">NOSOTROS</a>
+                <a th:href="@{/contactos}" class="activo">CONTACTO</a>
+                <a th:href="@{/login}">INICIAR SESIÓN</a>
+            </div>
+        </nav>
+
+        <!-- CARRUSEL / HERO DE CONTACTO -->
+        <section id="carruselContacto" class="carousel slide carousel-fade" data-bs-ride="carousel"
+            aria-label="Contacto Academia Sunkku Sinchi">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carruselContacto" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Diapositiva 1"></button>
+                <button type="button" data-bs-target="#carruselContacto" data-bs-slide-to="1"
+                    aria-label="Diapositiva 2"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <!-- Diapositiva 1 -->
+                <div class="carousel-item active">
+                    <img src="/img/nosotros_slider_04.png" class="d-block w-100"
+                        alt="Entrenamiento en la Academia Sunkku Sinchi" fetchpriority="high" />
+                    <div class="carousel-caption">
+                        <span class="carrusel-etiqueta">Contactos · Conversemos</span>
+                        <h2>Tu siguiente paso empieza aquí</h2>
+                        <p>
+                            Cuéntanos qué necesitas saber sobre la academia, nuestras clases o el equipamiento.
+                        </p>
+                        <a href="#formulario-contacto" class="btn btn-light">Enviar consulta</a>
+                    </div>
+                </div>
+
+                <!-- Diapositiva 2 -->
+                <div class="carousel-item">
+                    <img src="/img/nosotros_slider_02.png" class="d-block w-100"
+                        alt="Horarios y atención en el dojo" loading="lazy" />
+                    <div class="carousel-caption">
+                        <span class="carrusel-etiqueta">Atención personalizada</span>
+                        <h2>Estamos listos para orientarte</h2>
+                        <p>
+                            Resuelve tus dudas sobre niveles, matrícula y horarios de entrenamiento.
+                        </p>
+                        <a href="#ubicacion-dojo" class="btn btn-light">Ver ubicación</a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carruselContacto" data-bs-slide="prev"
+                aria-label="Diapositiva anterior">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carruselContacto" data-bs-slide="next"
+                aria-label="Diapositiva siguiente">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </section>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="contenedor">
+
+            <!-- SECCIÓN 1: FORMULARIO + HABLEMOS DEL DOJO -->
+            <section id="formulario-contacto" class="seccion" style="padding-top: 0;">
+                <div class="contacto-grid">
+
+                    <!-- COLUMNA IZQUIERDA: FORMULARIO -->
+                    <div class="panel-oscuro">
+                        <div class="etiqueta">Te escuchamos</div>
+                        <h2 style="color: #fff; margin-top: 0.35rem; margin-bottom: 0.5rem;">Envíanos un <span>mensaje</span></h2>
+                        <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 1.75rem;">
+                            Completa los campos obligatorios (*). No compartas información sensible.
+                        </p>
+
+                        <form id="formContacto" novalidate>
+                            <div class="row g-3">
+                                <div class="col-md-6 campo-dojo">
+                                    <label for="nombre">Nombre completo *</label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control"
+                                        placeholder="Ej. Andrea Pérez" required />
+                                </div>
+
+                                <div class="col-md-6 campo-dojo">
+                                    <label for="correo">Correo electrónico *</label>
+                                    <input type="email" id="correo" name="correo" class="form-control"
+                                        placeholder="andrea@ejemplo.com" required />
+                                </div>
+
+                               
+                               <!-- SELECTOR DE ESTRELLAS (Oculto hasta que elija Opinión) -->
+                                <div id="grupoCalificacion" class="col-12 campo-dojo" style="display: none;">
+                                    <label>Calificación de tu experiencia *</label>
+                                    <div class="selector-estrellas" aria-label="Calificación del 1 al 5">
+                                        <input type="radio" id="estrella5" name="calificacion" value="5" checked />
+                                        <label for="estrella5" title="5 estrellas">★</label>
+
+                                        <input type="radio" id="estrella4" name="calificacion" value="4" />
+                                        <label for="estrella4" title="4 estrellas">★</label>
+
+                                        <input type="radio" id="estrella3" name="calificacion" value="3" />
+                                        <label for="estrella3" title="3 estrellas">★</label>
+
+                                        <input type="radio" id="estrella2" name="calificacion" value="2" />
+                                        <label for="estrella2" title="2 estrellas">★</label>
+
+                                        <input type="radio" id="estrella1" name="calificacion" value="1" />
+                                        <label for="estrella1" title="1 estrella">★</label>
+                                    </div>
+                                </div>
+
+                              <div class="col-12 campo-dojo">
+                                    <label for="asunto">Asunto *</label>
+                                    <select id="asunto" name="asunto" class="form-select" required>
+                                        <option value="" selected disabled>Selecciona el motivo de tu consulta...</option>
+                                        <option value="Clases y horarios">Clases y horarios de entrenamiento</option>
+                                        <option value="Clase de prueba gratuita">Solicitar clase de prueba</option>
+                                        <option value="Matrícula y mensualidades">Información de matrícula y mensualidades</option>
+                                        <option value="Uniformes y equipamiento">Equipamiento, karategi y protecciones</option>
+                                        <option value="Exámenes de grado / Torneos">Exámenes de grado o torneos</option>
+                                        <option value="Opinión sobre el dojo">Opinión / Experiencia en el dojo</option>
+                                        <option value="Otro motivo">Otro motivo</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 campo-dojo">
+                                    <label for="mensaje">Mensaje *</label>
+                                    <textarea id="mensaje" name="mensaje" rows="4" class="form-control"
+                                        placeholder="Hola, quisiera conocer los horarios y la disponibilidad de clases para principiantes. Gracias."
+                                        required></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="privacidad" required
+                                            style="background-color: #111; border-color: rgba(255,255,255,0.25);" />
+                                        <label class="form-check-label" for="privacidad"
+                                            style="color: #9ca3af; font-size: 0.85rem;">
+                                            Acepto que se utilicen mis datos únicamente para responder esta consulta.
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="boton" style="border: none; cursor: pointer;">
+                                        Enviar mensaje
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- COLUMNA DERECHA: HABLEMOS DEL DOJO -->
+                    <div>
+                        <div class="panel-oscuro">
+                            <div class="etiqueta">Información directa</div>
+                            <h3 style="color: #fff; margin-top: 0.35rem; margin-bottom: 0.5rem;">Hablemos del dojo</h3>
+                            <p style="color: #9ca3af; font-size: 0.88rem; margin-bottom: 1.5rem;">
+                                Canales oficiales de atención de la Academia de Karate Sunkku Sinchi.
+                            </p>
+
+                            <div class="info-item">
+                                <div class="info-icono">✉️</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">Correo</div>
+                                    <div style="color: #9ca3af; font-size: 0.88rem;">markyc999@hotmail.com</div>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icono">📞</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">Teléfono / WhatsApp</div>
+                                    <div style="color: #9ca3af; font-size: 0.88rem;">+51 992 774 141 · Sensei Marco Ludeña</div>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icono">🕒</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">Horario de atención</div>
+                                    <div style="color: #9ca3af; font-size: 0.88rem;">Lun – Sab · 16:00 – 21:30</div>
+                                </div>
+                            </div>
+
+                            <div class="info-item" style="margin-bottom: 0;">
+                                <div class="info-icono">📍</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">Dirección</div>
+                                    <div style="color: #9ca3af; font-size: 0.88rem;">Calle Leoncio Prado Mz. D1 Lt. 39, San Juan de Miraflores</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta amarilla de aviso -->
+                        <div class="aviso-visita">
+                            <div style="font-weight: 700; color: #fbbf24; font-size: 0.9rem; margin-bottom: 0.35rem;">
+                                Antes de visitarnos
+                            </div>
+                            <p style="color: #d1d5db; font-size: 0.84rem; margin: 0; line-height: 1.5;">
+                                Te recomendamos escribirnos o llamarnos previamente para coordinar tu clase de prueba y confirmar disponibilidad de horarios.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: ENCUÉNTRANOS (GOOGLE MAPS) -->
+            <section id="ubicacion-dojo" class="seccion">
+                <div class="cabecera-seccion">
+                    <div>
+                        <div class="etiqueta">Ubicación</div>
+                        <h2>Encuéntranos en <span>Lima</span></h2>
+                    </div>
+                </div>
+
+                <div class="mapa-contenedor">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.10581862142!2d-76.96753698823922!3d-12.173198444220384!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105b9bf4bf6b20d%3A0x512d9f83041b2019!2sAcademia%20De%20Karate%20Sunkku%20Sinchi!5e0!3m2!1ses-419!2spe!4v1794457553293!5m2!1ses-419!2spe"
+                        width="100%" height="100%" style="border:0; filter: invert(90%) hue-rotate(180deg);"
+                        allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+                        title="Ubicación de la Academia de Karate Sunkku Sinchi">
+                    </iframe>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 3: VOCES DE NUESTRA COMUNIDAD (TESTIMONIOS + NUEVOS MENSAJES) -->
+            <section class="seccion">
+                <div class="cabecera-seccion" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <div class="etiqueta">La experiencia de aprender juntos</div>
+                        <h2>Voces de nuestra <span>comunidad</span></h2>
+                    </div>
+
+                    <a href="https://www.google.com/maps/search/?api=1&query=Academia+De+Karate+Sunkku+Sinchi"
+                        target="_blank" rel="noopener noreferrer"
+                        class="boton boton-secundario text-decoration-none" style="font-size: 0.85rem;">
+                        ⭐ Ver opiniones en Google Maps
+                    </a>
+                </div>
+
+                <!-- Aquí contacto.js dibujará todo automáticamente -->
+                <div id="gridComunidad" class="rejilla" style="grid-template-columns: repeat(3, 1fr);"></div>
+            </section>
+
+        </main>
+
+     
+
+        <!-- PIE DE PÁGINA (Idéntico al de tu compañero) -->
+        <footer id="footer" class="home-footer">
+            <div class="container home-footer__inner">
+                <!-- REDES SOCIALES -->
+                <div class="home-footer__social">
+                    <a href="https://www.facebook.com/DojoSunkkuSinchi/?locale=es_LA" class="home-footer__social-link"
+                        target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <img src="/img/facebook-logo.png" alt="Facebook" />
+                    </a>
+
+                    <a href="https://www.instagram.com/dojo_sunkku_sinchi/" class="home-footer__social-link"
+                        target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <img src="/img/instagram-logo.png" alt="Instagram" />
+                    </a>
+
+                    <a href="https://deportes.guiabbb.pe/01085850/Dojo_Sunkku_Sinchi" class="home-footer__social-link"
+                        target="_blank" rel="noopener noreferrer" aria-label="Guiabbb">
+                        <img src="/img/guiabbb.png" alt="Guiabbb" />
+                    </a>
+                </div>
+
+                <!-- UTP -->
+                <div class="home-footer__utp">
+                    <a href="https://www.utp.edu.pe/" target="_blank" rel="noopener noreferrer"
+                        aria-label="Universidad Tecnológica del Perú">
+                        <img src="/img/logo-utp.png" alt="Universidad Tecnológica del Perú" />
+                    </a>
+                </div>
+
+                <!-- CONTACTO -->
+                <div class="home-footer__contact">
+                    <span class="home-footer__contact-label"> CONTACTO </span>
+
+                    <strong> Sensei Marco Ludeña </strong>
+
+                    <span> 992 774 141 </span>
+
+                    <span> markyc999@hotmail.com </span>
+                </div>
+            </div>
+
+            <!-- COPYRIGHT -->
+            <div class="home-footer__copyright">
+                © 2026 Academia de Karate Sunkku Sinchi. Todos los derechos reservados.
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script th:src="@{/js/contacto.js}"></script>
+
+</body>
+
+</html>

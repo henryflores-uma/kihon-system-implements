@@ -45,6 +45,10 @@ public class ViewController {
     public String nosotros() {
         return "nosotros";
     }
+    @GetMapping("/contacto")
+    public String contacto() {
+        return "contacto";
+    }
 
 
 

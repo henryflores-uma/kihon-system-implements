@@ -5184,6 +5184,462 @@ img {
     font-size: 11px;
   }
 }
+.pagina-catalogo {
+  /* =========================================
+
+     ORGANIGRAMA - ASÍ NOS ORGANIZAMOS
+
+  ========================================= */
+}
+.pagina-catalogo .organigrama {
+  width: 100%;
+  padding: 20px 0;
+}
+.pagina-catalogo {
+  /* COORDINADOR GENERAL */
+}
+.pagina-catalogo .org-coordinador {
+  position: relative;
+  width: min(500px, 100%);
+  margin: 0 auto 50px;
+  padding: 25px;
+  background: rgba(16, 16, 16, 0.85);
+  border: 1px solid rgba(255, 36, 0, 0.4);
+  border-top: 4px solid #FF2400;
+  border-radius: 10px;
+  text-align: center;
+}
+.pagina-catalogo .org-coordinador span {
+  color: #FF2400;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.pagina-catalogo .org-coordinador h3 {
+  margin: 10px 0 5px;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+.pagina-catalogo .org-coordinador p {
+  margin: 0;
+  color: #B8B8B8;
+  font-size: 14px;
+}
+.pagina-catalogo .org-coordinador {
+  /* Conector vertical hacia el equipo */
+}
+.pagina-catalogo .org-coordinador::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -51px;
+  width: 2px;
+  height: 50px;
+  background: #FF2400;
+  transform: translateX(-50%);
+}
+.pagina-catalogo {
+  /* CONTENEDOR DE LOS TRES INTEGRANTES */
+}
+.pagina-catalogo .org-equipo {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  /* Línea horizontal de conexión */
+}
+.pagina-catalogo .org-equipo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16.66%;
+  right: 16.66%;
+  height: 2px;
+  background: #FF2400;
+}
+.pagina-catalogo {
+  /* TARJETA DE CADA INTEGRANTE */
+}
+.pagina-catalogo .org-integrante {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: 25px;
+  /* Conector vertical desde la línea horizontal */
+}
+.pagina-catalogo .org-integrante::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 25px;
+  background: #FF2400;
+  transform: translateX(-50%);
+}
+.pagina-catalogo {
+  /* DATOS DEL INTEGRANTE */
+}
+.pagina-catalogo .org-persona {
+  flex: 1;
+  padding: 22px 16px;
+  background: rgba(36, 36, 36, 0.95);
+  border: 1px solid #333333;
+  border-radius: 9px;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.pagina-catalogo .org-persona:hover {
+  border-color: #FF2400;
+  transform: translateY(-3px);
+}
+.pagina-catalogo .org-persona span {
+  color: #FF2400;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+.pagina-catalogo .org-persona h3 {
+  margin: 10px 0;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.pagina-catalogo .org-persona p {
+  margin: 0;
+  color: #B8B8B8;
+  font-size: 13px;
+}
+.pagina-catalogo {
+  /* CONECTOR HACIA RESPONSABILIDADES */
+}
+.pagina-catalogo .org-linea {
+  display: block;
+  width: 2px;
+  height: 25px;
+  margin: 0 auto;
+  background: #FF2400;
+}
+.pagina-catalogo {
+  /* CUADRO DE RESPONSABILIDADES */
+}
+.pagina-catalogo .org-responsabilidad {
+  flex: 1;
+  padding: 20px;
+  background: rgba(16, 16, 16, 0.7);
+  border: 1px solid #333333;
+  border-radius: 9px;
+  transition: border-color 0.2s;
+}
+.pagina-catalogo .org-responsabilidad:hover {
+  border-color: #FF2400;
+}
+.pagina-catalogo .org-responsabilidad strong {
+  display: block;
+  margin-bottom: 12px;
+  color: #FF2400;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.pagina-catalogo .org-responsabilidad ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #E5E5E5;
+  font-size: 13px;
+}
+.pagina-catalogo .org-responsabilidad li {
+  margin-bottom: 9px;
+  line-height: 1.5;
+}
+.pagina-catalogo .org-responsabilidad li::marker {
+  color: #FF2400;
+}
+.pagina-catalogo .org-responsabilidad li:last-child {
+  margin-bottom: 0;
+}
+.pagina-catalogo {
+  /* RESPONSIVE - TABLET Y MÓVIL */
+}
+@media (max-width: 768px) {
+  .pagina-catalogo .org-coordinador {
+    margin-bottom: 35px;
+  }
+  .pagina-catalogo .org-coordinador::after {
+    bottom: -36px;
+    height: 35px;
+  }
+  .pagina-catalogo .org-equipo {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .pagina-catalogo .org-equipo::before {
+    display: none;
+  }
+  .pagina-catalogo .org-integrante {
+    padding-top: 0;
+  }
+  .pagina-catalogo .org-integrante::before {
+    display: none;
+  }
+  .pagina-catalogo .org-persona {
+    padding: 20px;
+  }
+  .pagina-catalogo .org-responsabilidad {
+    padding: 18px;
+  }
+}
+.pagina-catalogo {
+  /* =========================================
+
+     SPRINTS - TABLAS DE SEGUIMIENTO
+
+  ========================================= */
+  /* NAVEGACION ENTRE SPRINTS */
+}
+.pagina-catalogo .sprints-descripcion {
+  margin-top: 10px;
+  color: #B8B8B8;
+  font-size: 14px;
+}
+.pagina-catalogo .sprints-navegacion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+.pagina-catalogo .sprint-tab {
+  flex: 1;
+  min-width: 110px;
+  padding: 14px 20px;
+  border: 1px solid #333333;
+  border-radius: 6px;
+  background: #1B1B1B;
+  color: #B8B8B8;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+.pagina-catalogo .sprint-tab:hover {
+  border-color: #FF2400;
+  color: #FFFFFF;
+  background: #242424;
+}
+.pagina-catalogo .sprint-tab.activo {
+  border-color: #FF2400;
+  background: #FF2400;
+  color: #FFFFFF;
+}
+.pagina-catalogo .sprint-tab:focus-visible {
+  outline: 2px solid #FFD700;
+  outline-offset: 4px;
+}
+.pagina-catalogo {
+  /* CONTENEDOR Y TARJETA DEL SPRINT */
+}
+.pagina-catalogo .contenedor-sprints {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+}
+.pagina-catalogo .sprint-bloque {
+  padding: 25px;
+  background: #1B1B1B;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  animation: aparecerSprint 0.25s ease;
+}
+@keyframes aparecerSprint {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.pagina-catalogo {
+  /* CABECERA DEL SPRINT */
+}
+.pagina-catalogo .sprint-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+.pagina-catalogo .sprint-titulo h3 {
+  margin: 8px 0 5px;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 800;
+}
+.pagina-catalogo .sprint-titulo p {
+  margin: 0;
+  color: #B8B8B8;
+  font-size: 13px;
+}
+.pagina-catalogo .sprint-numero {
+  color: #FF2400;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+.pagina-catalogo {
+  /* ESTADOS DEL SPRINT Y ACTIVIDADES */
+}
+.pagina-catalogo .sprint-estado,
+.pagina-catalogo .actividad-estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pagina-catalogo .sprint-estado {
+  padding: 7px 12px;
+  border-radius: 20px;
+}
+.pagina-catalogo .sprint-estado.completado {
+  color: #86efac;
+  background: rgba(22, 163, 74, 0.15);
+}
+.pagina-catalogo .sprint-estado.proceso {
+  color: #fcd34d;
+  background: rgba(229, 160, 0, 0.15);
+}
+.pagina-catalogo .sprint-estado.pendiente {
+  color: #E5E5E5;
+  background: rgba(102, 102, 102, 0.2);
+}
+.pagina-catalogo .actividad-estado.estado-completado {
+  color: #86efac;
+}
+.pagina-catalogo .actividad-estado.estado-proceso {
+  color: #fcd34d;
+}
+.pagina-catalogo .actividad-estado.estado-pendiente {
+  color: #B8B8B8;
+}
+.pagina-catalogo .estado-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+}
+.pagina-catalogo {
+  /* TABLA DE ACTIVIDADES */
+}
+.pagina-catalogo .tabla-sprint-contenedor {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #333333;
+  border-radius: 6px;
+}
+.pagina-catalogo .tabla-sprint {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  text-align: left;
+}
+.pagina-catalogo .tabla-sprint th {
+  padding: 14px 16px;
+  color: #FF2400;
+  background: rgba(16, 16, 16, 0.7);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.pagina-catalogo .tabla-sprint td {
+  padding: 15px 16px;
+  color: #E5E5E5;
+  border-bottom: 1px solid #333333;
+  font-size: 13px;
+}
+.pagina-catalogo .tabla-sprint tbody tr {
+  transition: background 0.2s;
+}
+.pagina-catalogo .tabla-sprint tbody tr:hover {
+  background: #242424;
+}
+.pagina-catalogo .tabla-sprint tbody tr:last-child td {
+  border-bottom: none;
+}
+.pagina-catalogo {
+  /* PROGRESO DEL SPRINT */
+}
+.pagina-catalogo .sprint-progreso {
+  margin-top: 22px;
+}
+.pagina-catalogo .sprint-progreso-texto {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: #B8B8B8;
+  font-size: 12px;
+}
+.pagina-catalogo .sprint-progreso-texto strong {
+  color: #FFFFFF;
+}
+.pagina-catalogo .sprint-barra {
+  width: 100%;
+  height: 7px;
+  overflow: hidden;
+  background: #101010;
+  border-radius: 20px;
+}
+.pagina-catalogo .sprint-barra div {
+  height: 100%;
+  background: #FF2400;
+  border-radius: inherit;
+  transition: width 0.3s;
+}
+.pagina-catalogo {
+  /* RESPONSIVE DE SPRINTS */
+}
+@media (max-width: 600px) {
+  .pagina-catalogo .sprints-navegacion {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .pagina-catalogo .sprint-tab {
+    min-width: 0;
+    padding: 12px;
+  }
+  .pagina-catalogo .sprint-bloque {
+    padding: 16px;
+  }
+  .pagina-catalogo .sprint-titulo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .pagina-catalogo .sprint-titulo h3 {
+    font-size: 17px;
+  }
+  .pagina-catalogo .tabla-sprint {
+    min-width: 520px;
+  }
+  .pagina-catalogo .sprint-progreso-texto {
+    flex-direction: column;
+  }
+}
 
 /* ==========================================
    VISTA PREVIA DEL CATÁLOGO

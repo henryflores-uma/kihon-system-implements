@@ -2,46 +2,79 @@
 const sprints = [
     {
         numero: "01",
-        nombre: "Descubrimiento y planificación",
-        periodo: "Semanas 1–2",
+        nombre: "Descubrimiento y planificación - Diseño de la primera versión de la pagina web",
+        periodo: "Semanas 1 – 6",
         actividades: [
             { nombre: "Identificar necesidades de la academia", responsable: "Henry", estado: "completado" },
             { nombre: "Realizar encuestas", responsable: "Jean Piere", estado: "completado" },
             { nombre: "Definir requerimientos del sistema", responsable: "Michael", estado: "completado" },
-            { nombre: "Organizar Product Backlog", responsable: "Gino", estado: "completado" }
+            { nombre: "Organizar Product Backlog", responsable: "Gino", estado: "completado" },
+            { nombre: "Establecer cronograma de desarrollo", responsable: "Henry", estado: "completado" },
+            { nombre: "Definir arquitectura del sistema", responsable: "Michael", estado: "completado" },
+            { nombre: "Elaborar mapa del sitio web", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Diseñar prototipo inicial", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Revisar y aprobar prototipo", responsable: "Gino", estado: "completado" },
+            { nombre: "Presentar prototipo a la academia", responsable: "Henry", estado: "completado" },
+            { nombre: "Recibir retroalimentación de la academia", responsable: "Gino", estado: "completado" },
+            { nombre: "Ajustar prototipo según retroalimentación", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Presentación del primer sprint", responsable: "Todos", estado: "completado" }
         ]
     },
     {
         numero: "02",
-        nombre: "Diseño UX/UI",
-        periodo: "Semanas 3–4",
+        nombre: "Diseño UX/UI - Desarrollo Backend y Frontend - Configuración de entorno de desarrollo",
+        periodo: "Semanas 7 – 11",
         actividades: [
             { nombre: "Elaborar mapa del sitio web", responsable: "Jean Piere", estado: "completado" },
             { nombre: "Diseñar wireframes", responsable: "Jean Piere", estado: "completado" },
-            { nombre: "Diseñar interfaces del sistema", responsable: "Henry", estado: "proceso" },
-            { nombre: "Validar propuesta visual", responsable: "Gino", estado: "pendiente" }
+            { nombre: "Diseñar interfaces del sistema", responsable: "Henry", estado: "completado" },
+            { nombre: "Validar propuesta visual", responsable: "Gino", estado: "completado" },
+            { nombre: "Configurar entorno de desarrollo", responsable: "Henry", estado: "completado" },
+            { nombre: "Configurar Supabase y PostgreSQL", responsable: "Michael", estado: "completado" },
+            { nombre: "Configurar Spring Boot y Thymeleaf", responsable: "Michael", estado: "completado" },
+            { nombre: "Configurar base de datos", responsable: "Michael", estado: "completado" },
+            { nombre: "Desarrollar backend con Spring Boot", responsable: "Michael", estado: "completado" },
+            { nombre: "Desarrollar módulos de productos y servicios", responsable: "Gino", estado: "completado" },
+            { nombre: "Desarrollar vistas con Thymeleaf", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Implementar lógica con Spring Boot", responsable: "Michael", estado: "completado" },
+            { nombre: "Integrar Supabase y PostgreSQL", responsable: "Michael", estado: "completado" },
+            { nombre: "Realizar pruebas funcionales", responsable: "Gino", estado: "completado" },
+            { nombre: "Validar formularios y módulos", responsable: "Michael", estado: "completado" },
+            { nombre: "Corregir errores encontrados", responsable: "Equipo", estado: "completado" },
+            { nombre: "Presentación del segundo sprint", responsable: "Todos", estado: "completado" }
         ]
     },
     {
         numero: "03",
-        nombre: "Desarrollo e implementación",
-        periodo: "Semanas 5–6",
+        nombre: "Desarrollo e implementación - Nuevas vistas y módulos - Integración de funcionalidades",
+        periodo: "Semanas 12 – 14",
         actividades: [
-            { nombre: "Desarrollar vistas con Thymeleaf", responsable: "Jean Piere", estado: "proceso" },
-            { nombre: "Implementar lógica con Spring Boot", responsable: "Michael", estado: "proceso" },
-            { nombre: "Integrar Supabase y PostgreSQL", responsable: "Michael", estado: "proceso" },
-            { nombre: "Desarrollar módulos de productos y servicios", responsable: "Gino", estado: "pendiente" }
+            { nombre: "Elaborar mapa del sitio web", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Diseñar wireframes - Contacto", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Diseñar wireframes - Nosotros", responsable: "Gino", estado: "completado" },
+            { nombre: "Diseñar interfaces del sistema", responsable: "Henry", estado: "completado" },
+            { nombre: "Validar propuesta visual", responsable: "Michael", estado: "completado" },
+            { nombre: "Diseñar interfaces del sistema - Contacto", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Diseñar interfaces del sistema - Nosotros", responsable: "Gino", estado: "completado" },
+            { nombre: "Actualizar mapa del sitio web", responsable: "Jean Piere", estado: "completado" },
+            { nombre: "Presentar el tercer sprint", responsable: "Todos", estado: "completado" }
         ]
     },
     {
         numero: "04",
-        nombre: "Integración y validación",
-        periodo: "Semanas 7–8",
+        nombre: "Descuentos y promociones - Carrito de compras - Pruebas finales",
+        periodo: "Semanas 15 – 16",
         actividades: [
+            { nombre: "Elaborar mapa del sitio web", responsable: "Jean Piere", estado: "pendiente" },
+            { nombre: "Diseñar wireframes - Descuentos y promociones", responsable: "Jean Piere", estado: "pendiente" },
+            { nombre: "Diseñar wireframes - Carrito de compras", responsable: "Gino", estado: "pendiente" },
+            { nombre: "Diseñar interfaces del sistema - Descuentos y promociones", responsable: "Henry", estado: "pendiente" },
+            { nombre: "Diseñar interfaces del sistema - Carrito de compras", responsable: "Michael", estado: "pendiente" },
             { nombre: "Realizar pruebas funcionales", responsable: "Gino", estado: "pendiente" },
             { nombre: "Validar formularios y módulos", responsable: "Michael", estado: "pendiente" },
             { nombre: "Corregir errores encontrados", responsable: "Equipo", estado: "pendiente" },
-            { nombre: "Preparar documentación final", responsable: "Henry", estado: "pendiente" }
+            { nombre: "Preparar documentación final", responsable: "Henry", estado: "pendiente" },
+            { nombre: "Presentación del cuarto sprint", responsable: "Todos", estado: "pendiente" }
         ]
     }
 ];
@@ -135,9 +168,9 @@ function mostrarSprint(numero) {
 
                     <tbody>
                         ${sprint.actividades.map(actividad => {
-                            const estado = obtenerEstado(actividad.estado);
+        const estado = obtenerEstado(actividad.estado);
 
-                            return `
+        return `
                                 <tr>
                                     <td>${actividad.nombre}</td>
                                     <td>${actividad.responsable}</td>
@@ -149,7 +182,7 @@ function mostrarSprint(numero) {
                                     </td>
                                 </tr>
                             `;
-                        }).join("")}
+    }).join("")}
                     </tbody>
                 </table>
             </div>

@@ -21,9 +21,11 @@
 
     <!-- Estilos del proyecto -->
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/compra-servicio.css}" />
 
     <!-- JavaScript del catálogo -->
     <script th:src="@{/js/catalogo.js}" defer></script>
+    <script th:src="@{/js/carrito-productos.js}" defer></script>
   </head>
 
   <body>
@@ -45,7 +47,11 @@
         <div class="enlaces">
           <a th:href="@{/}">INICIO</a>
 
-          <a href="#carruselCatalogo" class="activo"> PRODUCTOS Y SERVICIOS </a>
+          <a href="#productos">PRODUCTOS</a>
+          <a href="#servicios">SERVICIOS</a>
+          <a href="#productos" class="carrito-nav" id="abrirCompraProductos" aria-haspopup="dialog">
+            CARRITO <span class="carrito-contador">0</span>
+          </a>
 
           <a th:href="@{/nosotros}">NOSOTROS</a>
           <a th:href="@{/contacto}">CONTACTO</a>
@@ -293,7 +299,10 @@
             <article
               class="tarjeta tarjeta-catalogo"
               data-tipo="producto"
-              th:attr="data-nombre=${producto.nombre},
+              th:attr="data-item-id=${producto.id},
+                       data-stock=${producto.stockActual},
+                       data-precio=${producto.precioVenta},
+                       data-nombre=${producto.nombre},
                        data-descripcion=${producto.descripcion},
                        data-categoria=${producto.categoria.nombre}"
               th:each="producto : ${productos}"
@@ -360,9 +369,10 @@
                   >
                 </div>
 
-                <a class="boton boton-secundario" th:href="@{/login}">
-                  Consultar producto
-                </a>
+                <button class="boton boton-secundario" type="button" data-agregar-carrito
+                  th:disabled="${producto.stockActual == null or producto.stockActual <= 0 or producto.precioVenta == null}">
+                  Comprar producto
+                </button>
               </div>
             </article>
 
@@ -390,7 +400,9 @@
             <article
               class="tarjeta tarjeta-catalogo"
               data-tipo="servicio"
-              th:attr="data-nombre=${servicio.nombre},
+              th:attr="data-item-id=${servicio.id},
+                       data-precio=${servicio.precio},
+                       data-nombre=${servicio.nombre},
                        data-descripcion=${servicio.descripcion},
                        data-categoria=${servicio.categoria.nombre}"
               th:each="servicio : ${servicios}"
@@ -459,9 +471,10 @@
                   >
                 </div>
 
-                <a class="boton boton-secundario" th:href="@{/login}">
+                <button class="boton boton-secundario" type="button" data-agregar-carrito
+                  th:disabled="${servicio.precio == null}">
                   Consultar servicio
-                </a>
+                </button>
               </div>
             </article>
 
@@ -477,6 +490,153 @@
           Prueba con otro nombre, descripción o categoría.
         </div>
       </main>
+
+
+      <dialog class="compra-servicio compra-productos" id="compraProductos" aria-labelledby="tituloCompraProductos">
+        <button class="compra-cerrar" type="button" data-cerrar-carrito aria-label="Cerrar carrito">&times;</button>
+        <div class="compra-encabezado">
+          <p class="compra-paso" id="pasoCompraProductos">Paso 1 de 3</p>
+          <h2 id="tituloCompraProductos" tabindex="-1">Carrito de compras</h2>
+        </div>
+
+        <div class="compra-contenido">
+          <section id="listaCompraProductos" aria-label="Productos y servicios en el carrito">
+            <p id="carritoProductosVacio">Tu carrito está vacío.</p>
+            <ul class="carrito-lista" id="itemsCompraProductos"></ul>
+            <div class="compra-acciones">
+              <button class="boton boton-secundario" type="button" data-cerrar-carrito>Seguir comprando</button>
+              <button class="boton" type="button" id="continuarCompraProductos" disabled>Continuar al pago</button>
+            </div>
+          </section>
+
+          <form id="datosCompraProductos" method="dialog" hidden>
+            <p>Completa tus datos para la compra y el envío de la boleta.</p>
+            <div class="compra-campos">
+              <label>Nombre
+                <input type="text" autocomplete="given-name" name="nombre" data-solo-letras pattern="\p{L}[\p{L}\p{M}]*( +\p{L}[\p{L}\p{M}]*)*" title="Ingresa solo letras y espacios" required />
+              </label>
+              <label>Apellido
+                <input type="text" autocomplete="family-name" name="apellido" data-solo-letras pattern="\p{L}[\p{L}\p{M}]*( +\p{L}[\p{L}\p{M}]*)*" title="Ingresa solo letras y espacios" required />
+              </label>
+              <label>DNI
+                <input type="text" inputmode="numeric" data-solo-digitos pattern="[0-9]{8}" name="dni" maxlength="8" placeholder="8 dígitos" required />
+              </label>
+              <label>Edad
+                <input type="text" inputmode="numeric" data-solo-digitos pattern="[0-9]+" title="Ingresa la edad en años completos" required />
+              </label>
+              <label>Correo electrónico
+                <input type="email" autocomplete="email" name="correo" placeholder="nombre@ejemplo.com" required />
+              </label>
+              <label>Teléfono
+                <input type="tel" autocomplete="tel-national" inputmode="numeric" data-solo-digitos pattern="[0-9]{1,9}" maxlength="9" placeholder="Hasta 9 dígitos" required />
+              </label>
+            </div>
+
+            <fieldset class="carrito-metodos">
+              <legend>Método de pago</legend>
+              <label>
+                <input type="radio" name="metodoPago" value="efectivo" required />
+                <span><strong>Efectivo en la academia</strong><small>Paga en la academia al recoger tu pedido.</small></span>
+              </label>
+              <label>
+                <input type="radio" name="metodoPago" value="tarjeta" required />
+                <span><strong>Tarjeta de débito o crédito</strong><small>Pago en línea.</small></span>
+              </label>
+            </fieldset>
+
+            <p class="compra-aviso">Compra de demostración. Al finalizar podrás revisar la boleta y simular su envío por correo.</p>
+            <div class="compra-acciones">
+              <button class="boton boton-secundario" type="button" id="volverCompraProductos">Volver al carrito</button>
+              <button class="boton" type="submit">Finalizar pago</button>
+            </div>
+          </form>
+
+          <aside class="compra-resumen compra-resumen-texto" aria-label="Resumen del carrito" aria-live="polite">
+            <h3>Resumen del pedido</h3>
+            <dl class="compra-totales">
+              <div><dt>Unidades</dt><dd id="unidadesCompraProductos">0</dd></div>
+              <div class="compra-total"><dt>Total</dt><dd id="totalCompraProductos">S/ 0.00</dd></div>
+            </dl>
+          </aside>
+        </div>
+
+        <section class="boleta-compra" id="boletaCompraProductos" hidden aria-label="Boleta de la compra">
+          <article class="boleta-papel">
+            <header class="boleta-cabecera">
+              <div class="boleta-marca">
+                <img th:src="@{/img/logo_dojo.png}" alt="" width="54" height="54" />
+                <div>
+                  <strong>Academia de Karate Sunkku Sinchi</strong>
+                  <p>Catálogo de productos y servicios</p>
+                </div>
+              </div>
+              <div class="boleta-documento">
+                <strong>Boleta electrónica</strong>
+                <p data-boleta="referencia"></p>
+                <span>Demostración · Sin validez tributaria</span>
+              </div>
+            </header>
+
+            <dl class="boleta-datos">
+              <div><dt>Fecha de emisión</dt><dd data-boleta="fecha"></dd></div>
+              <div><dt>Cliente</dt><dd data-boleta="cliente"></dd></div>
+              <div><dt>DNI</dt><dd data-boleta="dni"></dd></div>
+              <div><dt>Correo electrónico</dt><dd data-boleta="correo"></dd></div>
+              <div><dt>Método de pago</dt><dd data-boleta="metodo"></dd></div>
+              <div><dt>Estado del pago</dt><dd data-boleta="estado"></dd></div>
+            </dl>
+
+            <div class="boleta-tabla">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Concepto</th>
+                    <th scope="col">Cant.</th>
+                    <th scope="col">Precio unit.</th>
+                    <th scope="col">Importe</th>
+                  </tr>
+                </thead>
+                <tbody id="detalleBoletaProductos"></tbody>
+              </table>
+            </div>
+
+            <dl class="boleta-total">
+              <dt>Total del pedido · PEN</dt>
+              <dd data-boleta="total"></dd>
+            </dl>
+          </article>
+
+          <div class="compra-acciones">
+            <button class="boton" type="button" id="guardarBoletaProductos">Guardar como PDF</button>
+            <button class="boton boton-secundario" type="button" id="enviarBoletaProductos">Simular envío por correo</button>
+            <button class="boton boton-secundario" type="button" data-cerrar-carrito>Volver al catálogo</button>
+          </div>
+          <p class="boleta-mensaje" id="mensajeBoletaProductos" role="status"></p>
+        </section>
+      </dialog>
+
+      <template id="plantillaItemCompra">
+        <li class="carrito-item">
+          <div class="carrito-foto">
+            <span>Sin foto</span>
+            <img alt="" hidden />
+          </div>
+          <div class="carrito-item-datos">
+            <h3 data-item-nombre></h3>
+            <p data-item-descripcion hidden></p>
+            <p data-item-precio></p>
+            <div class="carrito-cantidad">
+              <button type="button" data-cantidad="-1">−</button>
+              <span data-item-cantidad></span>
+              <button type="button" data-cantidad="1">+</button>
+            </div>
+          </div>
+          <div class="carrito-item-importe">
+            <strong data-item-total></strong>
+            <button type="button" data-quitar>Quitar</button>
+          </div>
+        </li>
+      </template>
 
       <!-- CONTACTO -->
       <section class="contacto">
